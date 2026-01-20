@@ -1,7 +1,7 @@
 import Layout from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Moon, Fingerprint, Calendar, Sparkles } from "lucide-react";
+import { ArrowRight, Star, Moon, Fingerprint, Calendar, Sparkles, Lock } from "lucide-react";
 import generatedImage from "@assets/generated_images/ethereal_pastel_gradient_background_with_spiritual_vibes.png";
 import { Link } from "wouter";
 
@@ -61,9 +61,16 @@ export default function Home() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                 Today brings a sense of grounding and stability. It's a perfect time to focus on material comfort and sensory pleasures.
               </p>
+              <Button variant="outline" size="sm" className="w-full rounded-full border-primary/20 hover:bg-primary/10 group">
+                <Calendar className="mr-2 h-4 w-4 text-primary" />
+                <span className="group-hover:hidden">Add to Calendar</span>
+                <span className="hidden group-hover:inline flex items-center gap-1">
+                  <Lock className="h-3 w-3" /> Mystic Feature
+                </span>
+              </Button>
             </CardContent>
           </Card>
 

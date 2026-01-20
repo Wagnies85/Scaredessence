@@ -25,6 +25,7 @@ export default function Subscription() {
       period: "/month",
       features: [
         "Advanced Vimshottari Dashas (All Levels)",
+        "Calendar Integration: Daily Horoscope sync",
         "Karmic Synastry (Deep Compatibility)",
         "Full Human Design Bodygraph Analysis",
         "Personalized Daily Transit Reports",
