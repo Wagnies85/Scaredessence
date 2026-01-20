@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {navItems.map((item) => {
         const isActive = location === item.href;
         return (
-          <Link key={item.href} href={item.href}>
+          <Link key={item.href} href={item.href} asChild>
             <a
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium",
@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         );
       })}
       <div className="pt-4 mt-4 border-t border-border/40">
-        <Link href="/profile">
+        <Link href="/profile" asChild>
           <a className={cn(
             "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium",
             location === "/profile" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background flex flex-col md:flex-row font-sans selection:bg-primary/20">
       <aside className="hidden md:flex flex-col w-72 border-r bg-white/50 backdrop-blur-xl h-screen sticky top-0 z-40">
         <div className="p-8 pb-4">
-          <h1 className="font-serif text-3xl text-primary font-medium tracking-tight">Sacred Essence</h1>
+          <h1 className="font-serif text-3xl text-primary font-medium tracking-tight text-shadow-sm">Sacred Essence</h1>
         </div>
         <div className="flex-1 overflow-y-auto">
           <NavContent />
