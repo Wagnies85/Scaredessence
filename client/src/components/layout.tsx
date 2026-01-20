@@ -55,7 +55,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row font-sans selection:bg-primary/20">
-      <aside className="hidden md:flex flex-col w-72 border-r bg-white/50 backdrop-blur-xl h-screen sticky top-0 z-40">
+      <aside className="hidden md:flex flex-col w-72 border-r bg-background/80 backdrop-blur-xl h-screen sticky top-0 z-40">
         <div className="p-8 pb-4">
           <h1 className="font-serif text-3xl text-primary font-medium tracking-tight text-shadow-sm">Sacred Essence</h1>
         </div>
@@ -64,7 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <div className="md:hidden flex items-center justify-between p-4 border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
+      <div className="md:hidden flex items-center justify-between p-4 border-b bg-background/80 backdrop-blur-md sticky top-0 z-50">
         <h1 className="font-serif text-xl text-primary">Sacred Essence</h1>
         <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
           <SheetTrigger asChild>
@@ -72,7 +72,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="p-0 bg-white/95 backdrop-blur-xl w-72">
+          <SheetContent side="left" className="p-0 bg-background/95 backdrop-blur-xl w-72">
             <NavContent />
           </SheetContent>
         </Sheet>
