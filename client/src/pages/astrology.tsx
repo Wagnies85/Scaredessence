@@ -1,9 +1,11 @@
 import Layout from "@/components/layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Moon, Sparkles, Zap, Sun, Info } from "lucide-react";
+import { Moon, Sparkles, Zap, Sun, Info, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 
 export default function Astrology() {
   return (
@@ -74,6 +76,24 @@ export default function Astrology() {
                   </Card>
                 </div>
               </div>
+
+              {/* Premium Lock for Deeper Dashas */}
+              <Card className="relative overflow-hidden border-primary/20 bg-primary/5">
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
+                    <Lock className="h-8 w-8 text-primary mb-4" />
+                    <h3 className="font-serif text-xl mb-2">Bhukti & Antara Dashas</h3>
+                    <p className="text-sm text-muted-foreground mb-4">Go deeper than Mahadashas. Unlock 5 levels of time-lord precision.</p>
+                    <Link href="/subscription">
+                        <Button variant="outline" className="rounded-full">View Premium Options</Button>
+                    </Link>
+                </div>
+                <CardHeader>
+                    <CardTitle className="font-serif">Micro-Timing Cycles</CardTitle>
+                </CardHeader>
+                <CardContent className="opacity-20 blur-sm pointer-events-none">
+                    <div className="h-32 bg-muted rounded-xl" />
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="tropical" className="space-y-6">
@@ -100,6 +120,24 @@ export default function Astrology() {
                   </div>
                 </CardContent>
               </Card>
+              
+              {/* Premium Lock for Asteroids/Transits */}
+               <Card className="relative overflow-hidden border-blue-200 bg-blue-50/20">
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
+                    <Lock className="h-8 w-8 text-blue-600 mb-4" />
+                    <h3 className="font-serif text-xl mb-2">Minor Placements & Transits</h3>
+                    <p className="text-sm text-muted-foreground mb-4">Unlock Chiron, Lilith, Juno, and daily planetary transit reports.</p>
+                    <Link href="/subscription">
+                        <Button variant="outline" className="rounded-full border-blue-200 text-blue-600">Upgrade to Mystic</Button>
+                    </Link>
+                </div>
+                <CardHeader>
+                    <CardTitle className="font-serif">Psychological Depth</CardTitle>
+                </CardHeader>
+                <CardContent className="opacity-20 blur-sm pointer-events-none">
+                    <div className="h-32 bg-muted rounded-xl" />
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
@@ -114,9 +152,11 @@ export default function Astrology() {
               <p className="text-sm leading-relaxed opacity-90">
                 A common question is: "Which is right?" The answer is both. Use **Sidereal** for your life's destiny and timing (Dashas), and **Tropical** for your inner psychological processing.
               </p>
-              <Button variant="secondary" className="w-full mt-4 rounded-full bg-white text-primary hover:bg-white/90">
-                Unlock Full Analysis
-              </Button>
+              <Link href="/subscription">
+                <Button variant="secondary" className="w-full mt-4 rounded-full bg-white text-primary hover:bg-white/90">
+                  Unlock Full Analysis
+                </Button>
+              </Link>
             </CardContent>
           </Card>
           
@@ -142,5 +182,3 @@ export default function Astrology() {
     </Layout>
   );
 }
-
-import { Button } from "@/components/ui/button";
