@@ -75,6 +75,24 @@ export default function Astrology() {
                     </CardContent>
                   </Card>
                 </div>
+                
+                <div className="p-6 bg-primary/10 rounded-2xl border border-primary/20 mt-6">
+                  <h3 className="font-serif text-xl text-primary mb-3">The Soul's Axis Deep-Dive</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-bold text-foreground mb-2">Rahu's Material Quest</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Rahu is the head of the dragon. It represents where you are expanding your boundaries. In your chart, Rahu pushes you to master the material world through intellect and communication.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-foreground mb-2">Ketu's Spiritual Wisdom</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Ketu is the tail of the dragon. It represents your natural talents brought from past lives. You possess an innate mastery of spiritual laws, allowing you to navigate the world with a sense of detachment.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Premium Lock for Deeper Dashas */}

@@ -21,21 +21,25 @@ export default function Home() {
         
         <div className="relative z-10 p-8 md:p-16 lg:p-20 max-w-2xl">
           <span className="inline-block px-3 py-1 rounded-full bg-white/40 backdrop-blur-md border border-white/50 text-xs font-semibold uppercase tracking-widest text-primary-foreground mb-6">
-            Daily Guidance
+            Premium: Sync to Google & iPhone Calendar
           </span>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-foreground mb-6 leading-[1.1]">
-            Discover Your <span className="italic text-primary">Sacred Essence</span>
+            Unlock Your <span className="italic text-primary">Soul Blueprint</span> Today
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
-            Unveil the cosmic blueprint of your soul through the synergy of Vedic Astrology, Numerology, and Human Design.
+            Unveil your cosmic architecture. Sync your daily horoscopes directly to your calendar and master your Rahu & Ketu karmic nodes.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 h-12 text-base shadow-lg shadow-primary/20 transition-all hover:scale-105">
-              Get Your Reading
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full bg-white/50 hover:bg-white/80 backdrop-blur-sm border-white/60 px-8 h-12 text-base">
-              Explore Dashas
-            </Button>
+            <Link href="/subscription">
+              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 h-12 text-base shadow-lg shadow-primary/20 transition-all hover:scale-105">
+                Go Premium
+              </Button>
+            </Link>
+            <Link href="/astrology">
+              <Button size="lg" variant="outline" className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border-white/20 px-8 h-12 text-base">
+                Explore Rahu & Ketu
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
