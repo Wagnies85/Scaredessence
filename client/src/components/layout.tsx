@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { Sparkles, Moon, Sun, Fingerprint, Star, Menu, User, Heart, CreditCard } from "lucide-react";
+import { Sparkles, Moon, Sun, Fingerprint, Star, Menu, User, Heart, CreditCard, Calendar as CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: Sparkles },
+    { href: "/calendar", label: "Cosmic Calendar", icon: CalendarIcon },
     { href: "/astrology", label: "Astrology", icon: Moon },
     { href: "/numerology", label: "Numerology", icon: Star },
     { href: "/human-design", label: "Human Design", icon: Fingerprint },

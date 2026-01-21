@@ -12,6 +12,7 @@ import AuthPage from "@/pages/auth-page";
 import Profile from "@/pages/profile";
 import Compatibility from "@/pages/compatibility";
 import Subscription from "@/pages/subscription";
+import CosmicCalendar from "@/pages/calendar";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/profile" component={Profile} />
       <Route path="/compatibility" component={Compatibility} />
       <Route path="/subscription" component={Subscription} />
+      <Route path="/calendar" component={CosmicCalendar} />
       <Route path="/astrology" component={Astrology} />
       <Route path="/numerology" component={Numerology} />
       <Route path="/human-design" component={HumanDesign} />
