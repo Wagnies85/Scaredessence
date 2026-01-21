@@ -50,64 +50,61 @@
 }
 
 :root {
-  /* Cosmic Nebula Theme - Deep Blue, Purple, and Emerald Green */
-  --background: 230 50% 5%; /* Deep Midnight Blue */
-  --foreground: 210 20% 98%; /* Icy White */
+  /* High-Contrast "Deep Space" Theme - Ultra-Dark with Pure Accents */
+  --background: 230 60% 2%; /* Absolute black-blue void */
+  --foreground: 0 0% 100%; /* Pure brilliant white for maximum legibility */
 
-  --card: 230 45% 10%; /* Slightly lighter navy */
-  --card-foreground: 210 20% 98%;
+  --card: 230 50% 5%; /* Distinct but very dark card background */
+  --card-foreground: 0 0% 100%;
 
-  --popover: 230 45% 10%;
-  --popover-foreground: 210 20% 98%;
+  --popover: 230 50% 5%;
+  --popover-foreground: 0 0% 100%;
 
-  /* Primary: Vibrant Nebula Purple */
-  --primary: 270 70% 65%; 
-  --primary-foreground: 230 50% 5%;
+  /* Primary: Luminous Electric Purple */
+  --primary: 270 90% 75%; 
+  --primary-foreground: 230 60% 2%;
 
-  /* Secondary: Ethereal Emerald Green */
-  --secondary: 160 60% 50%;
-  --secondary-foreground: 230 50% 5%;
+  /* Secondary: Brilliant Emerald */
+  --secondary: 160 80% 65%;
+  --secondary-foreground: 230 60% 2%;
 
-  /* Muted */
-  --muted: 230 30% 15%;
-  --muted-foreground: 230 10% 80%;
+  /* Muted: Accessible but secondary */
+  --muted: 230 40% 10%;
+  --muted-foreground: 230 20% 90%;
 
-  /* Accent: Electric Cyan Blue */
-  --accent: 200 80% 60%;
-  --accent-foreground: 230 50% 5%;
+  /* Accent: Bright Cyan */
+  --accent: 190 90% 70%;
+  --accent-foreground: 230 60% 2%;
 
-  --border: 230 30% 18%;
-  --input: 230 30% 18%;
-  --ring: 270 70% 65%;
+  --border: 230 40% 12%;
+  --input: 230 40% 12%;
+  --ring: 270 90% 75%;
 
-  --chart-1: 270 70% 65%; 
-  --chart-2: 160 60% 50%;
-  --chart-3: 200 80% 60%;
+  --chart-1: 270 90% 75%; 
+  --chart-2: 160 80% 65%;
+  --chart-3: 190 90% 70%;
 }
 
 .dark {
-  /* Consistent with Nebula theme */
-  --background: 230 60% 3%;
-  --foreground: 210 20% 98%;
+  /* Dark mode maintains the ultra-high contrast setup */
+  --background: 230 60% 1%;
+  --foreground: 0 0% 100%;
 
-  --card: 230 55% 8%;
-  --card-foreground: 210 20% 98%;
+  --card: 230 60% 4%;
+  --card-foreground: 0 0% 100%;
 
-  --primary: 270 80% 70%;
-  --primary-foreground: 230 60% 3%;
+  --primary: 270 100% 80%;
+  --primary-foreground: 230 60% 1%;
 
-  --secondary: 160 70% 55%;
-  --secondary-foreground: 230 60% 3%;
+  --secondary: 160 100% 70%;
+  --secondary-foreground: 230 60% 1%;
 
-  --muted: 230 40% 12%;
-  --muted-foreground: 230 15% 85%;
+  --muted: 230 50% 8%;
+  --muted-foreground: 0 0% 100%;
 
-  --accent: 200 90% 65%;
-  --accent-foreground: 230 60% 3%;
-
-  --border: 230 40% 15%;
-  --input: 230 40% 15%;
-  --ring: 270 80% 70%;
+  --border: 230 50% 10%;
+  --input: 230 50% 10%;
+  --ring: 270 100% 80%;
 }
 
 @layer base {
