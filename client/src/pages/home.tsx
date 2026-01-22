@@ -14,9 +14,9 @@ export default function Home() {
           <img 
             src={generatedImage} 
             alt="Ethereal Background" 
-            className="w-full h-full object-cover opacity-50 transition-transform duration-[20s] ease-in-out group-hover:scale-110" 
+            className="w-full h-full object-cover opacity-60 transition-transform duration-[20s] ease-in-out group-hover:scale-110" 
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-background/60 to-accent/20 backdrop-blur-[1px]" />
         </div>
         
         <div className="relative z-10 p-8 md:p-16 lg:p-20 max-w-2xl">
@@ -120,8 +120,8 @@ export default function Home() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           
           <Link href="/astrology">
-            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-border p-8 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-primary/20 p-8 shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
+              <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity transform group-hover:scale-110 duration-500 text-primary">
                 <Moon className="h-32 w-32" />
               </div>
               <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-primary transition-colors">Vedic Astrology</h3>
@@ -133,26 +133,26 @@ export default function Home() {
           </Link>
 
           <Link href="/numerology">
-            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-border p-8 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-secondary/20 p-8 shadow-sm hover:shadow-xl hover:border-secondary/50 transition-all duration-300">
+              <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity transform group-hover:scale-110 duration-500 text-secondary">
                 <Star className="h-32 w-32" />
               </div>
-              <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-primary transition-colors">Numerology</h3>
+              <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-secondary transition-colors">Numerology</h3>
               <p className="text-foreground/80 mb-6 max-w-[200px]">Decode the hidden patterns and vibrations of your life path.</p>
-              <div className="flex items-center text-sm font-medium text-primary">
+              <div className="flex items-center text-sm font-medium text-secondary">
                 Analyze Numbers <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </a>
           </Link>
 
           <Link href="/human-design">
-            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-border p-8 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-accent/20 p-8 shadow-sm hover:shadow-xl hover:border-accent/50 transition-all duration-300">
+              <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity transform group-hover:scale-110 duration-500 text-accent">
                 <Fingerprint className="h-32 w-32" />
               </div>
-              <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-primary transition-colors">Human Design</h3>
+              <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-accent transition-colors">Human Design</h3>
               <p className="text-foreground/80 mb-6 max-w-[200px]">Discover your unique energy blueprint and decision strategy.</p>
-              <div className="flex items-center text-sm font-medium text-primary">
+              <div className="flex items-center text-sm font-medium text-accent">
                 See Bodygraph <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </a>

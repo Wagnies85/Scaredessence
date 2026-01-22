@@ -50,39 +50,43 @@
 }
 
 :root {
-  /* "Obsidian Clarity" Theme - Pure Black & Crisp White */
-  --background: 0 0% 0%; /* Pure Black */
-  --foreground: 0 0% 100%; /* Pure White */
+  /* "Vivid Aurora" Theme - Deep Base with Vibrant Color Infusions */
+  --background: 240 60% 3%; /* Deep indigo black base */
+  --foreground: 0 0% 100%; /* Pure white for clarity */
 
-  --card: 0 0% 4%; /* Near Black for subtle separation */
+  --card: 240 40% 6%; /* Indigo-tinted cards */
   --card-foreground: 0 0% 100%;
 
-  --popover: 0 0% 4%;
+  --popover: 240 40% 6%;
   --popover-foreground: 0 0% 100%;
 
-  /* Primary: Vibrant Purple (Electrified for legibility) */
-  --primary: 270 100% 70%; 
+  /* Primary: Electrified Violet-Purple */
+  --primary: 275 100% 70%; 
   --primary-foreground: 0 0% 0%;
 
-  /* Secondary: Bright Emerald */
-  --secondary: 160 100% 65%;
+  /* Secondary: Vivid Spring Green */
+  --secondary: 155 90% 60%;
   --secondary-foreground: 0 0% 0%;
 
-  /* Muted: Soft grey but still high contrast */
-  --muted: 0 0% 12%;
-  --muted-foreground: 0 0% 90%;
+  /* Muted */
+  --muted: 240 30% 12%;
+  --muted-foreground: 240 20% 90%;
 
-  /* Accent: Electric Blue */
-  --accent: 195 100% 65%;
+  /* Accent: Hot Magenta / Pink */
+  --accent: 320 100% 65%;
   --accent-foreground: 0 0% 0%;
 
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 270 100% 70%;
+  /* Border & Inputs with indigo tint */
+  --border: 240 30% 18%;
+  --input: 240 30% 18%;
+  --ring: 275 100% 70%;
 
-  --chart-1: 270 100% 70%; 
-  --chart-2: 160 100% 65%;
-  --chart-3: 195 100% 65%;
+  /* Chart colors for extra variety */
+  --chart-1: 275 100% 70%; /* Purple */
+  --chart-2: 155 90% 60%;  /* Green */
+  --chart-3: 195 100% 65%; /* Cyan */
+  --chart-4: 320 100% 65%; /* Pink */
+  --chart-5: 45 100% 65%;  /* Gold */
 }
 
 @layer base {
