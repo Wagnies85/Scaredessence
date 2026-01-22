@@ -14,29 +14,29 @@ export default function Home() {
           <img 
             src={generatedImage} 
             alt="Ethereal Background" 
-            className="w-full h-full object-cover opacity-80 transition-transform duration-[20s] ease-in-out group-hover:scale-110" 
+            className="w-full h-full object-cover opacity-50 transition-transform duration-[20s] ease-in-out group-hover:scale-110" 
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/30 to-transparent backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent backdrop-blur-[2px]" />
         </div>
         
         <div className="relative z-10 p-8 md:p-16 lg:p-20 max-w-2xl">
-          <span className="inline-block px-3 py-1 rounded-full bg-white/40 backdrop-blur-md border border-white/50 text-xs font-semibold uppercase tracking-widest text-primary-foreground mb-6">
+          <span className="inline-block px-3 py-1 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-xs font-semibold uppercase tracking-widest text-primary mb-6">
             Premium: Sync to Google & iPhone Calendar
           </span>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-foreground mb-6 leading-[1.1]">
             Unlock Your <span className="italic text-primary">Soul Blueprint</span> Today
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
+          <p className="text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed max-w-lg">
             Unveil your cosmic architecture. Sync your daily horoscopes directly to your calendar and master your Rahu & Ketu karmic nodes.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link href="/subscription">
-              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 h-12 text-base shadow-lg shadow-primary/20 transition-all hover:scale-105">
+              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base shadow-lg shadow-primary/20 transition-all hover:scale-105">
                 Go Premium
               </Button>
             </Link>
             <Link href="/astrology">
-              <Button size="lg" variant="outline" className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border-white/20 px-8 h-12 text-base">
+              <Button size="lg" variant="outline" className="rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-sm border-white/10 px-8 h-12 text-base text-foreground">
                 Explore Rahu & Ketu
               </Button>
             </Link>
@@ -54,18 +54,18 @@ export default function Home() {
         </div>
         
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="bg-white/60 backdrop-blur-xl border-white/60 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <Card className="bg-card/50 backdrop-blur-xl border-border shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center gap-4 pb-2">
-              <div className="p-2 rounded-xl bg-violet-100 text-violet-600">
+              <div className="p-2 rounded-xl bg-primary/10 text-primary">
                 <Moon className="h-6 w-6" />
               </div>
               <div>
                 <CardTitle className="text-lg font-serif">Planetary Transit</CardTitle>
-                <CardDescription>Moon in Taurus</CardDescription>
+                <CardDescription className="text-muted-foreground/80">Moon in Taurus</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+              <p className="text-foreground/90 text-sm leading-relaxed mb-4">
                 Today brings a sense of grounding and stability. It's a perfect time to focus on material comfort and sensory pleasures.
               </p>
               <Button variant="outline" size="sm" className="w-full rounded-full border-primary/20 hover:bg-primary/10 group">
@@ -78,35 +78,35 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/60 backdrop-blur-xl border-white/60 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <Card className="bg-card/50 backdrop-blur-xl border-border shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center gap-4 pb-2">
-              <div className="p-2 rounded-xl bg-teal-100 text-teal-600">
+              <div className="p-2 rounded-xl bg-secondary/10 text-secondary">
                 <Star className="h-6 w-6" />
               </div>
               <div>
                 <CardTitle className="text-lg font-serif">Numerology</CardTitle>
-                <CardDescription>Personal Year 5</CardDescription>
+                <CardDescription className="text-muted-foreground/80">Personal Year 5</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-foreground/90 text-sm leading-relaxed">
                 Change is in the air. Embrace the unexpected and be open to new opportunities that cross your path today.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/60 backdrop-blur-xl border-white/60 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <Card className="bg-card/50 backdrop-blur-xl border-border shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center gap-4 pb-2">
-              <div className="p-2 rounded-xl bg-blue-100 text-blue-600">
+              <div className="p-2 rounded-xl bg-accent/10 text-accent">
                 <Fingerprint className="h-6 w-6" />
               </div>
               <div>
                 <CardTitle className="text-lg font-serif">Human Design</CardTitle>
-                <CardDescription>Generator Strategy</CardDescription>
+                <CardDescription className="text-muted-foreground/80">Generator Strategy</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-foreground/90 text-sm leading-relaxed">
                 Wait to respond. Your gut instinct is your compass today—don't initiate without a clear sign from your environment.
               </p>
             </CardContent>
@@ -120,12 +120,12 @@ export default function Home() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           
           <Link href="/astrology">
-            <a className="group block relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-50 to-white border border-white/60 p-8 shadow-sm hover:shadow-xl transition-all duration-300">
+            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-border p-8 shadow-sm hover:shadow-xl transition-all duration-300">
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <Moon className="h-32 w-32" />
               </div>
               <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-primary transition-colors">Vedic Astrology</h3>
-              <p className="text-muted-foreground mb-6 max-w-[200px]">Understand your karma through the ancient wisdom of the stars.</p>
+              <p className="text-foreground/80 mb-6 max-w-[200px]">Understand your karma through the ancient wisdom of the stars.</p>
               <div className="flex items-center text-sm font-medium text-primary">
                 View Chart <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -133,12 +133,12 @@ export default function Home() {
           </Link>
 
           <Link href="/numerology">
-            <a className="group block relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-50 to-white border border-white/60 p-8 shadow-sm hover:shadow-xl transition-all duration-300">
+            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-border p-8 shadow-sm hover:shadow-xl transition-all duration-300">
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <Star className="h-32 w-32" />
               </div>
               <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-primary transition-colors">Numerology</h3>
-              <p className="text-muted-foreground mb-6 max-w-[200px]">Decode the hidden patterns and vibrations of your life path.</p>
+              <p className="text-foreground/80 mb-6 max-w-[200px]">Decode the hidden patterns and vibrations of your life path.</p>
               <div className="flex items-center text-sm font-medium text-primary">
                 Analyze Numbers <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -146,12 +146,12 @@ export default function Home() {
           </Link>
 
           <Link href="/human-design">
-            <a className="group block relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-50 to-white border border-white/60 p-8 shadow-sm hover:shadow-xl transition-all duration-300">
+            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-border p-8 shadow-sm hover:shadow-xl transition-all duration-300">
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
                 <Fingerprint className="h-32 w-32" />
               </div>
               <h3 className="font-serif text-2xl mb-2 text-foreground group-hover:text-primary transition-colors">Human Design</h3>
-              <p className="text-muted-foreground mb-6 max-w-[200px]">Discover your unique energy blueprint and decision strategy.</p>
+              <p className="text-foreground/80 mb-6 max-w-[200px]">Discover your unique energy blueprint and decision strategy.</p>
               <div className="flex items-center text-sm font-medium text-primary">
                 See Bodygraph <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
