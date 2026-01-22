@@ -50,61 +50,39 @@
 }
 
 :root {
-  /* High-Contrast "Deep Space" Theme - Ultra-Dark with Pure Accents */
-  --background: 230 60% 2%; /* Absolute black-blue void */
-  --foreground: 0 0% 100%; /* Pure brilliant white for maximum legibility */
+  /* "Obsidian Clarity" Theme - Pure Black & Crisp White */
+  --background: 0 0% 0%; /* Pure Black */
+  --foreground: 0 0% 100%; /* Pure White */
 
-  --card: 230 50% 5%; /* Distinct but very dark card background */
+  --card: 0 0% 4%; /* Near Black for subtle separation */
   --card-foreground: 0 0% 100%;
 
-  --popover: 230 50% 5%;
+  --popover: 0 0% 4%;
   --popover-foreground: 0 0% 100%;
 
-  /* Primary: Luminous Electric Purple */
-  --primary: 270 90% 75%; 
-  --primary-foreground: 230 60% 2%;
+  /* Primary: Vibrant Purple (Electrified for legibility) */
+  --primary: 270 100% 70%; 
+  --primary-foreground: 0 0% 0%;
 
-  /* Secondary: Brilliant Emerald */
-  --secondary: 160 80% 65%;
-  --secondary-foreground: 230 60% 2%;
+  /* Secondary: Bright Emerald */
+  --secondary: 160 100% 65%;
+  --secondary-foreground: 0 0% 0%;
 
-  /* Muted: Accessible but secondary */
-  --muted: 230 40% 10%;
-  --muted-foreground: 230 20% 90%;
+  /* Muted: Soft grey but still high contrast */
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 90%;
 
-  /* Accent: Bright Cyan */
-  --accent: 190 90% 70%;
-  --accent-foreground: 230 60% 2%;
+  /* Accent: Electric Blue */
+  --accent: 195 100% 65%;
+  --accent-foreground: 0 0% 0%;
 
-  --border: 230 40% 12%;
-  --input: 230 40% 12%;
-  --ring: 270 90% 75%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 270 100% 70%;
 
-  --chart-1: 270 90% 75%; 
-  --chart-2: 160 80% 65%;
-  --chart-3: 190 90% 70%;
-}
-
-.dark {
-  /* Dark mode maintains the ultra-high contrast setup */
-  --background: 230 60% 1%;
-  --foreground: 0 0% 100%;
-
-  --card: 230 60% 4%;
-  --card-foreground: 0 0% 100%;
-
-  --primary: 270 100% 80%;
-  --primary-foreground: 230 60% 1%;
-
-  --secondary: 160 100% 70%;
-  --secondary-foreground: 230 60% 1%;
-
-  --muted: 230 50% 8%;
-  --muted-foreground: 0 0% 100%;
-
-  --border: 230 50% 10%;
-  --input: 230 50% 10%;
-  --ring: 270 100% 80%;
+  --chart-1: 270 100% 70%; 
+  --chart-2: 160 100% 65%;
+  --chart-3: 195 100% 65%;
 }
 
 @layer base {
