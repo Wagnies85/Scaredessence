@@ -11,7 +11,8 @@ export async function registerRoutes(
   app.get("/api/profile", async (req, res) => {
     // For MVP, we'll use a hardcoded user ID or session if implemented
     const profile = await storage.getSpiritualProfile("default-user");
-    res.json(profile || {});
+    // Return premium status with the profile for review purposes
+    res.json({ ...(profile || {}), isPremium: true });
   });
 
   app.post("/api/profile", async (req, res) => {
