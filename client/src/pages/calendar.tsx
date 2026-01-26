@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function CosmicCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   
-  const { data: profile } = useQuery({
+  const { data: profile } = useQuery<any>({
     queryKey: ["/api/profile"],
   });
 

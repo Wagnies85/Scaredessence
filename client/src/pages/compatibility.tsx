@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 
 export default function Compatibility() {
-  const { data: profile } = useQuery({
+  const { data: profile } = useQuery<any>({
     queryKey: ["/api/profile"],
   });
 

@@ -9,7 +9,7 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Astrology() {
-  const { data: profile } = useQuery({
+  const { data: profile } = useQuery<any>({
     queryKey: ["/api/profile"],
   });
 
