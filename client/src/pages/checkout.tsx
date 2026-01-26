@@ -37,14 +37,20 @@ export default function Checkout() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full rounded-full h-12 text-base font-semibold">
+              <Button 
+                className="w-full rounded-full h-12 text-base font-semibold"
+                onClick={() => window.location.href = "/"}
+              >
                 Pay $14.99 with Card
               </Button>
             </CardFooter>
           </Card>
 
           <div className="space-y-6">
-            <Card className="bg-card/60 backdrop-blur-xl border-border hover:border-primary transition-colors cursor-pointer group">
+            <Card 
+              className="bg-card/60 backdrop-blur-xl border-border hover:border-primary transition-colors cursor-pointer group"
+              onClick={() => window.location.href = "/"}
+            >
               <CardContent className="p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="h-12 w-20 bg-[#003087] rounded-lg flex items-center justify-center font-bold italic text-white text-xs">
@@ -61,7 +67,10 @@ export default function Checkout() {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/60 backdrop-blur-xl border-border hover:border-primary transition-colors cursor-pointer group">
+            <Card 
+              className="bg-card/60 backdrop-blur-xl border-border hover:border-primary transition-colors cursor-pointer group"
+              onClick={() => window.location.href = "/"}
+            >
               <CardContent className="p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="h-12 w-20 bg-black rounded-lg flex items-center justify-center">
