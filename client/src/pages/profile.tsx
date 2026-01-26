@@ -7,7 +7,20 @@ import { User, Calendar, Clock, MapPin, Loader2 } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function Profile() {
   const { toast } = useToast();
@@ -21,6 +34,11 @@ export default function Profile() {
     birthLocation: "",
   });
 
+  const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [cities, setCities] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
   useEffect(() => {
     if (profile) {
       setFormData({
@@ -31,6 +49,35 @@ export default function Profile() {
     }
   }, [profile]);
 
+  useEffect(() => {
+    const fetchCities = async () => {
+      if (searchValue.length < 3) {
+        setCities([]);
+        return;
+      }
+
+      setIsSearching(true);
+      try {
+        const response = await fetch(
+          `https://secure.geonames.org/searchJSON?q=${searchValue}&maxRows=5&username=demo&style=short`
+        );
+        const data = await response.json();
+        const formattedCities = data.geonames?.map((city: any) => ({
+          label: `${city.name}${city.adminName1 ? `, ${city.adminName1}` : ""}, ${city.countryName}`,
+          value: `${city.name}${city.adminName1 ? `, ${city.adminName1}` : ""}, ${city.countryName}`,
+        })) || [];
+        setCities(formattedCities);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      } finally {
+        setIsSearching(false);
+      }
+    };
+
+    const timeoutId = setTimeout(fetchCities, 500);
+    return () => clearTimeout(timeoutId);
+  }, [searchValue]);
+
   const mutation = useMutation({
     mutationFn: async (newData: typeof formData) => {
       const res = await fetch("/api/profile", {
@@ -38,7 +85,7 @@ export default function Profile() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...newData,
-          userId: "default-user", // Hardcoded for MVP as per routes.ts
+          userId: "default-user",
           birthDate: newData.birthDate ? new Date(newData.birthDate).toISOString() : null,
         }),
       });
@@ -114,11 +161,48 @@ export default function Profile() {
 
               <div className="space-y-2">
                 <Label className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Place of Birth</Label>
-                <Input 
-                  placeholder="City, Country" 
-                  value={formData.birthLocation}
-                  onChange={(e) => setFormData(prev => ({ ...prev, birthLocation: e.target.value }))}
-                />
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-start font-normal text-muted-foreground"
+                    >
+                      {formData.birthLocation || "Select city..."}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                    <Command shouldFilter={false}>
+                      <CommandInput 
+                        placeholder="Type city name (min 3 chars)..." 
+                        onValueChange={setSearchValue}
+                      />
+                      <CommandList>
+                        {isSearching ? (
+                          <div className="p-4 text-sm text-center">Searching...</div>
+                        ) : cities.length === 0 ? (
+                          <CommandEmpty>No city found.</CommandEmpty>
+                        ) : (
+                          <CommandGroup>
+                            {cities.map((city) => (
+                              <CommandItem
+                                key={city.value}
+                                value={city.value}
+                                onSelect={() => {
+                                  setFormData(prev => ({ ...prev, birthLocation: city.label }));
+                                  setOpen(false);
+                                }}
+                              >
+                                {city.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        )}
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
 
