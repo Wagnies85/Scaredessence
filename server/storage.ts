@@ -4,11 +4,12 @@ import { eq } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 import { pool } from "./db";
+import { type Store } from "express-session";
 
 const PostgresSessionStore = connectPg(session);
 
 export interface IStorage {
-  sessionStore: session.Store;
+  sessionStore: Store;
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
@@ -17,7 +18,7 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.Store;
+  sessionStore: Store;
 
   constructor() {
     this.sessionStore = new PostgresSessionStore({
@@ -47,13 +48,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertSpiritualProfile(insertProfile: InsertSpiritualProfile): Promise<SpiritualProfile> {
-    const [existing] = await db.select().from(spiritualProfiles).where(eq(spiritualProfiles.userId, insertProfile.userId));
+    const userId = insertProfile.userId!;
+    const [existing] = await db.select().from(spiritualProfiles).where(eq(spiritualProfiles.userId, userId));
     
     if (existing) {
       const [updated] = await db
         .update(spiritualProfiles)
         .set(insertProfile)
-        .where(eq(spiritualProfiles.userId, insertProfile.userId))
+        .where(eq(spiritualProfiles.userId, userId))
         .returning();
       return updated;
     }

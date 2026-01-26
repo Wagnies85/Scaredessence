@@ -4,8 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Moon, Fingerprint, Calendar, Sparkles, Lock } from "lucide-react";
 import generatedImage from "@assets/generated_images/ethereal_pastel_gradient_background_with_spiritual_vibes.png";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
+  const { data: profile } = useQuery({
+    queryKey: ["/api/profile"],
+  });
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -61,12 +66,14 @@ export default function Home() {
               </div>
               <div>
                 <CardTitle className="text-lg font-serif">Planetary Transit</CardTitle>
-                <CardDescription className="text-muted-foreground/80">Moon in Taurus</CardDescription>
+                <CardDescription className="text-muted-foreground/80">
+                  {(profile as any)?.astrologyChart?.currentTransit || "Moon in Taurus"}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-foreground/90 text-sm leading-relaxed mb-4">
-                Today brings a sense of grounding and stability. It's a perfect time to focus on material comfort and sensory pleasures.
+                {(profile as any)?.astrologyChart?.insight || "Today brings a sense of grounding and stability. It's a perfect time to focus on material comfort and sensory pleasures."}
               </p>
               <Button variant="outline" size="sm" className="w-full rounded-full border-primary/20 hover:bg-primary/10 group">
                 <Calendar className="mr-2 h-4 w-4 text-primary" />
@@ -85,12 +92,14 @@ export default function Home() {
               </div>
               <div>
                 <CardTitle className="text-lg font-serif">Numerology</CardTitle>
-                <CardDescription className="text-muted-foreground/80">Personal Year 5</CardDescription>
+                <CardDescription className="text-muted-foreground/80">
+                  {(profile as any)?.numerologyNumbers?.currentYear || "Personal Year 5"}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-foreground/90 text-sm leading-relaxed">
-                Change is in the air. Embrace the unexpected and be open to new opportunities that cross your path today.
+                {(profile as any)?.numerologyNumbers?.insight || "Change is in the air. Embrace the unexpected and be open to new opportunities that cross your path today."}
               </p>
             </CardContent>
           </Card>
@@ -102,12 +111,14 @@ export default function Home() {
               </div>
               <div>
                 <CardTitle className="text-lg font-serif">Human Design</CardTitle>
-                <CardDescription className="text-muted-foreground/80">Generator Strategy</CardDescription>
+                <CardDescription className="text-muted-foreground/80">
+                  {(profile as any)?.humanDesignBodygraph?.strategy || "Generator Strategy"}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-foreground/90 text-sm leading-relaxed">
-                Wait to respond. Your gut instinct is your compass today—don't initiate without a clear sign from your environment.
+                {(profile as any)?.humanDesignBodygraph?.insight || "Wait to respond. Your gut instinct is your compass today—don't initiate without a sign from your environment."}
               </p>
             </CardContent>
           </Card>
