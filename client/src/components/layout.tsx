@@ -25,9 +25,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         const isActive = location === item.href;
         return (
           <Link key={item.href} href={item.href}>
-            <a
+            <div
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium",
+                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium cursor-pointer",
                 isActive
                   ? "bg-primary/10 text-primary font-semibold shadow-sm"
                   : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
@@ -36,19 +36,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <item.icon className={cn("h-5 w-5", isActive ? "text-primary" : "text-muted-foreground")} />
               {item.label}
-            </a>
+            </div>
           </Link>
         );
       })}
       <div className="pt-4 mt-4 border-t border-border/40">
         <Link href="/profile">
-          <a className={cn(
-            "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium",
+          <div className={cn(
+            "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium cursor-pointer",
             location === "/profile" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"
           )}>
             <User className="h-5 w-5" />
             Profile
-          </a>
+          </div>
         </Link>
       </div>
     </nav>
