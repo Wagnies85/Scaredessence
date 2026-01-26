@@ -7,8 +7,10 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { generateICS, downloadICS } from "@/lib/ics";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CosmicCalendar() {
+  const { toast } = useToast();
   const [currentDate, setCurrentDate] = useState(new Date());
   
   const { data: profile } = useQuery<any>({
@@ -30,13 +32,26 @@ export default function CosmicCalendar() {
   const isLocked = selectedDay.isPremium && !userIsPremium;
 
   const handleExport = () => {
-    const event = {
-      title: `Cosmic Insight: ${selectedDay.energy} Energy`,
-      date: currentDate.toISOString(),
-      description: `Vibration: ${selectedDay.vibration}. Influence: Moon square Pluto. Sacral energy tuned to creative projects.`,
-    };
-    const icsContent = generateICS([event]);
-    downloadICS(icsContent, `cosmic-insight-${currentDate.getDate()}.ics`);
+    try {
+      const event = {
+        title: `Cosmic Insight: ${selectedDay.energy} Energy`,
+        date: currentDate.toISOString(),
+        description: `Vibration: ${selectedDay.vibration}. Influence: Moon square Pluto. Sacral energy tuned to creative projects.`,
+      };
+      const icsContent = generateICS([event]);
+      downloadICS(icsContent, `cosmic-insight-${currentDate.getDate()}.ics`);
+      toast({
+        title: "Download Started",
+        description: "Your cosmic insight is being downloaded to your device.",
+      });
+    } catch (error) {
+      console.error("Export error:", error);
+      toast({
+        variant: "destructive",
+        title: "Download Failed",
+        description: "Could not generate the calendar file. Please try again.",
+      });
+    }
   };
 
   return (
