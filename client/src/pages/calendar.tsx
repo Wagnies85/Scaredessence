@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { generateICS, downloadICS } from "@/lib/ics";
 
 export default function CosmicCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -27,6 +28,16 @@ export default function CosmicCalendar() {
 
   const selectedDay = days[currentDate.getDate() - 1];
   const isLocked = selectedDay.isPremium && !userIsPremium;
+
+  const handleExport = () => {
+    const event = {
+      title: `Cosmic Insight: ${selectedDay.energy} Energy`,
+      date: currentDate.toISOString(),
+      description: `Vibration: ${selectedDay.vibration}. Influence: Moon square Pluto. Sacral energy tuned to creative projects.`,
+    };
+    const icsContent = generateICS([event]);
+    downloadICS(icsContent, `cosmic-insight-${currentDate.getDate()}.ics`);
+  };
 
   return (
     <Layout>
@@ -129,7 +140,11 @@ export default function CosmicCalendar() {
                   </Link>
                 </div>
               ) : (
-                <Button variant="outline" className="w-full rounded-full border-primary/20 hover:bg-primary/10">
+                <Button 
+                  variant="outline" 
+                  className="w-full rounded-full border-primary/20 hover:bg-primary/10"
+                  onClick={handleExport}
+                >
                   <CalendarIcon className="mr-2 h-4 w-4" /> Add to Calendar
                 </Button>
               )}
