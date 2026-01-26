@@ -105,6 +105,7 @@ export default function Subscription() {
             </Card>
           ))}
         </div>
+      </div>
     </Layout>
   );
 }
