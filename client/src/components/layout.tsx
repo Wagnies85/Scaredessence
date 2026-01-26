@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { href: "/numerology", label: "Numerology", icon: Star },
     { href: "/human-design", label: "Human Design", icon: Fingerprint },
     { href: "/compatibility", label: "Compatibility", icon: Heart },
-    { href: "/subscription", label: "Premium", icon: CreditCard },
+    { href: "/checkout", label: "Premium", icon: CreditCard },
   ];
 
   const NavContent = () => (

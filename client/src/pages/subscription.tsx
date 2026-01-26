@@ -1,8 +1,9 @@
 import Layout from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, Crown, Zap, Sparkles, CreditCard, Apple, ShieldCheck, Lock, Star } from "lucide-react";
+import { Check, Crown, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "wouter";
 
 export default function Subscription() {
   const plans = [
@@ -83,24 +84,11 @@ export default function Subscription() {
                 </ul>
               </CardContent>
               <CardFooter className="p-8">
-                {plan.highlight ? (
-                  <div className="w-full space-y-4">
-                    <Button className="w-full rounded-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
-                      Upgrade to Mystic
-                    </Button>
-                    <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <CreditCard className="h-4 w-4 text-primary" />
-                        <span className="text-xs font-medium">Pay with Card</span>
-                      </div>
-                      <ShieldCheck className="h-4 w-4 text-secondary" />
-                    </div>
-                  </div>
-                ) : (
+                <Link href="/checkout" className="w-full">
                   <Button className="w-full rounded-full h-12 text-base font-semibold" variant={plan.variant}>
                     {plan.button}
                   </Button>
-                )}
+                </Link>
               </CardFooter>
             </Card>
           ))}
