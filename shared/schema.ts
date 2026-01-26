@@ -25,6 +25,7 @@ export const spiritualProfiles = pgTable("spiritual_profiles", {
   birthTime: text("birth_time"),
   birthLocation: text("birth_location"),
   astrologyChart: jsonb("astrology_chart"),
+  siderealChart: jsonb("sidereal_chart"),
   humanDesignBodygraph: jsonb("human_design_bodygraph"),
   numerologyNumbers: jsonb("numerology_numbers"),
 });
