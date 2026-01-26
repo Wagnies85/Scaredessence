@@ -1,16 +1,27 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertSpiritualProfileSchema } from "@shared/schema";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
+  
+  app.get("/api/profile", async (req, res) => {
+    // For MVP, we'll use a hardcoded user ID or session if implemented
+    const profile = await storage.getSpiritualProfile("default-user");
+    res.json(profile || {});
+  });
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  app.post("/api/profile", async (req, res) => {
+    const result = insertSpiritualProfileSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({ error: result.error });
+    }
+    const profile = await storage.upsertSpiritualProfile(result.data);
+    res.json(profile);
+  });
 
   return httpServer;
 }
