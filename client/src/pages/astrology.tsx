@@ -6,8 +6,15 @@ import { Moon, Sparkles, Zap, Sun, Info, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Astrology() {
+  const { data: profile } = useQuery({
+    queryKey: ["/api/profile"],
+  });
+
+  const isPremium = profile?.isPremium ?? false;
+
   return (
     <Layout>
       <div className="mb-10">
@@ -97,19 +104,38 @@ export default function Astrology() {
 
               {/* Premium Lock for Deeper Dashas */}
               <Card className="relative overflow-hidden border-primary/20 bg-primary/5">
-                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
-                    <Lock className="h-8 w-8 text-primary mb-4" />
-                    <h3 className="font-serif text-xl mb-2">Bhukti & Antara Dashas</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Go deeper than Mahadashas. Unlock 5 levels of time-lord precision.</p>
-                    <Link href="/subscription">
-                        <Button variant="outline" className="rounded-full">View Premium Options</Button>
-                    </Link>
-                </div>
+                {!isPremium && (
+                  <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
+                      <Lock className="h-8 w-8 text-primary mb-4" />
+                      <h3 className="font-serif text-xl mb-2">Bhukti & Antara Dashas</h3>
+                      <p className="text-sm text-muted-foreground mb-4">Go deeper than Mahadashas. Unlock 5 levels of time-lord precision.</p>
+                      <Link href="/subscription">
+                          <Button variant="outline" className="rounded-full">View Premium Options</Button>
+                      </Link>
+                  </div>
+                )}
                 <CardHeader>
                     <CardTitle className="font-serif">Micro-Timing Cycles</CardTitle>
                 </CardHeader>
-                <CardContent className="opacity-20 blur-sm pointer-events-none">
-                    <div className="h-32 bg-muted rounded-xl" />
+                <CardContent className={cn("transition-all", !isPremium && "opacity-20 blur-sm pointer-events-none")}>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-primary/5 rounded-xl border border-primary/10">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-bold">Jupiter Mahadasha</span>
+                          <span className="text-xs text-muted-foreground">Ends 2032</span>
+                        </div>
+                        <div className="pl-4 border-l-2 border-primary/30 space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm">Saturn Bhukti</span>
+                            <Badge variant="outline">Current</Badge>
+                          </div>
+                          <div className="flex justify-between items-center text-xs text-muted-foreground">
+                            <span>Mercury Antara</span>
+                            <span>Active through July</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -141,19 +167,30 @@ export default function Astrology() {
               
               {/* Premium Lock for Asteroids/Transits */}
                <Card className="relative overflow-hidden border-blue-200 bg-blue-50/20">
-                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
-                    <Lock className="h-8 w-8 text-blue-600 mb-4" />
-                    <h3 className="font-serif text-xl mb-2">Minor Placements & Transits</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Unlock Chiron, Lilith, Juno, and daily planetary transit reports.</p>
-                    <Link href="/subscription">
-                        <Button variant="outline" className="rounded-full border-blue-200 text-blue-600">Upgrade to Mystic</Button>
-                    </Link>
-                </div>
+                {!isPremium && (
+                  <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
+                      <Lock className="h-8 w-8 text-blue-600 mb-4" />
+                      <h3 className="font-serif text-xl mb-2">Minor Placements & Transits</h3>
+                      <p className="text-sm text-muted-foreground mb-4">Unlock Chiron, Lilith, Juno, and daily planetary transit reports.</p>
+                      <Link href="/subscription">
+                          <Button variant="outline" className="rounded-full border-blue-200 text-blue-600">Upgrade to Mystic</Button>
+                      </Link>
+                  </div>
+                )}
                 <CardHeader>
                     <CardTitle className="font-serif">Psychological Depth</CardTitle>
                 </CardHeader>
-                <CardContent className="opacity-20 blur-sm pointer-events-none">
-                    <div className="h-32 bg-muted rounded-xl" />
+                <CardContent className={cn("transition-all", !isPremium && "opacity-20 blur-sm pointer-events-none")}>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 bg-white/60 rounded-lg">
+                        <span className="text-xs text-muted-foreground">Chiron</span>
+                        <p className="text-sm font-medium">Aries 12°</p>
+                      </div>
+                      <div className="p-3 bg-white/60 rounded-lg">
+                        <span className="text-xs text-muted-foreground">Black Moon Lilith</span>
+                        <p className="text-sm font-medium">Scorpio 4°</p>
+                      </div>
+                    </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -170,11 +207,13 @@ export default function Astrology() {
               <p className="text-sm leading-relaxed opacity-90">
                 A common question is: "Which is right?" The answer is both. Use **Sidereal** for your life's destiny and timing (Dashas), and **Tropical** for your inner psychological processing.
               </p>
-              <Link href="/subscription">
-                <Button variant="secondary" className="w-full mt-4 rounded-full bg-white text-primary hover:bg-white/90">
-                  Unlock Full Analysis
-                </Button>
-              </Link>
+              {!isPremium && (
+                <Link href="/subscription">
+                  <Button variant="secondary" className="w-full mt-4 rounded-full bg-white text-primary hover:bg-white/90">
+                    Unlock Full Analysis
+                  </Button>
+                </Link>
+              )}
             </CardContent>
           </Card>
           

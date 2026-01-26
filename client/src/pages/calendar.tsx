@@ -5,10 +5,17 @@ import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Lock, Sparkles, Mo
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 export default function CosmicCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   
+  const { data: profile } = useQuery({
+    queryKey: ["/api/profile"],
+  });
+
+  const userIsPremium = profile?.isPremium ?? false;
+
   // Mock data for the calendar days
   const daysInMonth = 31;
   const days = Array.from({ length: daysInMonth }, (_, i) => ({
@@ -19,6 +26,7 @@ export default function CosmicCalendar() {
   }));
 
   const selectedDay = days[currentDate.getDate() - 1];
+  const isLocked = selectedDay.isPremium && !userIsPremium;
 
   return (
     <Layout>
@@ -56,10 +64,14 @@ export default function CosmicCalendar() {
                         ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20" 
                         : "hover:bg-white/5 border-transparent text-muted-foreground"
                     )}
-                    onClick={() => !d.isPremium && setCurrentDate(new Date(2026, 0, d.day))}
+                    onClick={() => {
+                      if (!d.isPremium || userIsPremium) {
+                        setCurrentDate(new Date(2026, 0, d.day));
+                      }
+                    }}
                   >
                     <span className="text-sm font-semibold">{d.day}</span>
-                    {d.isPremium && <Lock className="h-2 w-2 absolute top-1 right-1 opacity-40" />}
+                    {d.isPremium && !userIsPremium && <Lock className="h-2 w-2 absolute top-1 right-1 opacity-40" />}
                     <div className={cn(
                       "w-1 h-1 rounded-full mt-1",
                       d.energy === "High" ? "bg-green-400" : d.energy === "Focus" ? "bg-blue-400" : "bg-purple-400"
@@ -106,7 +118,7 @@ export default function CosmicCalendar() {
                 </div>
               </div>
 
-              {selectedDay.isPremium ? (
+              {isLocked ? (
                 <div className="p-6 bg-background/50 rounded-2xl border border-dashed border-primary/30 text-center">
                   <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
                   <p className="text-sm font-medium mb-4">Unlock the full month and sync to your Google/iCal Calendar</p>

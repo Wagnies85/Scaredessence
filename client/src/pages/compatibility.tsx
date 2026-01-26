@@ -4,8 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Lock, Star } from "lucide-react";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 
 export default function Compatibility() {
+  const { data: profile } = useQuery({
+    queryKey: ["/api/profile"],
+  });
+
+  const isPremium = profile?.isPremium ?? false;
+
   return (
     <Layout>
       <h1 className="font-serif text-4xl mb-4">Soul Compatibility</h1>
@@ -40,24 +48,31 @@ export default function Compatibility() {
 
         {/* Paid Content Mockup */}
         <Card className="relative overflow-hidden border-primary/20 bg-gradient-to-br from-violet-50 to-white">
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-[4px] z-10 flex flex-col items-center justify-center p-8 text-center">
-            <div className="bg-white p-4 rounded-full shadow-xl mb-4">
-              <Lock className="h-8 w-8 text-primary" />
+          {!isPremium && (
+            <div className="absolute inset-0 bg-white/40 backdrop-blur-[4px] z-10 flex flex-col items-center justify-center p-8 text-center">
+              <div className="bg-white p-4 rounded-full shadow-xl mb-4">
+                <Lock className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-serif mb-2">Deep Cosmic Synastry</h3>
+              <p className="text-sm text-muted-foreground mb-6">Unlock detailed Rahu/Ketu karmic knots, Human Design channel connections, and intimate dasha overlaps.</p>
+              <Link href="/subscription">
+                <Button className="rounded-full bg-primary px-8">Unlock Premium</Button>
+              </Link>
             </div>
-            <h3 className="text-xl font-serif mb-2">Deep Cosmic Synastry</h3>
-            <p className="text-sm text-muted-foreground mb-6">Unlock detailed Rahu/Ketu karmic knots, Human Design channel connections, and intimate dasha overlaps.</p>
-            <Link href="/subscription">
-              <Button className="rounded-full bg-primary px-8">Unlock Premium</Button>
-            </Link>
-          </div>
+          )}
           <CardHeader>
             <CardTitle>Detailed Comparison</CardTitle>
           </CardHeader>
-          <CardContent className="opacity-20 blur-sm pointer-events-none">
+          <CardContent className={cn("transition-all", !isPremium && "opacity-20 blur-sm pointer-events-none")}>
             <div className="space-y-4">
-              <div className="h-20 bg-muted rounded-xl" />
-              <div className="h-20 bg-muted rounded-xl" />
-              <div className="h-20 bg-muted rounded-xl" />
+              <div className="p-4 bg-white/60 rounded-xl border border-primary/10">
+                <h4 className="font-bold text-sm mb-2">Karmic Knots</h4>
+                <p className="text-xs text-muted-foreground">Your Rahu conjunct their North Node indicates a fated connection for growth.</p>
+              </div>
+              <div className="p-4 bg-white/60 rounded-xl border border-primary/10">
+                <h4 className="font-bold text-sm mb-2">Human Design Synthesis</h4>
+                <p className="text-xs text-muted-foreground">Channel 10-57 is defined between you, creating a shared sense of intuition.</p>
+              </div>
             </div>
           </CardContent>
         </Card>
