@@ -59,9 +59,10 @@ export default function Profile() {
       setIsSearching(true);
       try {
         const response = await fetch(
-          `https://secure.geonames.org/searchJSON?q=${searchValue}&maxRows=5&username=demo&style=short`
+          `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(searchValue)}&maxRows=5&username=demo&style=short`
         );
         const data = await response.json();
+        console.log("Autocomplete results:", data);
         const formattedCities = data.geonames?.map((city: any) => ({
           label: `${city.name}${city.adminName1 ? `, ${city.adminName1}` : ""}, ${city.countryName}`,
           value: `${city.name}${city.adminName1 ? `, ${city.adminName1}` : ""}, ${city.countryName}`,
@@ -175,14 +176,19 @@ export default function Profile() {
                   <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
                     <Command shouldFilter={false}>
                       <CommandInput 
-                        placeholder="Type city name (min 3 chars)..." 
+                        placeholder="Type city name (e.g. Fredericton)..." 
                         onValueChange={setSearchValue}
                       />
-                      <CommandList>
+                      <CommandList className="max-h-[300px] overflow-y-auto">
                         {isSearching ? (
-                          <div className="p-4 text-sm text-center">Searching...</div>
-                        ) : cities.length === 0 ? (
+                          <div className="p-4 text-sm text-center flex items-center justify-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Searching...
+                          </div>
+                        ) : cities.length === 0 && searchValue.length >= 3 ? (
                           <CommandEmpty>No city found.</CommandEmpty>
+                        ) : cities.length === 0 && searchValue.length < 3 ? (
+                          <div className="p-4 text-sm text-center text-muted-foreground">Type at least 3 characters</div>
                         ) : (
                           <CommandGroup>
                             {cities.map((city) => (
@@ -193,6 +199,7 @@ export default function Profile() {
                                   setFormData(prev => ({ ...prev, birthLocation: city.label }));
                                   setOpen(false);
                                 }}
+                                className="cursor-pointer"
                               >
                                 {city.label}
                               </CommandItem>
