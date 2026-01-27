@@ -96,7 +96,7 @@ export default function Profile() {
           userId: "default-user",
           // Send original date string if it's already in a valid format, 
           // or try to parse it safely
-          birthDate: newData.birthDate ? new Date(newData.birthDate).toISOString() : null,
+          birthDate: newData.birthDate ? new Date(`${newData.birthDate}T12:00:00Z`).toISOString() : null,
         }),
       });
       
