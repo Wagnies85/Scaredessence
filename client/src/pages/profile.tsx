@@ -59,13 +59,13 @@ export default function Profile() {
       setIsSearching(true);
       try {
         const response = await fetch(
-          `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(searchValue)}&maxRows=5&username=demo&style=short`
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchValue)}&limit=5&addressdetails=1`
         );
         const data = await response.json();
         console.log("Autocomplete results:", data);
-        const formattedCities = data.geonames?.map((city: any) => ({
-          label: `${city.name}${city.adminName1 ? `, ${city.adminName1}` : ""}, ${city.countryName}`,
-          value: `${city.name}${city.adminName1 ? `, ${city.adminName1}` : ""}, ${city.countryName}`,
+        const formattedCities = data.map((item: any) => ({
+          label: item.display_name,
+          value: item.display_name,
         })) || [];
         setCities(formattedCities);
       } catch (error) {
