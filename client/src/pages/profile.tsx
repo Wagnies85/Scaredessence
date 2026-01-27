@@ -83,10 +83,22 @@ export default function Profile() {
     mutationFn: async (newData: typeof formData) => {
       console.log("Saving profile with data:", newData);
       
-      // Basic validation on frontend to avoid unnecessary requests
       if (!newData.birthDate) {
         throw new Error("Birth date is required");
       }
+
+      // Ensure birthDate is strictly YYYY-MM-DD for the new Date constructor
+      const dateParts = newData.birthDate.split('-');
+      if (dateParts.length !== 3) {
+        throw new Error("Invalid birth date format. Please use YYYY-MM-DD");
+      }
+
+      const isoDate = new Date(Date.UTC(
+        parseInt(dateParts[0]), 
+        parseInt(dateParts[1]) - 1, 
+        parseInt(dateParts[2]), 
+        12, 0, 0
+      )).toISOString();
 
       const res = await fetch("/api/profile", {
         method: "POST",
@@ -94,9 +106,7 @@ export default function Profile() {
         body: JSON.stringify({
           ...newData,
           userId: "default-user",
-          // Send original date string if it's already in a valid format, 
-          // or try to parse it safely
-          birthDate: newData.birthDate ? new Date(`${newData.birthDate}T12:00:00Z`).toISOString() : null,
+          birthDate: isoDate,
         }),
       });
       
