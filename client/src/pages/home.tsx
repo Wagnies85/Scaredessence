@@ -1,18 +1,65 @@
 import Layout from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Moon, Fingerprint, Calendar, Sparkles, Lock } from "lucide-react";
-import generatedImage from "@assets/generated_images/ethereal_pastel_gradient_background_with_spiritual_vibes.png";
+import { ArrowRight, Star, Moon, Fingerprint, Calendar, Sparkles, Lock, Gift, Zap } from "lucide-react";
+import generatedImage from "@assets/generated_images/ethereal_pastel_gradient_background_background_with_spiritual_vibes.png";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
+function getZodiacSign(date: Date) {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Aquarius";
+  if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return "Pisces";
+  if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "Aries";
+  if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "Taurus";
+  if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "Gemini";
+  if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "Cancer";
+  if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "Leo";
+  if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "Virgo";
+  if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "Libra";
+  if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "Scorpio";
+  if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "Sagittarius";
+  return "Capricorn";
+}
+
 export default function Home() {
-  const { data: profile } = useQuery({
+  const { data: profile } = useQuery<any>({
     queryKey: ["/api/profile"],
   });
 
+  const birthDate = profile?.birthDate ? new Date(profile.birthDate) : null;
+  const today = new Date();
+  const isBirthday = birthDate && 
+    birthDate.getDate() === today.getDate() && 
+    birthDate.getMonth() === today.getMonth();
+  
+  const zodiacSign = birthDate ? getZodiacSign(birthDate) : "Mystic";
+
   return (
     <Layout>
+      {/* Birthday Horoscope Section */}
+      {isBirthday && (
+        <section className="mb-12 animate-in zoom-in duration-700">
+          <Card className="bg-gradient-to-br from-primary/20 via-primary/5 to-background border-primary/30 shadow-2xl overflow-hidden">
+            <CardHeader className="flex flex-row items-center gap-4 pb-2">
+              <div className="p-3 bg-primary/20 rounded-full">
+                <Gift className="h-8 w-8 text-primary animate-bounce" />
+              </div>
+              <div>
+                <CardTitle className="font-serif text-3xl">Happy Solar Return!</CardTitle>
+                <CardDescription className="text-lg text-primary font-medium">Special Birthday Horoscope for {zodiacSign}</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <p className="text-xl leading-relaxed text-foreground font-light italic bg-white/40 p-6 rounded-2xl border border-white/60 backdrop-blur-sm">
+                "Today, as the Sun returns to the exact degree it held at your birth, a portal of profound transformation opens. For you, {zodiacSign}, this year marks a cycle of unprecedented spiritual expansion. Your intuition is at an all-time high—trust the whispers of your soul. A major breakthrough in your personal expression is manifesting. Shine your light without hesitation; the universe is conspiring in your favor."
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+      )}
+
       {/* Hero Section */}
       <section className="relative rounded-3xl overflow-hidden mb-12 shadow-2xl shadow-primary/5 group">
         <div className="absolute inset-0 z-0">
