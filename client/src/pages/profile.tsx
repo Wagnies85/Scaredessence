@@ -81,17 +81,31 @@ export default function Profile() {
 
   const mutation = useMutation({
     mutationFn: async (newData: typeof formData) => {
+      console.log("Saving profile with data:", newData);
+      
+      // Basic validation on frontend to avoid unnecessary requests
+      if (!newData.birthDate) {
+        throw new Error("Birth date is required");
+      }
+
       const res = await fetch("/api/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...newData,
           userId: "default-user",
+          // Send original date string if it's already in a valid format, 
+          // or try to parse it safely
           birthDate: newData.birthDate ? new Date(newData.birthDate).toISOString() : null,
         }),
       });
-      if (!res.ok) throw new Error("Failed to update profile");
-      return res.json();
+      
+      const data = await res.json();
+      if (!res.ok) {
+        console.error("Profile save error response:", data);
+        throw new Error(data.error?.message || data.error || "Failed to update profile");
+      }
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/profile"] });

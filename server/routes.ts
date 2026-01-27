@@ -17,20 +17,24 @@ export async function registerRoutes(
 
   app.post("/api/profile", async (req, res) => {
     try {
+      console.log("POST /api/profile request body:", req.body);
       const result = insertSpiritualProfileSchema.safeParse(req.body);
       if (!result.success) {
-        console.error("Validation error:", result.error);
-        return res.status(400).json({ error: result.error });
+        console.error("Validation error details:", JSON.stringify(result.error.format(), null, 2));
+        return res.status(400).json({ 
+          error: "Invalid profile data", 
+          details: result.error.format() 
+        });
       }
       
-      // Ensure we have a default user if none exists (for MVP)
       const userId = result.data.userId || "default-user";
       const user = await storage.getUser(userId);
       if (!user) {
+        console.log("Creating default user:", userId);
         await storage.createUser({
           id: userId,
           username: "default_user",
-          password: "password", // Dummy password
+          password: "password",
           isPremium: true
         });
       }
@@ -40,9 +44,9 @@ export async function registerRoutes(
         userId
       });
       res.json(profile);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Profile upsert error:", error);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: error.message || "Internal server error" });
     }
   });
 
