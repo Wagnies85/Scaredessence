@@ -28,15 +28,19 @@ export async function registerRoutes(
       }
       
       const userId = result.data.userId || "default-user";
-      const user = await storage.getUser(userId);
-      if (!user) {
-        console.log("Creating default user:", userId);
-        await storage.createUser({
-          id: userId,
-          username: "default_user",
-          password: "password",
-          isPremium: true
-        });
+      try {
+        const user = await storage.getUser(userId);
+        if (!user) {
+          console.log("Creating default user:", userId);
+          await storage.createUser({
+            id: userId,
+            username: `user_${Date.now()}`,
+            password: "password",
+            isPremium: true
+          });
+        }
+      } catch (userError) {
+        console.error("Error ensuring user exists:", userError);
       }
 
       const profile = await storage.upsertSpiritualProfile({
