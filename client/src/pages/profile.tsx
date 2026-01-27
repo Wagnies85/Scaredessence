@@ -21,6 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { DialogTitle } from "@/components/ui/dialog";
 
 export default function Profile() {
   const { toast } = useToast();
@@ -198,7 +199,8 @@ export default function Profile() {
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-                    <Command shouldFilter={false}>
+                    <Command shouldFilter={false} className="overflow-hidden">
+                      <DialogTitle className="sr-only">City Selection</DialogTitle>
                       <CommandInput 
                         placeholder="Type city name (e.g. Fredericton)..." 
                         onValueChange={setSearchValue}
