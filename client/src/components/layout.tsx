@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {navItems.map((item) => {
         const isActive = location === item.href;
         return (
-          <Link key={item.href} href={item.href}>
+          <Link key={item.href} href={item.href} className="block">
             <div
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium cursor-pointer",
@@ -41,7 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         );
       })}
       <div className="pt-4 mt-4 border-t border-border/40">
-        <Link href="/profile">
+        <Link href="/profile" className="block">
           <div className={cn(
             "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium cursor-pointer",
             location === "/profile" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted/50"

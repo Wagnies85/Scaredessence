@@ -172,7 +172,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           
           <Link href="/astrology">
-            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-primary/20 p-8 shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
+            <div className="group block relative overflow-hidden rounded-3xl bg-card border border-primary/20 p-8 shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300 cursor-pointer">
               <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity transform group-hover:scale-110 duration-500 text-primary">
                 <Moon className="h-32 w-32" />
               </div>
@@ -181,11 +181,11 @@ export default function Home() {
               <div className="flex items-center text-sm font-medium text-primary">
                 View Chart <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </a>
+            </div>
           </Link>
 
           <Link href="/numerology">
-            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-secondary/20 p-8 shadow-sm hover:shadow-xl hover:border-secondary/50 transition-all duration-300">
+            <div className="group block relative overflow-hidden rounded-3xl bg-card border border-secondary/20 p-8 shadow-sm hover:shadow-xl hover:border-secondary/50 transition-all duration-300 cursor-pointer">
               <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity transform group-hover:scale-110 duration-500 text-secondary">
                 <Star className="h-32 w-32" />
               </div>
@@ -194,11 +194,11 @@ export default function Home() {
               <div className="flex items-center text-sm font-medium text-secondary">
                 Analyze Numbers <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </a>
+            </div>
           </Link>
 
           <Link href="/human-design">
-            <a className="group block relative overflow-hidden rounded-3xl bg-card border border-accent/20 p-8 shadow-sm hover:shadow-xl hover:border-accent/50 transition-all duration-300">
+            <div className="group block relative overflow-hidden rounded-3xl bg-card border border-accent/20 p-8 shadow-sm hover:shadow-xl hover:border-accent/50 transition-all duration-300 cursor-pointer">
               <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity transform group-hover:scale-110 duration-500 text-accent">
                 <Fingerprint className="h-32 w-32" />
               </div>
@@ -207,7 +207,7 @@ export default function Home() {
               <div className="flex items-center text-sm font-medium text-accent">
                 See Bodygraph <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </a>
+            </div>
           </Link>
 
         </div>
