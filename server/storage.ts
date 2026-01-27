@@ -48,22 +48,33 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertSpiritualProfile(insertProfile: InsertSpiritualProfile): Promise<SpiritualProfile> {
-    const userId = insertProfile.userId;
-    if (!userId) throw new Error("userId is required for upsertSpiritualProfile");
+    try {
+      const userId = insertProfile.userId;
+      if (!userId) throw new Error("userId is required for upsertSpiritualProfile");
 
-    const [existing] = await db.select().from(spiritualProfiles).where(eq(spiritualProfiles.userId, userId));
-    
-    if (existing) {
-      const [updated] = await db
-        .update(spiritualProfiles)
-        .set(insertProfile)
-        .where(eq(spiritualProfiles.userId, userId))
-        .returning();
-      return updated;
+      const [existing] = await db.select().from(spiritualProfiles).where(eq(spiritualProfiles.userId, userId));
+      
+      if (existing) {
+        const [updated] = await db
+          .update(spiritualProfiles)
+          .set({
+            ...insertProfile,
+            astrologyChart: insertProfile.astrologyChart ?? existing.astrologyChart,
+            siderealChart: insertProfile.siderealChart ?? existing.siderealChart,
+            humanDesignBodygraph: insertProfile.humanDesignBodygraph ?? existing.humanDesignBodygraph,
+            numerologyNumbers: insertProfile.numerologyNumbers ?? existing.numerologyNumbers,
+          })
+          .where(eq(spiritualProfiles.userId, userId))
+          .returning();
+        return updated;
+      }
+
+      const [created] = await db.insert(spiritualProfiles).values(insertProfile).returning();
+      return created;
+    } catch (error) {
+      console.error("Database storage error in upsertSpiritualProfile:", error);
+      throw error;
     }
-
-    const [created] = await db.insert(spiritualProfiles).values(insertProfile).returning();
-    return created;
   }
 }
 
