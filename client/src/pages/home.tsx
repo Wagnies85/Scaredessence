@@ -2,7 +2,6 @@ import Layout from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Moon, Fingerprint, Calendar, Sparkles, Lock, Gift, Zap } from "lucide-react";
-import generatedImage from "@assets/generated_images/ethereal_pastel_gradient_background_background_with_spiritual_vibes.png";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
@@ -62,13 +61,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative rounded-3xl overflow-hidden mb-12 shadow-2xl shadow-primary/5 group">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={generatedImage} 
-            alt="Ethereal Background" 
-            className="w-full h-full object-cover opacity-60 transition-transform duration-[20s] ease-in-out group-hover:scale-110" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-background/60 to-accent/20 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/10 via-background to-accent/5 backdrop-blur-[1px]">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center opacity-20 transition-transform duration-[20s] ease-in-out group-hover:scale-110" />
         </div>
         
         <div className="relative z-10 p-8 md:p-16 lg:p-20 max-w-2xl">
