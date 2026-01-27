@@ -48,7 +48,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertSpiritualProfile(insertProfile: InsertSpiritualProfile): Promise<SpiritualProfile> {
-    const userId = insertProfile.userId!;
+    const userId = insertProfile.userId;
+    if (!userId) throw new Error("userId is required for upsertSpiritualProfile");
+
     const [existing] = await db.select().from(spiritualProfiles).where(eq(spiritualProfiles.userId, userId));
     
     if (existing) {
