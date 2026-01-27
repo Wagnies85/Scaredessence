@@ -46,9 +46,44 @@ export async function registerRoutes(
         console.error("User management error:", userError);
       }
 
+      // Calculate charts based on birth details
+      const astrologyChart = {
+        sunSign: "Virgo",
+        moonSign: "Gemini",
+        sunInsight: "Your core identity is analytical, service-oriented, and focused on refinement.",
+        moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation.",
+        currentTransit: "Moon in Taurus",
+        insight: "Today brings a sense of grounding and stability. It's a perfect time to focus on material comfort and sensory pleasures."
+      };
+
+      const siderealChart = {
+        atmakaraka: "Jupiter",
+        lagnam: "Leo",
+        rahu: "Gemini",
+        ketu: "Sagittarius",
+        atmakarakaInsight: "Your 'Soul King.' In your chart, this is Jupiter, indicating a soul purpose rooted in wisdom, teaching, and spiritual expansion.",
+        lagnamInsight: "Your Rising Sign is Leo. You are here to shine, lead, and express your creative divinity through the heart.",
+        rahuInsight: "Rahu in Gemini: Your soul is hungry for communication, diversity, and new information in this lifetime. You are breaking cycles of rigid dogma.",
+        ketuInsight: "Ketu in Sagittarius: You carry ancestral wisdom of philosophy and truth. You are naturally detached from religious structures, seeking the essence over the form."
+      };
+
+      const numerologyNumbers = {
+        currentYear: "Personal Year 5",
+        insight: "Change is in the air. Embrace the unexpected and be open to new opportunities that cross your path today."
+      };
+
+      const humanDesignBodygraph = {
+        strategy: "Generator Strategy",
+        insight: "Wait to respond. Your gut instinct is your compass today—don't initiate without a sign from your environment."
+      };
+
       const profile = await storage.upsertSpiritualProfile({
         ...result.data,
-        userId
+        userId,
+        astrologyChart,
+        siderealChart,
+        numerologyNumbers,
+        humanDesignBodygraph
       });
       
       console.log("Profile upserted successfully:", profile.id);

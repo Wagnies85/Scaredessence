@@ -15,6 +15,24 @@ export default function Astrology() {
 
   const isPremium = profile?.isPremium ?? false;
 
+  const siderealData = profile?.siderealChart || {
+    atmakaraka: "Jupiter",
+    lagnam: "Leo",
+    rahu: "Gemini",
+    ketu: "Sagittarius",
+    atmakarakaInsight: "Your 'Soul King.' In your chart, this is Jupiter, indicating a soul purpose rooted in wisdom, teaching, and spiritual expansion.",
+    lagnamInsight: "Your Rising Sign is Leo. You are here to shine, lead, and express your creative divinity through the heart.",
+    rahuInsight: "Rahu in Gemini: Your soul is hungry for communication, diversity, and new information in this lifetime. You are breaking cycles of rigid dogma.",
+    ketuInsight: "Ketu in Sagittarius: You carry ancestral wisdom of philosophy and truth. You are naturally detached from religious structures, seeking the essence over the form."
+  };
+
+  const tropicalData = profile?.astrologyChart || {
+    sunSign: "Virgo",
+    moonSign: "Gemini",
+    sunInsight: "Your core identity is analytical, service-oriented, and focused on refinement.",
+    moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation."
+  };
+
   return (
     <Layout>
       <div className="mb-10">
@@ -47,11 +65,11 @@ export default function Astrology() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <h4 className="font-semibold flex items-center gap-2"><Moon className="h-4 w-4 text-primary" /> Atmakaraka</h4>
-                      <p className="text-sm text-muted-foreground">Your "Soul King." In your chart, this is **Jupiter**, indicating a soul purpose rooted in wisdom, teaching, and spiritual expansion.</p>
+                      <p className="text-sm text-muted-foreground">{siderealData.atmakarakaInsight}</p>
                     </div>
                     <div className="space-y-2">
                       <h4 className="font-semibold flex items-center gap-2"><Sun className="h-4 w-4 text-primary" /> Lagnam</h4>
-                      <p className="text-sm text-muted-foreground">Your Rising Sign is **Leo**. You are here to shine, lead, and express your creative divinity through the heart.</p>
+                      <p className="text-sm text-muted-foreground">{siderealData.lagnamInsight}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -69,7 +87,7 @@ export default function Astrology() {
                       <Badge className="bg-violet-100 text-violet-700 border-violet-200">The Obsession</Badge>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">Rahu in Gemini: Your soul is hungry for communication, diversity, and new information in this lifetime. You are breaking cycles of rigid dogma.</p>
+                      <p className="text-sm text-muted-foreground">{siderealData.rahuInsight}</p>
                     </CardContent>
                   </Card>
                   <Card className="bg-gradient-to-br from-amber-50 to-white border-amber-100">
@@ -78,7 +96,7 @@ export default function Astrology() {
                       <Badge className="bg-amber-100 text-amber-700 border-amber-200">The Mastery</Badge>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">Ketu in Sagittarius: You carry ancestral wisdom of philosophy and truth. You are naturally detached from religious structures, seeking the essence over the form.</p>
+                      <p className="text-sm text-muted-foreground">{siderealData.ketuInsight}</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -154,12 +172,12 @@ export default function Astrology() {
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="p-4 bg-white/40 rounded-lg">
-                      <p className="font-semibold text-foreground">Sun in Virgo</p>
-                      <p className="text-xs text-muted-foreground mt-1">Your core identity is analytical, service-oriented, and focused on refinement.</p>
+                      <p className="font-semibold text-foreground">Sun in {tropicalData.sunSign}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tropicalData.sunInsight}</p>
                     </div>
                     <div className="p-4 bg-white/40 rounded-lg">
-                      <p className="font-semibold text-foreground">Moon in Gemini</p>
-                      <p className="text-xs text-muted-foreground mt-1">Your emotional world is curious, communicative, and needs mental stimulation.</p>
+                      <p className="font-semibold text-foreground">Moon in {tropicalData.moonSign}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{tropicalData.moonInsight}</p>
                     </div>
                   </div>
                 </CardContent>
