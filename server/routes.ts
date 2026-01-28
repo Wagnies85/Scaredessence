@@ -65,11 +65,16 @@ export async function registerRoutes(
       const birthLocation = result.data.birthLocation || "Unknown";
 
       // Use Claude for high-precision spiritual calculations
-      const prompt = `Act as an expert Vedic astrologer, Human Design professional, and Numerologist. 
+      const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
       Calculate high-precision spiritual data for:
       Birth Date: ${birthDate.toISOString()}
       Birth Time: ${birthTime}
       Birth Location: ${birthLocation}
+
+      CRITICAL ACCURACY REQUIREMENTS:
+      1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. Identify the correct Lagnam (Ascendant) and Rashi (Moon Sign) based on the exact time and coordinates of ${birthLocation}.
+      2. Numerology: Calculate Life Path by reducing Day, Month, and Year separately, then summing and reducing (Western Pythagorian style). Identify the Personal Year for 2026.
+      3. Human Design: Determine the correct Type (e.g., Manifesting Generator) and Strategy.
 
       Required Fields (strictly return JSON):
       {

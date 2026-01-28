@@ -16,22 +16,22 @@ export default function Astrology() {
   const isPremium = profile?.isPremium ?? false;
 
   const siderealData = profile?.siderealChart || {
-    atmakaraka: "Jupiter",
-    lagnam: "Leo",
-    rahu: "Gemini",
-    ketu: "Sagittarius",
-    atmakarakaInsight: "Your 'Soul King.' In your chart, this is Jupiter, indicating a soul purpose rooted in wisdom, teaching, and spiritual expansion.",
-    lagnamInsight: "Your Rising Sign is Leo. You are here to shine, lead, and express your creative divinity through the heart.",
-    rahuInsight: "Rahu in Gemini: Your soul is hungry for communication, diversity, and new information in this lifetime. You are breaking cycles of rigid dogma.",
-    ketuInsight: "Ketu in Sagittarius: You carry ancestral wisdom of philosophy and truth. You are naturally detached from religious structures, seeking the essence over the form."
+    atmakaraka: "Loading...",
+    lagnam: "Loading...",
+    rahu: "Loading...",
+    ketu: "Loading...",
+    atmakarakaInsight: "Calculating your soul's king...",
+    lagnamInsight: "Determining your rising sign...",
+    rahuInsight: "Identifying your karmic direction...",
+    ketuInsight: "Assessing your past life mastery..."
   };
 
   const tropicalData = profile?.astrologyChart || {
-    sunSign: "Virgo",
-    moonSign: "Gemini",
-    ascendant: "Leo",
-    sunInsight: "Your core identity is analytical, service-oriented, and focused on refinement.",
-    moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation."
+    sunSign: "Loading...",
+    moonSign: "Loading...",
+    ascendant: "Loading...",
+    sunInsight: "Connecting to solar energies...",
+    moonInsight: "Reflecting inner world..."
   };
 
   const SouthIndianChart = ({ title, data }: { title: string, data: any }) => (
