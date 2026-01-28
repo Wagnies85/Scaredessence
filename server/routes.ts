@@ -64,17 +64,19 @@ export async function registerRoutes(
       const birthTime = result.data.birthTime || "12:00";
       const birthLocation = result.data.birthLocation || "Unknown";
 
-      // Use Claude for high-precision spiritual calculations
+      // Use Claude for high-precision spiritual calculations and daily horoscope
       const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
-      Calculate high-precision spiritual data for:
+      Calculate high-precision spiritual data and a personalized daily horoscope for:
       Birth Date: ${birthDate.toISOString()}
       Birth Time: ${birthTime}
       Birth Location: ${birthLocation}
+      Current Date: ${new Date().toISOString()}
 
       CRITICAL ACCURACY REQUIREMENTS:
       1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. Identify the correct Lagnam (Ascendant) and Rashi (Moon Sign) based on the exact time and coordinates of ${birthLocation}.
       2. Numerology: Calculate Life Path by reducing Day, Month, and Year separately, then summing and reducing (Western Pythagorian style). Identify the Personal Year for 2026.
       3. Human Design: Determine the correct Type (e.g., Manifesting Generator) and Strategy.
+      4. Daily Horoscope: Provide a 2-3 sentence personalized guidance for today based on current transits relative to this specific birth chart.
 
       Required Fields (strictly return JSON):
       {
@@ -84,7 +86,8 @@ export async function registerRoutes(
           "ascendant": "string",
           "sunInsight": "string",
           "moonInsight": "string",
-          "insight": "string"
+          "insight": "string",
+          "dailyHoroscope": "string"
         },
         "sidereal": {
           "atmakaraka": "string",

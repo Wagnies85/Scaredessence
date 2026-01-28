@@ -321,6 +321,20 @@ export default function Astrology() {
 
         <div className="lg:col-span-4 space-y-6">
           <Card className="bg-primary text-white overflow-hidden relative">
+            <Sparkles className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12" />
+            <CardHeader>
+              <CardTitle className="font-serif text-xl flex items-center gap-2">
+                <Sparkles className="h-5 w-5" /> Your Daily Horoscope
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm leading-relaxed italic">
+                {tropicalData.dailyHoroscope || "Your personalized daily guidance is aligning with the stars. Please update your birth details to generate your first reading."}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-primary text-white overflow-hidden relative">
             <Zap className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12" />
             <CardHeader>
               <CardTitle className="font-serif text-xl">The Synthesis</CardTitle>
