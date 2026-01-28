@@ -201,7 +201,7 @@ export default function Profile() {
                     }}
                   />
                   {open && (searchValue.length >= 3) && (
-                    <Card className="absolute z-50 w-full mt-1 max-h-[200px] overflow-y-auto shadow-xl border-primary/20 bg-white/95 backdrop-blur-sm">
+                    <Card className="absolute left-0 right-0 z-[100] mt-1 max-h-[250px] overflow-y-auto shadow-2xl border-primary/30 bg-white ring-1 ring-black/5">
                       <div className="p-1">
                         {isSearching ? (
                           <div className="p-4 text-sm text-center flex items-center justify-center gap-2">

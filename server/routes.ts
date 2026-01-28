@@ -74,9 +74,22 @@ export async function registerRoutes(
         ketuInsight: "Ketu in Sagittarius: You carry ancestral wisdom of philosophy and truth. You are naturally detached from religious structures, seeking the essence over the form."
       };
 
+      // Calculate Life Path Number
+      const calculateLifePath = (date: Date) => {
+        const digits = date.getUTCDate().toString() + (date.getUTCMonth() + 1).toString() + date.getUTCFullYear().toString();
+        let sum = digits.split('').reduce((acc, d) => acc + parseInt(d), 0);
+        while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+          sum = sum.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
+        }
+        return sum;
+      };
+
+      const lifePath = calculateLifePath(result.data.birthDate || new Date());
+
       const numerologyNumbers = {
+        lifePath,
         currentYear: "Personal Year 5",
-        insight: "Change is in the air. Embrace the unexpected and be open to new opportunities that cross your path today."
+        insight: `Your Life Path number is ${lifePath}. This represents your core purpose and the journey you are meant to take in this lifetime.`
       };
 
       const humanDesignBodygraph = {
