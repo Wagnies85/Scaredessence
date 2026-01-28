@@ -48,4 +48,10 @@ waitForPort = 5000
 
 [agent]
 mockupState = "FULLSTACK"
-integrations = ["javascript_database:1.0.0"]
+integrations = ["javascript_database:1.0.0", "javascript_anthropic_ai_integrations:2.0.0"]
+
+[userenv]
+
+[userenv.shared]
+AI_INTEGRATIONS_ANTHROPIC_BASE_URL = "http://localhost:1106/modelfarm/anthropic"
+AI_INTEGRATIONS_ANTHROPIC_API_KEY = "_DUMMY_API_KEY_"

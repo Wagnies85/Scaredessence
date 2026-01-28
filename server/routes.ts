@@ -3,13 +3,18 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertSpiritualProfileSchema } from "@shared/schema";
 
-import { anthropic } from "@replit/ai-sdk";
+import Anthropic from "@anthropic-ai/sdk";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   
+  const anthropic = new Anthropic({
+    apiKey: process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY,
+    baseURL: process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL,
+  });
+
   app.get("/api/profile", async (req, res) => {
     // For MVP, we'll use a hardcoded user ID or session if implemented
     const profile = await storage.getSpiritualProfile("default-user");
@@ -115,20 +120,6 @@ export async function registerRoutes(
         numerologyNumbers: spiritualData.numerology,
         humanDesignBodygraph: spiritualData.humanDesign
       });
-      
-      console.log("Profile upserted successfully:", profile.id);
-      res.json(profile);
-    } catch (error: any) {
-      console.error("Profile saving crash:", error);
-      res.status(500).json({ 
-        error: "Internal server error during profile save",
-        message: error.message 
-      });
-    }
-  });
-
-  return httpServer;
-}
       
       console.log("Profile upserted successfully:", profile.id);
       res.json(profile);
