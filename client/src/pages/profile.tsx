@@ -200,7 +200,6 @@ export default function Profile() {
                   </PopoverTrigger>
                   <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
                     <Command shouldFilter={false} className="overflow-hidden">
-                      <DialogTitle className="sr-only">City Selection</DialogTitle>
                       <CommandInput 
                         placeholder="Type city name (e.g. Fredericton)..." 
                         onValueChange={setSearchValue}
