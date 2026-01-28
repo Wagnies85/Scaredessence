@@ -33,6 +33,67 @@ export default function Astrology() {
     moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation."
   };
 
+  const NatalChartDisplay = () => (
+    <Card className="bg-white/80 backdrop-blur-xl border-primary/20 shadow-lg overflow-hidden mb-8">
+      <CardHeader className="bg-primary/5 border-b border-primary/10">
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle className="font-serif text-2xl">Natal Birth Chart</CardTitle>
+            <CardDescription>Your celestial snapshot at the moment of arrival</CardDescription>
+          </div>
+          <Badge variant="outline" className="border-primary/30 text-primary">Sidereal Lahiri</Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="relative aspect-square max-w-[500px] mx-auto p-8">
+          {/* North Indian Style Chart Grid */}
+          <div className="absolute inset-0 m-8 border-2 border-primary/30 rotate-45"></div>
+          <div className="absolute inset-0 m-8 border-2 border-primary/30">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-px h-full bg-primary/30"></div>
+              <div className="h-px w-full bg-primary/30"></div>
+            </div>
+          </div>
+          
+          {/* Chart Labels (Mock Data for Visual) */}
+          <div className="absolute top-[15%] left-[50%] -translate-x-1/2 text-xs font-bold text-primary/80">1 (ASC)</div>
+          <div className="absolute top-[30%] left-[30%] text-xs font-semibold">2: JU</div>
+          <div className="absolute top-[30%] right-[30%] text-xs font-semibold">12: MA</div>
+          <div className="absolute top-[50%] left-[15%] -translate-y-1/2 text-xs font-semibold">4: MO</div>
+          <div className="absolute top-[50%] right-[15%] -translate-y-1/2 text-xs font-semibold">10: SA</div>
+          <div className="absolute bottom-[30%] left-[30%] text-xs font-semibold">6: VE</div>
+          <div className="absolute bottom-[30%] right-[30%] text-xs font-semibold">8: SU</div>
+          <div className="absolute bottom-[15%] left-[50%] -translate-x-1/2 text-xs font-semibold">7: RA</div>
+          
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+             <div className="text-center bg-white/90 p-4 rounded-full border border-primary/10 shadow-sm">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Soul Center</p>
+                <p className="font-serif text-lg text-primary">{siderealData.atmakaraka}</p>
+             </div>
+          </div>
+        </div>
+        <div className="bg-muted/30 p-4 border-t border-primary/10 grid grid-cols-2 md:grid-cols-4 gap-4">
+           <div className="text-center">
+              <p className="text-[10px] uppercase text-muted-foreground">Ascendant</p>
+              <p className="text-sm font-semibold">{siderealData.lagnam}</p>
+           </div>
+           <div className="text-center">
+              <p className="text-[10px] uppercase text-muted-foreground">Sun (S)</p>
+              <p className="text-sm font-semibold">{tropicalData.sunSign}</p>
+           </div>
+           <div className="text-center">
+              <p className="text-[10px] uppercase text-muted-foreground">Moon (M)</p>
+              <p className="text-sm font-semibold">{tropicalData.moonSign}</p>
+           </div>
+           <div className="text-center">
+              <p className="text-[10px] uppercase text-muted-foreground">Soul Planet</p>
+              <p className="text-sm font-semibold">{siderealData.atmakaraka}</p>
+           </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <Layout>
       <div className="mb-10">
@@ -44,6 +105,8 @@ export default function Astrology() {
 
       <div className="grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-8">
+          <NatalChartDisplay />
+          
           <Tabs defaultValue="sidereal" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted/50 p-1 rounded-xl mb-6">
               <TabsTrigger value="sidereal" className="rounded-lg">Sidereal (Vedic)</TabsTrigger>

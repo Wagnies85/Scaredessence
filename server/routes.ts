@@ -18,7 +18,14 @@ export async function registerRoutes(
   app.post("/api/profile", async (req, res) => {
     try {
       console.log("POST /api/profile request body:", JSON.stringify(req.body));
-      const result = insertSpiritualProfileSchema.safeParse(req.body);
+      
+      // Pre-process birthDate to be a Date object for Zod validation if it's a string
+      const body = { ...req.body };
+      if (typeof body.birthDate === "string") {
+        body.birthDate = new Date(body.birthDate);
+      }
+      
+      const result = insertSpiritualProfileSchema.safeParse(body);
       
       if (!result.success) {
         console.error("Validation error details:", JSON.stringify(result.error.format(), null, 2));
