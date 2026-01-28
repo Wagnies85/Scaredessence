@@ -16,22 +16,23 @@ export default function Astrology() {
   const isPremium = profile?.isPremium ?? false;
 
   const siderealData = profile?.siderealChart || {
-    atmakaraka: "Loading...",
-    lagnam: "Loading...",
-    rahu: "Loading...",
-    ketu: "Loading...",
-    atmakarakaInsight: "Calculating your soul's king...",
-    lagnamInsight: "Determining your rising sign...",
-    rahuInsight: "Identifying your karmic direction...",
-    ketuInsight: "Assessing your past life mastery..."
+    atmakaraka: "Calculating...",
+    lagnam: "Calculating...",
+    rahu: "Calculating...",
+    ketu: "Calculating...",
+    atmakarakaInsight: "Decoding your soul's purpose...",
+    lagnamInsight: "Analyzing your rising path...",
+    rahuInsight: "Tracing your future evolution...",
+    ketuInsight: "Harvesting past life wisdom..."
   };
 
   const tropicalData = profile?.astrologyChart || {
-    sunSign: "Loading...",
-    moonSign: "Loading...",
-    ascendant: "Loading...",
-    sunInsight: "Connecting to solar energies...",
-    moonInsight: "Reflecting inner world..."
+    sunSign: "Calculating...",
+    moonSign: "Calculating...",
+    ascendant: "Calculating...",
+    sunInsight: "Connecting with your core identity...",
+    moonInsight: "Refining your emotional inner-world...",
+    dailyHoroscope: "Your stars for today are aligning..."
   };
 
   const SouthIndianChart = ({ title, data }: { title: string, data: any }) => (

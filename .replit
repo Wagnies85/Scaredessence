@@ -55,3 +55,4 @@ integrations = ["javascript_database:1.0.0", "javascript_anthropic_ai_integratio
 [userenv.shared]
 AI_INTEGRATIONS_ANTHROPIC_BASE_URL = "http://localhost:1106/modelfarm/anthropic"
 AI_INTEGRATIONS_ANTHROPIC_API_KEY = "_DUMMY_API_KEY_"
+VEDIC_ASTRO_API_KEY = "5qjW9CsS9Y9yz6weTpsbG5qRYs2z6Mt3aRvst9Id"
