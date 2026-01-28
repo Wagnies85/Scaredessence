@@ -1,3 +1,4 @@
+import { useLocation } from "wouter";
 import Layout from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 export default function Profile() {
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const { data: profile, isLoading } = useQuery<any>({
     queryKey: ["/api/profile"],
   });
@@ -124,6 +126,7 @@ export default function Profile() {
         title: "Profile Updated",
         description: "Your cosmic details have been saved successfully.",
       });
+      setLocation("/astrology");
     },
     onError: () => {
       toast({
