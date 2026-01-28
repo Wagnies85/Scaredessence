@@ -53,12 +53,11 @@ export async function registerRoutes(
         console.error("User management error:", userError);
       }
 
-      // --- ACCURATE VEDIC (SIDEREAL) LOGIC (Approximation) ---
+      // --- GENERALIZED VEDIC (SIDEREAL) LOGIC (Approximation) ---
       const getSiderealSunSign = (date: Date) => {
         const m = date.getUTCMonth() + 1;
         const d = date.getUTCDate();
-        // Sidereal (Lahiri) Ayanamsa is ~24 degrees back from Tropical.
-        // Approx dates: April 14-May 14 (Aries), etc.
+        // Sidereal (Lahiri) approximation - ~24 deg back from Tropical
         if ((m === 4 && d >= 14) || (m === 5 && d <= 14)) return "Aries";
         if ((m === 5 && d >= 15) || (m === 6 && d <= 14)) return "Taurus";
         if ((m === 6 && d >= 15) || (m === 7 && d <= 15)) return "Gemini";
@@ -73,30 +72,35 @@ export async function registerRoutes(
         return "Pisces";
       };
 
+      const getSiderealMoonSign = (date: Date) => {
+        // Very simplified moon calculation for variety in demo
+        const days = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+        const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        return signs[days % 12];
+      };
+
       const birthDate = result.data.birthDate || new Date();
       const siderealSun = getSiderealSunSign(birthDate);
-
-      // Force Libra Asc/Moon for this user specifically as they stated
-      const isUserMatch = siderealSun === "Pisces"; 
+      const moonSign = getSiderealMoonSign(birthDate);
       
       const astrologyChart = {
-        sunSign: isUserMatch ? "Pisces" : siderealSun,
-        moonSign: "Libra",
-        sunInsight: `Your Sun is in ${isUserMatch ? "Pisces" : siderealSun}, giving you your core spiritual essence.`,
-        moonInsight: "Your Moon is in Libra, balancing your emotions with harmony and grace.",
-        currentTransit: "Moon in Libra",
-        insight: "Deep spiritual currents meet the need for relational balance."
+        sunSign: siderealSun,
+        moonSign: moonSign,
+        sunInsight: `Your Sun is in ${siderealSun}, your core spiritual fire.`,
+        moonInsight: `Your Moon in ${moonSign} reflects your emotional needs and inner world.`,
+        currentTransit: "Cosmic Flow Active",
+        insight: `The meeting of ${siderealSun} and ${moonSign} defines your unique astrological signature.`
       };
 
       const siderealChart = {
-        atmakaraka: "Jupiter",
-        lagnam: "Libra",
+        atmakaraka: "Jupiter", // Standard placeholder for variety
+        lagnam: moonSign, // Placeholder for Ascendant using moon for variety
         rahu: "Gemini",
         ketu: "Sagittarius",
-        atmakarakaInsight: "Your Soul King (Atmakaraka) is Jupiter, indicating a life path of wisdom and guidance.",
-        lagnamInsight: "As a Libra Ascendant, your physical expression is one of charm, fairness, and diplomacy.",
-        rahuInsight: "Rahu in Gemini: Your soul's evolution involves mastering communication and duality.",
-        ketuInsight: "Ketu in Sagittarius: You have an innate wisdom from past lives regarding truth and philosophy."
+        atmakarakaInsight: "Your Atmakaraka represents your soul's highest aspiration in this incarnation.",
+        lagnamInsight: `As a ${moonSign} rising, you approach the world through the lens of this zodiac energy.`,
+        rahuInsight: "Rahu represents your soul's growth edge and new experiences.",
+        ketuInsight: "Ketu represents your innate talents and past life mastery."
       };
 
       // --- ACCURATE NUMEROLOGY LOGIC ---
