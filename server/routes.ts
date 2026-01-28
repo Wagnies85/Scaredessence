@@ -53,25 +53,44 @@ export async function registerRoutes(
         console.error("User management error:", userError);
       }
 
-      // Calculate charts based on birth details
+      // Calculate Tropical placements
+      const getSunSign = (date: Date) => {
+        const m = date.getUTCMonth() + 1;
+        const d = date.getUTCDate();
+        if ((m === 3 && d >= 21) || (m === 4 && d <= 19)) return "Aries";
+        if ((m === 4 && d >= 20) || (m === 5 && d <= 20)) return "Taurus";
+        if ((m === 5 && d >= 21) || (m === 6 && d <= 20)) return "Gemini";
+        if ((m === 6 && d >= 21) || (m === 7 && d <= 22)) return "Cancer";
+        if ((m === 7 && d >= 23) || (m === 8 && d <= 22)) return "Leo";
+        if ((m === 8 && d >= 23) || (m === 9 && d <= 22)) return "Virgo";
+        if ((m === 9 && d >= 23) || (m === 10 && d <= 22)) return "Libra";
+        if ((m === 10 && d >= 23) || (m === 11 && d <= 21)) return "Scorpio";
+        if ((m === 11 && d >= 22) || (m === 12 && d <= 21)) return "Sagittarius";
+        if ((m === 12 && d >= 22) || (m === 1 && d <= 19)) return "Capricorn";
+        if ((m === 1 && d >= 20) || (m === 2 && d <= 18)) return "Aquarius";
+        return "Pisces";
+      };
+
+      const sunSign = getSunSign(result.data.birthDate || new Date());
+
       const astrologyChart = {
-        sunSign: "Virgo",
-        moonSign: "Gemini",
-        sunInsight: "Your core identity is analytical, service-oriented, and focused on refinement.",
-        moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation.",
-        currentTransit: "Moon in Taurus",
-        insight: "Today brings a sense of grounding and stability. It's a perfect time to focus on material comfort and sensory pleasures."
+        sunSign: sunSign,
+        moonSign: "Libra",
+        sunInsight: `Your ${sunSign} sun provides your core vitality and identity.`,
+        moonInsight: "Your Libra moon needs emotional balance and aesthetic surroundings to feel secure.",
+        currentTransit: "Moon in Libra",
+        insight: `With your Sun in ${sunSign} and Moon in Libra, you balance deep intuition with a need for social harmony.`
       };
 
       const siderealChart = {
         atmakaraka: "Jupiter",
-        lagnam: "Leo",
+        lagnam: "Libra",
         rahu: "Gemini",
         ketu: "Sagittarius",
-        atmakarakaInsight: "Your 'Soul King.' In your chart, this is Jupiter, indicating a soul purpose rooted in wisdom, teaching, and spiritual expansion.",
-        lagnamInsight: "Your Rising Sign is Leo. You are here to shine, lead, and express your creative divinity through the heart.",
-        rahuInsight: "Rahu in Gemini: Your soul is hungry for communication, diversity, and new information in this lifetime. You are breaking cycles of rigid dogma.",
-        ketuInsight: "Ketu in Sagittarius: You carry ancestral wisdom of philosophy and truth. You are naturally detached from religious structures, seeking the essence over the form."
+        atmakarakaInsight: "Your Soul King. Indicates a purpose rooted in wisdom and expansion.",
+        lagnamInsight: "Your Rising Sign is Libra. You seek balance, harmony, and refined beauty in all expressions of life.",
+        rahuInsight: "Rahu in Gemini: Soul hunger for communication and new information.",
+        ketuInsight: "Ketu in Sagittarius: Philosophical detachment and ancestral wisdom."
       };
 
       // Calculate Life Path Number
