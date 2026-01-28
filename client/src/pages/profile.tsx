@@ -187,59 +187,53 @@ export default function Profile() {
 
               <div className="space-y-2">
                 <Label className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Place of Birth</Label>
-                <Popover open={open} onOpenChange={setOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={open}
-                      className="w-full justify-start font-normal text-muted-foreground"
-                    >
-                      {formData.birthLocation || "Select city..."}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-                    <Dialog>
-                      <DialogContent className="p-0 border-none bg-transparent shadow-none w-full">
-                        <DialogTitle className="sr-only">Location Search</DialogTitle>
-                        <Command shouldFilter={false} className="overflow-hidden border rounded-md bg-popover shadow-md">
-                          <CommandInput 
-                            placeholder="Type city name (e.g. Fredericton)..." 
-                            onValueChange={setSearchValue}
-                          />
-                          <CommandList className="max-h-[300px] overflow-y-auto">
-                            {isSearching ? (
-                              <div className="p-4 text-sm text-center flex items-center justify-center gap-2">
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                Searching...
-                              </div>
-                            ) : cities.length === 0 && searchValue.length >= 3 ? (
-                              <CommandEmpty>No city found.</CommandEmpty>
-                            ) : cities.length === 0 && searchValue.length < 3 ? (
-                              <div className="p-4 text-sm text-center text-muted-foreground">Type at least 3 characters</div>
-                            ) : (
-                              <CommandGroup>
-                                {cities.map((city) => (
-                                  <CommandItem
-                                    key={city.value}
-                                    value={city.value}
-                                    onSelect={() => {
-                                      setFormData(prev => ({ ...prev, birthLocation: city.label }));
-                                      setOpen(false);
-                                    }}
-                                    className="cursor-pointer"
-                                  >
-                                    {city.label}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            )}
-                          </CommandList>
-                        </Command>
-                      </DialogContent>
-                    </Dialog>
-                  </PopoverContent>
-                </Popover>
+                <div className="relative">
+                  <Input
+                    placeholder="Type city name (e.g. London, UK)..."
+                    value={formData.birthLocation}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, birthLocation: e.target.value }));
+                      setSearchValue(e.target.value);
+                      if (e.target.value.length >= 3) setOpen(true);
+                    }}
+                    onFocus={() => {
+                      if (formData.birthLocation.length >= 3) setOpen(true);
+                    }}
+                  />
+                  {open && (searchValue.length >= 3) && (
+                    <Card className="absolute z-50 w-full mt-1 max-h-[200px] overflow-y-auto shadow-xl border-primary/20 bg-white/95 backdrop-blur-sm">
+                      <div className="p-1">
+                        {isSearching ? (
+                          <div className="p-4 text-sm text-center flex items-center justify-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                            Searching...
+                          </div>
+                        ) : cities.length === 0 ? (
+                          <div className="p-4 text-sm text-center text-muted-foreground">No city found.</div>
+                        ) : (
+                          cities.map((city) => (
+                            <button
+                              key={city.value}
+                              className="w-full text-left px-4 py-2 text-sm hover:bg-primary/10 rounded-md transition-colors"
+                              onClick={() => {
+                                setFormData(prev => ({ ...prev, birthLocation: city.label }));
+                                setOpen(false);
+                              }}
+                            >
+                              {city.label}
+                            </button>
+                          ))
+                        )}
+                      </div>
+                    </Card>
+                  )}
+                </div>
+                {open && (
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setOpen(false)}
+                  />
+                )}
               </div>
             </div>
 
