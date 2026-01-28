@@ -94,26 +94,27 @@ export default function Astrology() {
     </Card>
   );
 
-  const MedicalAstrology = () => (
+  const VedicInsights = () => (
     <div className="space-y-6">
-       <Card className="border-2 border-secondary/40 shadow-lg">
-          <CardHeader className="bg-secondary/10">
-             <CardTitle className="font-serif text-2xl text-secondary">Medical Astrology Insights</CardTitle>
-             <CardDescription className="text-foreground/80">Planetary correlations with physical well-being</CardDescription>
+       <Card className="border-2 border-primary/40 shadow-lg">
+          <CardHeader className="bg-primary/10">
+             <CardTitle className="font-serif text-2xl text-primary">Vedic (Jyotish) Wisdom</CardTitle>
+             <CardDescription className="text-foreground/80">Deep insights from the ancient Sidereal tradition</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
              <div className="grid gap-4">
                 <div className="p-4 bg-primary/5 rounded-lg border border-primary/10">
-                   <h4 className="font-bold text-primary mb-1">Sun in {tropicalData.sunSign} (Vitality)</h4>
-                   <p className="text-sm">Governs the heart and spinal cord. Your constitution is {tropicalData.sunSign === 'Virgo' ? 'focused on digestive health and refinement of the nervous system.' : 'tied to your core sun sign vitality.'}</p>
+                   <h4 className="font-bold text-primary mb-1">Soul Purpose (Atmakaraka)</h4>
+                   <p className="text-sm">{siderealData.atmakarakaInsight}</p>
                 </div>
                 <div className="p-4 bg-secondary/5 rounded-lg border border-secondary/10">
-                   <h4 className="font-bold text-secondary mb-1">Moon in {tropicalData.moonSign} (Fluid Systems)</h4>
-                   <p className="text-sm">Governs bodily fluids and stomach. Needs emotional stability to maintain endocrine balance.</p>
+                   <h4 className="font-bold text-secondary mb-1">Destiny Path (Rahu & Ketu)</h4>
+                   <p className="text-sm mb-2">{siderealData.rahuInsight}</p>
+                   <p className="text-sm">{siderealData.ketuInsight}</p>
                 </div>
                 <div className="p-4 bg-accent/5 rounded-lg border border-accent/10">
-                   <h4 className="font-bold text-accent mb-1">Ascendant: {siderealData.lagnam} (Physical Body)</h4>
-                   <p className="text-sm">The first house rules the head and brain. Vital energy is expressed through {siderealData.lagnam}.</p>
+                   <h4 className="font-bold text-accent mb-1">Ascendant (Lagnam)</h4>
+                   <p className="text-sm">{siderealData.lagnamInsight}</p>
                 </div>
              </div>
           </CardContent>
@@ -125,7 +126,7 @@ export default function Astrology() {
     <div className="space-y-8">
       <SouthIndianChart title="Natal Birth Chart (D1)" data={siderealData} />
       <SouthIndianChart title="Navamsha Chart (D9)" data={{...siderealData, atmakaraka: "Venus"}} />
-      <MedicalAstrology />
+      <VedicInsights />
     </div>
   );
 
