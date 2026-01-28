@@ -50,43 +50,43 @@
 }
 
 :root {
-  /* "Sacred Clarity" Theme - Lighter, High Contrast for Spiritual Serenity */
-  --background: 240 33% 98%; /* Soft off-white background */
-  --foreground: 240 10% 10%; /* Deep charcoal for text readability */
+  /* "Sacred Radiance" Theme - High Contrast with Spiritual Vibrancy */
+  --background: 240 33% 99%; /* Very soft off-white */
+  --foreground: 240 10% 10%; /* Deep charcoal */
 
-  --card: 0 0% 100%; /* Pure white cards */
+  --card: 0 0% 100%;
   --card-foreground: 240 10% 15%;
 
   --popover: 0 0% 100%;
   --popover-foreground: 240 10% 15%;
 
-  /* Primary: Deep Spiritual Purple (Royal Amethyst) */
-  --primary: 265 80% 45%; 
+  /* Primary: Vibrant Royal Amethyst */
+  --primary: 265 85% 55%; 
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary: Calming Sage Green */
-  --secondary: 155 40% 45%;
-  --secondary-foreground: 0 0% 100%;
+  /* Secondary: Bright Spiritual Gold */
+  --secondary: 45 95% 50%;
+  --secondary-foreground: 240 10% 10%;
 
   /* Muted */
   --muted: 240 10% 95%;
   --muted-foreground: 240 10% 40%;
 
-  /* Accent: Warm Gold */
-  --accent: 40 80% 50%;
+  /* Accent: Ethereal Rose */
+  --accent: 330 90% 60%;
   --accent-foreground: 0 0% 100%;
 
   /* Border & Inputs */
-  --border: 240 10% 90%;
-  --input: 240 10% 90%;
-  --ring: 265 80% 45%;
+  --border: 240 10% 88%;
+  --input: 240 10% 88%;
+  --ring: 265 85% 55%;
 
   /* Chart colors */
-  --chart-1: 265 80% 45%; /* Purple */
-  --chart-2: 155 40% 45%;  /* Green */
-  --chart-3: 200 80% 45%; /* Blue */
-  --chart-4: 330 80% 45%; /* Rose */
-  --chart-5: 40 80% 50%;  /* Gold */
+  --chart-1: 265 85% 55%; /* Purple */
+  --chart-2: 155 60% 50%; /* Green */
+  --chart-3: 200 90% 55%; /* Blue */
+  --chart-4: 330 90% 60%; /* Rose */
+  --chart-5: 45 95% 50%;  /* Gold */
 }
 
 @layer base {

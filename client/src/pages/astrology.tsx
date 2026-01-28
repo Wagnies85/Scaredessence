@@ -33,49 +33,49 @@ export default function Astrology() {
     moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation."
   };
 
-  const NatalChartDisplay = () => (
+  const SouthIndianChart = ({ title, data }: { title: string, data: any }) => (
     <Card className="bg-white border-2 border-primary/40 shadow-xl overflow-hidden mb-8">
       <CardHeader className="bg-primary/10 border-b border-primary/20">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="font-serif text-3xl text-primary">Natal Birth Chart</CardTitle>
-            <CardDescription className="text-foreground/80 font-medium">Your celestial snapshot at the moment of arrival</CardDescription>
+            <CardTitle className="font-serif text-3xl text-primary">{title}</CardTitle>
+            <CardDescription className="text-foreground/80 font-medium italic">South Indian Style Chart</CardDescription>
           </div>
           <Badge className="bg-primary text-white border-none px-3 py-1">Sidereal Lahiri</Badge>
         </div>
       </CardHeader>
       <CardContent className="p-0 bg-white">
-        <div className="relative aspect-square max-w-[500px] mx-auto p-12">
-          {/* North Indian Style Chart Grid with higher contrast */}
-          <div className="absolute inset-0 m-12 border-4 border-primary/50 rotate-45"></div>
-          <div className="absolute inset-0 m-12 border-4 border-primary/50">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-1 h-full bg-primary/40"></div>
-              <div className="h-1 w-full bg-primary/40"></div>
-            </div>
-          </div>
+        <div className="grid grid-cols-4 grid-rows-4 aspect-square max-w-[500px] mx-auto border-4 border-primary/50 m-4">
+          {/* Row 1 */}
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">12: PI</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">1: AR</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">2: TA</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">3: GE</div>
           
-          {/* Chart Labels (Mock Data for Visual) with better visibility */}
-          <div className="absolute top-[18%] left-[50%] -translate-x-1/2 text-sm font-black text-primary">1 (ASC)</div>
-          <div className="absolute top-[32%] left-[32%] text-sm font-bold text-foreground">2: JU</div>
-          <div className="absolute top-[32%] right-[32%] text-sm font-bold text-foreground">12: MA</div>
-          <div className="absolute top-[50%] left-[18%] -translate-y-1/2 text-sm font-bold text-foreground">4: MO</div>
-          <div className="absolute top-[50%] right-[18%] -translate-y-1/2 text-sm font-bold text-foreground">10: SA</div>
-          <div className="absolute bottom-[32%] left-[32%] text-sm font-bold text-foreground">6: VE</div>
-          <div className="absolute bottom-[32%] right-[32%] text-sm font-bold text-foreground">8: SU</div>
-          <div className="absolute bottom-[18%] left-[50%] -translate-x-1/2 text-sm font-bold text-foreground">7: RA</div>
-          
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-             <div className="text-center bg-white p-6 rounded-full border-2 border-primary/20 shadow-md">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Soul Center</p>
-                <p className="font-serif text-2xl text-primary font-bold">{siderealData.atmakaraka}</p>
-             </div>
+          {/* Row 2 */}
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">11: AQ</div>
+          <div className="col-span-2 row-span-2 flex flex-col items-center justify-center bg-primary/5">
+             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Soul Center</p>
+             <p className="font-serif text-2xl text-primary font-bold">{data.atmakaraka}</p>
+             <p className="text-[10px] text-muted-foreground mt-1">ASC: {data.lagnam}</p>
           </div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">4: CA</div>
+          
+          {/* Row 3 */}
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">10: CP</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">5: LE</div>
+          
+          {/* Row 4 */}
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">9: SG</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">8: SC</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">7: LI</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">6: VI</div>
         </div>
+        
         <div className="bg-primary/5 p-6 border-t border-primary/20 grid grid-cols-2 md:grid-cols-4 gap-6">
            <div className="text-center">
               <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Ascendant</p>
-              <p className="text-base font-black text-foreground">{siderealData.lagnam}</p>
+              <p className="text-base font-black text-foreground">{data.lagnam}</p>
            </div>
            <div className="text-center">
               <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Sun (S)</p>
@@ -87,11 +87,46 @@ export default function Astrology() {
            </div>
            <div className="text-center">
               <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Soul Planet</p>
-              <p className="text-base font-black text-foreground">{siderealData.atmakaraka}</p>
+              <p className="text-base font-black text-foreground">{data.atmakaraka}</p>
            </div>
         </div>
       </CardContent>
     </Card>
+  );
+
+  const MedicalAstrology = () => (
+    <div className="space-y-6">
+       <Card className="border-2 border-secondary/40 shadow-lg">
+          <CardHeader className="bg-secondary/10">
+             <CardTitle className="font-serif text-2xl text-secondary">Medical Astrology Insights</CardTitle>
+             <CardDescription className="text-foreground/80">Planetary correlations with physical well-being</CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+             <div className="grid gap-4">
+                <div className="p-4 bg-primary/5 rounded-lg border border-primary/10">
+                   <h4 className="font-bold text-primary mb-1">Sun in {tropicalData.sunSign} (Vitality)</h4>
+                   <p className="text-sm">Governs the heart and spinal cord. Your constitution is {tropicalData.sunSign === 'Virgo' ? 'focused on digestive health and refinement of the nervous system.' : 'tied to your core sun sign vitality.'}</p>
+                </div>
+                <div className="p-4 bg-secondary/5 rounded-lg border border-secondary/10">
+                   <h4 className="font-bold text-secondary mb-1">Moon in {tropicalData.moonSign} (Fluid Systems)</h4>
+                   <p className="text-sm">Governs bodily fluids and stomach. Needs emotional stability to maintain endocrine balance.</p>
+                </div>
+                <div className="p-4 bg-accent/5 rounded-lg border border-accent/10">
+                   <h4 className="font-bold text-accent mb-1">Ascendant: {siderealData.lagnam} (Physical Body)</h4>
+                   <p className="text-sm">The first house rules the head and brain. Vital energy is expressed through {siderealData.lagnam}.</p>
+                </div>
+             </div>
+          </CardContent>
+       </Card>
+    </div>
+  );
+
+  const NatalChartDisplay = () => (
+    <div className="space-y-8">
+      <SouthIndianChart title="Natal Birth Chart (D1)" data={siderealData} />
+      <SouthIndianChart title="Navamsha Chart (D9)" data={{...siderealData, atmakaraka: "Venus"}} />
+      <MedicalAstrology />
+    </div>
   );
 
   return (
