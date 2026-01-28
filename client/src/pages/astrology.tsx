@@ -34,60 +34,60 @@ export default function Astrology() {
   };
 
   const NatalChartDisplay = () => (
-    <Card className="bg-white/80 backdrop-blur-xl border-primary/20 shadow-lg overflow-hidden mb-8">
-      <CardHeader className="bg-primary/5 border-b border-primary/10">
+    <Card className="bg-white border-2 border-primary/40 shadow-xl overflow-hidden mb-8">
+      <CardHeader className="bg-primary/10 border-b border-primary/20">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="font-serif text-2xl">Natal Birth Chart</CardTitle>
-            <CardDescription>Your celestial snapshot at the moment of arrival</CardDescription>
+            <CardTitle className="font-serif text-3xl text-primary">Natal Birth Chart</CardTitle>
+            <CardDescription className="text-foreground/80 font-medium">Your celestial snapshot at the moment of arrival</CardDescription>
           </div>
-          <Badge variant="outline" className="border-primary/30 text-primary">Sidereal Lahiri</Badge>
+          <Badge className="bg-primary text-white border-none px-3 py-1">Sidereal Lahiri</Badge>
         </div>
       </CardHeader>
-      <CardContent className="p-0">
-        <div className="relative aspect-square max-w-[500px] mx-auto p-8">
-          {/* North Indian Style Chart Grid */}
-          <div className="absolute inset-0 m-8 border-2 border-primary/30 rotate-45"></div>
-          <div className="absolute inset-0 m-8 border-2 border-primary/30">
+      <CardContent className="p-0 bg-white">
+        <div className="relative aspect-square max-w-[500px] mx-auto p-12">
+          {/* North Indian Style Chart Grid with higher contrast */}
+          <div className="absolute inset-0 m-12 border-4 border-primary/50 rotate-45"></div>
+          <div className="absolute inset-0 m-12 border-4 border-primary/50">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-px h-full bg-primary/30"></div>
-              <div className="h-px w-full bg-primary/30"></div>
+              <div className="w-1 h-full bg-primary/40"></div>
+              <div className="h-1 w-full bg-primary/40"></div>
             </div>
           </div>
           
-          {/* Chart Labels (Mock Data for Visual) */}
-          <div className="absolute top-[15%] left-[50%] -translate-x-1/2 text-xs font-bold text-primary/80">1 (ASC)</div>
-          <div className="absolute top-[30%] left-[30%] text-xs font-semibold">2: JU</div>
-          <div className="absolute top-[30%] right-[30%] text-xs font-semibold">12: MA</div>
-          <div className="absolute top-[50%] left-[15%] -translate-y-1/2 text-xs font-semibold">4: MO</div>
-          <div className="absolute top-[50%] right-[15%] -translate-y-1/2 text-xs font-semibold">10: SA</div>
-          <div className="absolute bottom-[30%] left-[30%] text-xs font-semibold">6: VE</div>
-          <div className="absolute bottom-[30%] right-[30%] text-xs font-semibold">8: SU</div>
-          <div className="absolute bottom-[15%] left-[50%] -translate-x-1/2 text-xs font-semibold">7: RA</div>
+          {/* Chart Labels (Mock Data for Visual) with better visibility */}
+          <div className="absolute top-[18%] left-[50%] -translate-x-1/2 text-sm font-black text-primary">1 (ASC)</div>
+          <div className="absolute top-[32%] left-[32%] text-sm font-bold text-foreground">2: JU</div>
+          <div className="absolute top-[32%] right-[32%] text-sm font-bold text-foreground">12: MA</div>
+          <div className="absolute top-[50%] left-[18%] -translate-y-1/2 text-sm font-bold text-foreground">4: MO</div>
+          <div className="absolute top-[50%] right-[18%] -translate-y-1/2 text-sm font-bold text-foreground">10: SA</div>
+          <div className="absolute bottom-[32%] left-[32%] text-sm font-bold text-foreground">6: VE</div>
+          <div className="absolute bottom-[32%] right-[32%] text-sm font-bold text-foreground">8: SU</div>
+          <div className="absolute bottom-[18%] left-[50%] -translate-x-1/2 text-sm font-bold text-foreground">7: RA</div>
           
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-             <div className="text-center bg-white/90 p-4 rounded-full border border-primary/10 shadow-sm">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Soul Center</p>
-                <p className="font-serif text-lg text-primary">{siderealData.atmakaraka}</p>
+             <div className="text-center bg-white p-6 rounded-full border-2 border-primary/20 shadow-md">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Soul Center</p>
+                <p className="font-serif text-2xl text-primary font-bold">{siderealData.atmakaraka}</p>
              </div>
           </div>
         </div>
-        <div className="bg-muted/30 p-4 border-t border-primary/10 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-primary/5 p-6 border-t border-primary/20 grid grid-cols-2 md:grid-cols-4 gap-6">
            <div className="text-center">
-              <p className="text-[10px] uppercase text-muted-foreground">Ascendant</p>
-              <p className="text-sm font-semibold">{siderealData.lagnam}</p>
+              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Ascendant</p>
+              <p className="text-base font-black text-foreground">{siderealData.lagnam}</p>
            </div>
            <div className="text-center">
-              <p className="text-[10px] uppercase text-muted-foreground">Sun (S)</p>
-              <p className="text-sm font-semibold">{tropicalData.sunSign}</p>
+              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Sun (S)</p>
+              <p className="text-base font-black text-foreground">{tropicalData.sunSign}</p>
            </div>
            <div className="text-center">
-              <p className="text-[10px] uppercase text-muted-foreground">Moon (M)</p>
-              <p className="text-sm font-semibold">{tropicalData.moonSign}</p>
+              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Moon (M)</p>
+              <p className="text-base font-black text-foreground">{tropicalData.moonSign}</p>
            </div>
            <div className="text-center">
-              <p className="text-[10px] uppercase text-muted-foreground">Soul Planet</p>
-              <p className="text-sm font-semibold">{siderealData.atmakaraka}</p>
+              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Soul Planet</p>
+              <p className="text-base font-black text-foreground">{siderealData.atmakaraka}</p>
            </div>
         </div>
       </CardContent>

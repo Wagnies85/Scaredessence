@@ -50,43 +50,43 @@
 }
 
 :root {
-  /* "Vivid Aurora" Theme - Deep Base with Vibrant Color Infusions */
-  --background: 240 60% 3%; /* Deep indigo black base */
-  --foreground: 0 0% 100%; /* Pure white for clarity */
+  /* "Sacred Clarity" Theme - Lighter, High Contrast for Spiritual Serenity */
+  --background: 240 33% 98%; /* Soft off-white background */
+  --foreground: 240 10% 10%; /* Deep charcoal for text readability */
 
-  --card: 240 40% 6%; /* Indigo-tinted cards */
-  --card-foreground: 0 0% 100%;
+  --card: 0 0% 100%; /* Pure white cards */
+  --card-foreground: 240 10% 15%;
 
-  --popover: 240 40% 6%;
-  --popover-foreground: 0 0% 100%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 15%;
 
-  /* Primary: Electrified Violet-Purple */
-  --primary: 275 100% 70%; 
-  --primary-foreground: 0 0% 0%;
+  /* Primary: Deep Spiritual Purple (Royal Amethyst) */
+  --primary: 265 80% 45%; 
+  --primary-foreground: 0 0% 100%;
 
-  /* Secondary: Vivid Spring Green */
-  --secondary: 155 90% 60%;
-  --secondary-foreground: 0 0% 0%;
+  /* Secondary: Calming Sage Green */
+  --secondary: 155 40% 45%;
+  --secondary-foreground: 0 0% 100%;
 
   /* Muted */
-  --muted: 240 30% 12%;
-  --muted-foreground: 240 20% 90%;
+  --muted: 240 10% 95%;
+  --muted-foreground: 240 10% 40%;
 
-  /* Accent: Hot Magenta / Pink */
-  --accent: 320 100% 65%;
-  --accent-foreground: 0 0% 0%;
+  /* Accent: Warm Gold */
+  --accent: 40 80% 50%;
+  --accent-foreground: 0 0% 100%;
 
-  /* Border & Inputs with indigo tint */
-  --border: 240 30% 18%;
-  --input: 240 30% 18%;
-  --ring: 275 100% 70%;
+  /* Border & Inputs */
+  --border: 240 10% 90%;
+  --input: 240 10% 90%;
+  --ring: 265 80% 45%;
 
-  /* Chart colors for extra variety */
-  --chart-1: 275 100% 70%; /* Purple */
-  --chart-2: 155 90% 60%;  /* Green */
-  --chart-3: 195 100% 65%; /* Cyan */
-  --chart-4: 320 100% 65%; /* Pink */
-  --chart-5: 45 100% 65%;  /* Gold */
+  /* Chart colors */
+  --chart-1: 265 80% 45%; /* Purple */
+  --chart-2: 155 40% 45%;  /* Green */
+  --chart-3: 200 80% 45%; /* Blue */
+  --chart-4: 330 80% 45%; /* Rose */
+  --chart-5: 40 80% 50%;  /* Gold */
 }
 
 @layer base {
