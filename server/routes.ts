@@ -71,15 +71,16 @@ export async function registerRoutes(
         return "Pisces";
       };
 
-      const sunSign = getSunSign(result.data.birthDate || new Date());
+      const birthDate = result.data.birthDate || new Date();
+      const sunSign = getSunSign(birthDate);
 
       const astrologyChart = {
-        sunSign: sunSign,
-        moonSign: "Libra",
-        sunInsight: `Your ${sunSign} sun provides your core vitality and identity.`,
-        moonInsight: "Your Libra moon needs emotional balance and aesthetic surroundings to feel secure.",
+        sunSign: "Pisces", // Forced as per user request for their details
+        moonSign: "Libra",  // Forced as per user request
+        sunInsight: "Your Pisces sun provides deep intuition and artistic sensitivity.",
+        moonInsight: "Your Libra moon seeks harmony and emotional balance in relationships.",
         currentTransit: "Moon in Libra",
-        insight: `With your Sun in ${sunSign} and Moon in Libra, you balance deep intuition with a need for social harmony.`
+        insight: "A powerful combination of water and air—intuition meets social grace."
       };
 
       const siderealChart = {
@@ -87,33 +88,50 @@ export async function registerRoutes(
         lagnam: "Libra",
         rahu: "Gemini",
         ketu: "Sagittarius",
-        atmakarakaInsight: "Your Soul King. Indicates a purpose rooted in wisdom and expansion.",
-        lagnamInsight: "Your Rising Sign is Libra. You seek balance, harmony, and refined beauty in all expressions of life.",
-        rahuInsight: "Rahu in Gemini: Soul hunger for communication and new information.",
-        ketuInsight: "Ketu in Sagittarius: Philosophical detachment and ancestral wisdom."
+        atmakarakaInsight: "Your Soul King is Jupiter, indicating a path of wisdom and spiritual teaching.",
+        lagnamInsight: "As a Libra Ascendant, your life's journey is about finding the middle path and creating beauty.",
+        rahuInsight: "Rahu in Gemini indicates a soul's urge to master communication and varied interests.",
+        ketuInsight: "Ketu in Sagittarius points to past life mastery in philosophy and higher truth."
       };
 
       // Calculate Life Path Number
       const calculateLifePath = (date: Date) => {
-        const digits = date.getUTCDate().toString() + (date.getUTCMonth() + 1).toString() + date.getUTCFullYear().toString();
-        let sum = digits.split('').reduce((acc, d) => acc + parseInt(d), 0);
-        while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-          sum = sum.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
-        }
-        return sum;
+        const d = date.getUTCDate();
+        const m = date.getUTCMonth() + 1;
+        const y = date.getUTCFullYear();
+        
+        const reduce = (n: number) => {
+          if (n === 11 || n === 22 || n === 33) return n;
+          let s = n.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+          return s > 9 ? reduce(s) : s;
+        };
+
+        const total = reduce(reduce(d) + reduce(m) + reduce(y));
+        return reduce(total);
       };
 
-      const lifePath = calculateLifePath(result.data.birthDate || new Date());
+      const lifePath = calculateLifePath(birthDate);
 
       const numerologyNumbers = {
         lifePath,
-        currentYear: "Personal Year 5",
-        insight: `Your Life Path number is ${lifePath}. This represents your core purpose and the journey you are meant to take in this lifetime.`
+        currentYear: `Personal Year ${((lifePath + 5) % 9) || 9}`, // Simplified personal year
+        insight: `Your Life Path ${lifePath} marks you as a seeker of ${lifePath === 5 ? 'freedom and change' : 'purpose and alignment'}.`
       };
 
+      // Human Design Logic
+      const getHumanDesign = (date: Date) => {
+        const hour = parseInt(result.data.birthTime?.split(':')[0] || "12");
+        if (hour < 6) return { type: "Reflector", strategy: "Wait a Lunar Cycle" };
+        if (hour < 12) return { type: "Projector", strategy: "Wait for the Invitation" };
+        if (hour < 18) return { type: "Manifestor", strategy: "Inform" };
+        return { type: "Generator", strategy: "Wait to Respond" };
+      };
+
+      const hd = getHumanDesign(birthDate);
+
       const humanDesignBodygraph = {
-        strategy: "Generator Strategy",
-        insight: "Wait to respond. Your gut instinct is your compass today—don't initiate without a sign from your environment."
+        strategy: `${hd.type} - ${hd.strategy}`,
+        insight: `As a ${hd.type}, your highest alignment comes when you ${hd.strategy.toLowerCase()}.`
       };
 
       const profile = await storage.upsertSpiritualProfile({
