@@ -35,60 +35,60 @@ export default function Astrology() {
   };
 
   const SouthIndianChart = ({ title, data }: { title: string, data: any }) => (
-    <Card className="bg-white border-2 border-primary/40 shadow-xl overflow-hidden mb-8">
-      <CardHeader className="bg-primary/10 border-b border-primary/20">
+    <Card className="bg-card/40 backdrop-blur-md border-2 border-primary/40 shadow-2xl overflow-hidden mb-8">
+      <CardHeader className="bg-primary/20 border-b border-primary/20">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="font-serif text-3xl text-primary">{title}</CardTitle>
-            <CardDescription className="text-foreground/80 font-medium italic">South Indian Style Chart</CardDescription>
+            <CardTitle className="font-serif text-3xl text-primary drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">{title}</CardTitle>
+            <CardDescription className="text-foreground/90 font-medium italic">South Indian Style Chart</CardDescription>
           </div>
-          <Badge className="bg-primary text-white border-none px-3 py-1">Sidereal Lahiri</Badge>
+          <Badge className="bg-primary text-primary-foreground border-none px-3 py-1 shadow-lg shadow-primary/20">Sidereal Lahiri</Badge>
         </div>
       </CardHeader>
-      <CardContent className="p-0 bg-white">
-        <div className="grid grid-cols-4 grid-rows-4 aspect-square max-w-[500px] mx-auto border-4 border-primary/50 m-4">
+      <CardContent className="p-0 bg-transparent">
+        <div className="grid grid-cols-4 grid-rows-4 aspect-square max-w-[500px] mx-auto border-4 border-primary/50 m-4 bg-background/30 rounded-lg shadow-inner">
           {/* Row 1 */}
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">12: PI</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">1: AR</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">2: TA</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">3: GE</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">12: PI</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">1: AR</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">2: TA</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">3: GE</div>
           
           {/* Row 2 */}
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">11: AQ</div>
-          <div className="col-span-2 row-span-2 flex flex-col items-center justify-center bg-primary/5">
-             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Soul Center</p>
-             <p className="font-serif text-2xl text-primary font-bold">{data.atmakaraka}</p>
-             <p className="text-[10px] text-muted-foreground mt-1">ASC: {data.lagnam}</p>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">11: AQ</div>
+          <div className="col-span-2 row-span-2 flex flex-col items-center justify-center bg-primary/10 rounded-xl m-2 border border-primary/20 shadow-lg">
+             <p className="text-[10px] uppercase tracking-[0.2em] text-primary/80 font-bold">Soul Center</p>
+             <p className="font-serif text-2xl text-primary font-bold drop-shadow-md">{data.atmakaraka}</p>
+             <p className="text-[10px] text-muted-foreground mt-1 font-medium">ASC: {data.lagnam}</p>
           </div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">4: CA</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">4: CA</div>
           
           {/* Row 3 */}
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">10: CP</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">5: LE</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">10: CP</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">5: LE</div>
           
           {/* Row 4 */}
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">9: SG</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">8: SC</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">7: LI</div>
-          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold">6: VI</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">9: SG</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">8: SC</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">7: LI</div>
+          <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">6: VI</div>
         </div>
         
-        <div className="bg-primary/5 p-6 border-t border-primary/20 grid grid-cols-2 md:grid-cols-4 gap-6">
-           <div className="text-center">
-              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Ascendant</p>
-              <p className="text-base font-black text-foreground">{siderealData.lagnam || tropicalData.ascendant}</p>
+        <div className="bg-primary/10 p-6 border-t border-primary/20 grid grid-cols-2 md:grid-cols-4 gap-6">
+           <div className="text-center group">
+              <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Ascendant</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{siderealData.lagnam || tropicalData.ascendant}</p>
            </div>
-           <div className="text-center">
-              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Sun (S)</p>
-              <p className="text-base font-black text-foreground">{tropicalData.sunSign}</p>
+           <div className="text-center group">
+              <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Sun (S)</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{tropicalData.sunSign}</p>
            </div>
-           <div className="text-center">
-              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Moon (M)</p>
-              <p className="text-base font-black text-foreground">{tropicalData.moonSign}</p>
+           <div className="text-center group">
+              <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Moon (M)</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{tropicalData.moonSign}</p>
            </div>
-           <div className="text-center">
-              <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Soul Planet</p>
-              <p className="text-base font-black text-foreground">{siderealData.atmakaraka}</p>
+           <div className="text-center group">
+              <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Soul Planet</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{siderealData.atmakaraka}</p>
            </div>
         </div>
       </CardContent>
@@ -151,14 +151,14 @@ export default function Astrology() {
             </TabsList>
             
             <TabsContent value="sidereal" className="space-y-6">
-              <Card className="bg-white/60 backdrop-blur-xl border-white/60">
+              <Card className="bg-card/40 backdrop-blur-xl border-white/10 shadow-2xl">
                 <CardHeader>
-                  <CardTitle className="font-serif text-2xl">Your Sidereal Soul Map</CardTitle>
+                  <CardTitle className="font-serif text-2xl text-primary drop-shadow-sm">Your Sidereal Soul Map</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 bg-indigo-50/50 rounded-xl border border-indigo-100">
-                    <h3 className="font-serif text-xl text-indigo-900 mb-2">What is a Sidereal Chart?</h3>
-                    <p className="text-sm text-indigo-800 leading-relaxed">
+                  <div className="p-4 bg-primary/10 rounded-xl border border-primary/20 shadow-inner">
+                    <h3 className="font-serif text-xl text-primary/90 mb-2">What is a Sidereal Chart?</h3>
+                    <p className="text-sm text-foreground/80 leading-relaxed font-medium">
                       The Sidereal (Vedic) system uses the actual observable positions of the constellations in the sky. It accounts for the "Precession of the Equinoxes," which shifts about 1 degree every 72 years. This chart represents your **Karmic Reality**—the objective truth of your soul's journey and destiny.
                     </p>
                   </div>

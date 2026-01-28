@@ -50,43 +50,43 @@
 }
 
 :root {
-  /* "Sacred Radiance" Theme - High Contrast with Spiritual Vibrancy */
-  --background: 240 33% 99%; /* Very soft off-white */
-  --foreground: 240 10% 10%; /* Deep charcoal */
+  /* "Mystic Nebula" Theme - Rich, Colorful, and Deep */
+  --background: 260 40% 6%; /* Deep Cosmic Purple */
+  --foreground: 260 20% 98%; /* Soft starlight white */
 
-  --card: 0 0% 100%;
-  --card-foreground: 240 10% 15%;
+  --card: 260 40% 10%; /* Slightly lighter nebula */
+  --card-foreground: 260 20% 95%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 15%;
+  --popover: 260 40% 10%;
+  --popover-foreground: 260 20% 95%;
 
-  /* Primary: Vibrant Royal Amethyst */
-  --primary: 265 85% 55%; 
-  --primary-foreground: 0 0% 100%;
+  /* Primary: Electric Indigo */
+  --primary: 265 90% 65%; 
+  --primary-foreground: 260 20% 5%;
 
-  /* Secondary: Bright Spiritual Gold */
-  --secondary: 45 95% 50%;
-  --secondary-foreground: 240 10% 10%;
+  /* Secondary: Radiant Solar Gold */
+  --secondary: 42 100% 60%;
+  --secondary-foreground: 260 40% 5%;
 
   /* Muted */
-  --muted: 240 10% 95%;
-  --muted-foreground: 240 10% 40%;
+  --muted: 260 30% 15%;
+  --muted-foreground: 260 20% 70%;
 
-  /* Accent: Ethereal Rose */
-  --accent: 330 90% 60%;
+  /* Accent: Cosmic Magenta */
+  --accent: 320 85% 65%;
   --accent-foreground: 0 0% 100%;
 
   /* Border & Inputs */
-  --border: 240 10% 88%;
-  --input: 240 10% 88%;
-  --ring: 265 85% 55%;
+  --border: 260 30% 20%;
+  --input: 260 30% 20%;
+  --ring: 265 90% 65%;
 
-  /* Chart colors */
-  --chart-1: 265 85% 55%; /* Purple */
-  --chart-2: 155 60% 50%; /* Green */
-  --chart-3: 200 90% 55%; /* Blue */
-  --chart-4: 330 90% 60%; /* Rose */
-  --chart-5: 45 95% 50%;  /* Gold */
+  /* Chart colors - Vibrant Palette */
+  --chart-1: 265 90% 65%; /* Indigo */
+  --chart-2: 170 85% 55%; /* Teal */
+  --chart-3: 200 95% 60%; /* Cyan */
+  --chart-4: 320 85% 65%; /* Pink */
+  --chart-5: 42 100% 60%;  /* Gold */
 }
 
 @layer base {
