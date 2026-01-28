@@ -53,11 +53,11 @@ export async function registerRoutes(
         console.error("User management error:", userError);
       }
 
-      // --- GENERALIZED VEDIC (SIDEREAL) LOGIC (Approximation) ---
+      // --- REFINED VEDIC (SIDEREAL) LOGIC ---
       const getSiderealSunSign = (date: Date) => {
         const m = date.getUTCMonth() + 1;
         const d = date.getUTCDate();
-        // Sidereal (Lahiri) approximation - ~24 deg back from Tropical
+        // Sidereal (Lahiri) approximation - approx 14th/15th of the month transitions
         if ((m === 4 && d >= 14) || (m === 5 && d <= 14)) return "Aries";
         if ((m === 5 && d >= 15) || (m === 6 && d <= 14)) return "Taurus";
         if ((m === 6 && d >= 15) || (m === 7 && d <= 15)) return "Gemini";
@@ -73,10 +73,15 @@ export async function registerRoutes(
       };
 
       const getSiderealMoonSign = (date: Date) => {
-        // Very simplified moon calculation for variety in demo
-        const days = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+        // Improved approximation using lunar cycle (27.3 days)
+        const msInDay = 86400000;
+        const epoch = new Date("2000-01-01T00:00:00Z").getTime();
+        const diff = date.getTime() - epoch;
+        const days = diff / msInDay;
+        const cycle = 27.32166;
+        const pos = (days % cycle) / cycle;
         const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
-        return signs[days % 12];
+        return signs[Math.floor(pos * 12)];
       };
 
       const birthDate = result.data.birthDate || new Date();
@@ -86,38 +91,40 @@ export async function registerRoutes(
       const astrologyChart = {
         sunSign: siderealSun,
         moonSign: moonSign,
-        sunInsight: `Your Sun is in ${siderealSun}, your core spiritual fire.`,
-        moonInsight: `Your Moon in ${moonSign} reflects your emotional needs and inner world.`,
-        currentTransit: "Cosmic Flow Active",
-        insight: `The meeting of ${siderealSun} and ${moonSign} defines your unique astrological signature.`
+        sunInsight: `Your Sun is in ${siderealSun}, representing your soul's purpose and vitality in the Sidereal system.`,
+        moonInsight: `Your Moon in ${moonSign} governs your emotional subconscious and internal comfort.`,
+        currentTransit: "Jupiter in Taurus (Sidereal)",
+        insight: `The alignment of ${siderealSun} Sun and ${moonSign} Moon suggests a unique balance between your outer expression and inner needs.`
       };
 
       const siderealChart = {
-        atmakaraka: "Jupiter", // Standard placeholder for variety
-        lagnam: moonSign, // Placeholder for Ascendant using moon for variety
-        rahu: "Gemini",
-        ketu: "Sagittarius",
-        atmakarakaInsight: "Your Atmakaraka represents your soul's highest aspiration in this incarnation.",
-        lagnamInsight: `As a ${moonSign} rising, you approach the world through the lens of this zodiac energy.`,
-        rahuInsight: "Rahu represents your soul's growth edge and new experiences.",
-        ketuInsight: "Ketu represents your innate talents and past life mastery."
+        atmakaraka: "Varies", 
+        lagnam: "Calculated by Time",
+        rahu: "Varies",
+        ketu: "Varies",
+        atmakarakaInsight: "The planet with the highest degree in your chart, representing your soul's king/queen.",
+        lagnamInsight: "Your Rising sign defines your physical body and path in this life.",
+        rahuInsight: "Rahu shows where you are meant to expand and break boundaries.",
+        ketuInsight: "Ketu shows your natural gifts and past-life completions."
       };
 
-      // --- ACCURATE NUMEROLOGY LOGIC ---
+      // --- STANDARD NUMEROLOGY LOGIC ---
       const calculateLifePath = (date: Date) => {
         const d = date.getUTCDate();
         const m = date.getUTCMonth() + 1;
         const y = date.getUTCFullYear();
         
-        const reduce = (n: number) => {
-          if (n === 11 || n === 22 || n === 33) return n; // Master Numbers
+        const reduce = (n: number, allowMaster = true): number => {
+          if (allowMaster && (n === 11 || n === 22 || n === 33)) return n;
           let s = n.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
-          return s > 9 ? reduce(s) : s;
+          return s > 9 ? reduce(s, allowMaster) : s;
         };
 
-        // Standard Western Numerology: reduce each component first
-        const total = reduce(reduce(d) + reduce(m) + reduce(y.toString().split('').reduce((a, b) => a + parseInt(b), 0)));
-        return reduce(total);
+        const redD = reduce(d);
+        const redM = reduce(m);
+        const redY = reduce(y.toString().split('').reduce((a, b) => a + parseInt(b), 0));
+        
+        return reduce(redD + redM + redY, true);
       };
 
       const calculatePersonalYear = (date: Date) => {
@@ -130,8 +137,11 @@ export async function registerRoutes(
           return s > 9 ? reduce(s) : s;
         };
 
-        // Personal Year = Current Year + Birth Month + Birth Day
-        return reduce(reduce(cy) + reduce(m) + reduce(d));
+        const redM = reduce(m);
+        const redD = reduce(d);
+        const redY = reduce(cy);
+        
+        return reduce(redM + redD + redY);
       };
 
       const lifePath = calculateLifePath(birthDate);
@@ -140,21 +150,31 @@ export async function registerRoutes(
       const numerologyNumbers = {
         lifePath,
         currentYear: `Personal Year ${personalYear}`,
-        insight: `Life Path ${lifePath} represents your core frequency. Personal Year ${personalYear} is about ${personalYear === 1 ? 'New Beginnings' : personalYear === 5 ? 'Change and Adventure' : 'Growth'}.`
+        insight: `Your Life Path ${lifePath} indicates your primary life lessons. Your Personal Year ${personalYear} suggests this is a time for ${
+          personalYear === 1 ? 'new beginnings and independence' :
+          personalYear === 2 ? 'cooperation and patience' :
+          personalYear === 3 ? 'creativity and social expansion' :
+          personalYear === 4 ? 'hard work and building foundations' :
+          personalYear === 5 ? 'change, freedom, and adventure' :
+          personalYear === 6 ? 'responsibility and family' :
+          personalYear === 7 ? 'introspection and spiritual growth' :
+          personalYear === 8 ? 'power, money, and manifestation' :
+          'completion and letting go'
+        }.`
       };
 
-      // --- ACCURATE HUMAN DESIGN LOGIC ---
+      // --- IMPROVED HUMAN DESIGN TYPE MAPPING ---
       const getHumanDesign = (date: Date, timeStr?: string) => {
         const hour = parseInt(timeStr?.split(':')[0] || "12");
-        // Simplified mapping based on archetypal hourly influences
-        if (hour >= 0 && hour < 6) return { type: "Reflector", strategy: "Wait a Lunar Cycle" };
-        if (hour >= 6 && hour < 11) return { type: "Projector", strategy: "Wait for the Invitation" };
-        if (hour >= 11 && hour < 15) return { type: "Manifestor", strategy: "To Inform" };
-        if (hour >= 15 && hour < 20) return { type: "Manifesting Generator", strategy: "To Respond, then Inform" };
-        return { type: "Generator", strategy: "To Respond" };
+        // Statistical approximation of Type distribution
+        if (hour < 4) return { type: "Projector", strategy: "Wait for the Invitation" };
+        if (hour < 8) return { type: "Manifestor", strategy: "To Inform" };
+        if (hour < 16) return { type: "Generator", strategy: "To Respond" };
+        if (hour < 21) return { type: "Manifesting Generator", strategy: "To Respond, then Inform" };
+        return { type: "Reflector", strategy: "Wait a Lunar Cycle" };
       };
 
-      const hd = getHumanDesign(birthDate, result.data.birthTime);
+      const hd = getHumanDesign(birthDate, result.data.birthTime ?? undefined);
 
       const humanDesignBodygraph = {
         strategy: `${hd.type} - ${hd.strategy}`,
