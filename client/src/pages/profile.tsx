@@ -214,11 +214,13 @@ export default function Profile() {
                         ) : cities.length === 0 ? (
                           <div className="p-4 text-sm text-center text-muted-foreground">No city found.</div>
                         ) : (
-                          cities.map((city) => (
+                          cities.map((city, index) => (
                             <button
-                              key={city.value}
-                              className="w-full text-left px-4 py-2 text-sm hover:bg-primary/10 rounded-md transition-colors"
-                              onClick={() => {
+                              key={`${city.value}-${index}`}
+                              type="button"
+                              className="w-full text-left px-4 py-3 text-sm hover:bg-primary/10 rounded-md transition-colors border-b border-border/50 last:border-0"
+                              onMouseDown={(e) => {
+                                e.preventDefault();
                                 setFormData(prev => ({ ...prev, birthLocation: city.label }));
                                 setOpen(false);
                               }}
