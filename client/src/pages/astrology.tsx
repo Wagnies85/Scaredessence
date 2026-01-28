@@ -75,7 +75,7 @@ export default function Astrology() {
         <div className="bg-primary/5 p-6 border-t border-primary/20 grid grid-cols-2 md:grid-cols-4 gap-6">
            <div className="text-center">
               <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Ascendant</p>
-              <p className="text-base font-black text-foreground">{data.lagnam}</p>
+              <p className="text-base font-black text-foreground">{siderealData.lagnam || tropicalData.ascendant}</p>
            </div>
            <div className="text-center">
               <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Sun (S)</p>
@@ -87,7 +87,7 @@ export default function Astrology() {
            </div>
            <div className="text-center">
               <p className="text-xs uppercase text-muted-foreground font-bold tracking-wider">Soul Planet</p>
-              <p className="text-base font-black text-foreground">{data.atmakaraka}</p>
+              <p className="text-base font-black text-foreground">{siderealData.atmakaraka}</p>
            </div>
         </div>
       </CardContent>
@@ -277,6 +277,10 @@ export default function Astrology() {
                     <div className="p-4 bg-white/40 rounded-lg">
                       <p className="font-semibold text-foreground">Moon in {tropicalData.moonSign}</p>
                       <p className="text-xs text-muted-foreground mt-1">{tropicalData.moonInsight}</p>
+                    </div>
+                    <div className="p-4 bg-white/40 rounded-lg col-span-2">
+                      <p className="font-semibold text-foreground">Ascendant (Rising) in {tropicalData.ascendant}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Your Ascendant represents your outward personality and how others perceive you.</p>
                     </div>
                   </div>
                 </CardContent>
