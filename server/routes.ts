@@ -116,7 +116,7 @@ export async function registerRoutes(
         return reduce(total);
       };
 
-      const calculatePersonalYear = (date: Date, lp: number) => {
+      const calculatePersonalYear = (date: Date) => {
         const m = date.getUTCMonth() + 1;
         const d = date.getUTCDate();
         const cy = new Date().getFullYear();
@@ -126,11 +126,12 @@ export async function registerRoutes(
           return s > 9 ? reduce(s) : s;
         };
 
-        return reduce(reduce(m) + reduce(d) + reduce(cy));
+        // Personal Year = Current Year + Birth Month + Birth Day
+        return reduce(reduce(cy) + reduce(m) + reduce(d));
       };
 
       const lifePath = calculateLifePath(birthDate);
-      const personalYear = calculatePersonalYear(birthDate, lifePath);
+      const personalYear = calculatePersonalYear(birthDate);
 
       const numerologyNumbers = {
         lifePath,
