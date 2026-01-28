@@ -29,6 +29,7 @@ export default function Astrology() {
   const tropicalData = profile?.astrologyChart || {
     sunSign: "Virgo",
     moonSign: "Gemini",
+    ascendant: "Leo",
     sunInsight: "Your core identity is analytical, service-oriented, and focused on refinement.",
     moonInsight: "Your emotional world is curious, communicative, and needs mental stimulation."
   };
