@@ -21,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 export default function Profile() {
   const { toast } = useToast();
@@ -199,40 +199,45 @@ export default function Profile() {
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-                    <Command shouldFilter={false} className="overflow-hidden">
-                      <CommandInput 
-                        placeholder="Type city name (e.g. Fredericton)..." 
-                        onValueChange={setSearchValue}
-                      />
-                      <CommandList className="max-h-[300px] overflow-y-auto">
-                        {isSearching ? (
-                          <div className="p-4 text-sm text-center flex items-center justify-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Searching...
-                          </div>
-                        ) : cities.length === 0 && searchValue.length >= 3 ? (
-                          <CommandEmpty>No city found.</CommandEmpty>
-                        ) : cities.length === 0 && searchValue.length < 3 ? (
-                          <div className="p-4 text-sm text-center text-muted-foreground">Type at least 3 characters</div>
-                        ) : (
-                          <CommandGroup>
-                            {cities.map((city) => (
-                              <CommandItem
-                                key={city.value}
-                                value={city.value}
-                                onSelect={() => {
-                                  setFormData(prev => ({ ...prev, birthLocation: city.label }));
-                                  setOpen(false);
-                                }}
-                                className="cursor-pointer"
-                              >
-                                {city.label}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        )}
-                      </CommandList>
-                    </Command>
+                    <Dialog>
+                      <DialogContent className="p-0 border-none bg-transparent shadow-none w-full">
+                        <DialogTitle className="sr-only">Location Search</DialogTitle>
+                        <Command shouldFilter={false} className="overflow-hidden border rounded-md bg-popover shadow-md">
+                          <CommandInput 
+                            placeholder="Type city name (e.g. Fredericton)..." 
+                            onValueChange={setSearchValue}
+                          />
+                          <CommandList className="max-h-[300px] overflow-y-auto">
+                            {isSearching ? (
+                              <div className="p-4 text-sm text-center flex items-center justify-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Searching...
+                              </div>
+                            ) : cities.length === 0 && searchValue.length >= 3 ? (
+                              <CommandEmpty>No city found.</CommandEmpty>
+                            ) : cities.length === 0 && searchValue.length < 3 ? (
+                              <div className="p-4 text-sm text-center text-muted-foreground">Type at least 3 characters</div>
+                            ) : (
+                              <CommandGroup>
+                                {cities.map((city) => (
+                                  <CommandItem
+                                    key={city.value}
+                                    value={city.value}
+                                    onSelect={() => {
+                                      setFormData(prev => ({ ...prev, birthLocation: city.label }));
+                                      setOpen(false);
+                                    }}
+                                    className="cursor-pointer"
+                                  >
+                                    {city.label}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            )}
+                          </CommandList>
+                        </Command>
+                      </DialogContent>
+                    </Dialog>
                   </PopoverContent>
                 </Popover>
               </div>
