@@ -32,6 +32,7 @@ export default function Profile() {
   });
 
   const [formData, setFormData] = useState({
+    name: "",
     birthDate: "",
     birthTime: "",
     birthLocation: "",
@@ -45,6 +46,7 @@ export default function Profile() {
   useEffect(() => {
     if (profile) {
       setFormData({
+        name: profile.name || "",
         birthDate: profile.birthDate ? new Date(profile.birthDate).toISOString().split('T')[0] : "",
         birthTime: profile.birthTime || "",
         birthLocation: profile.birthLocation || "",
@@ -166,12 +168,11 @@ export default function Profile() {
               <div className="space-y-2">
                 <Label className="text-primary/80">Full Name</Label>
                 <Input 
-                  placeholder="John Doe" 
-                  disabled 
-                  value="Default User" 
-                  className="bg-background/50 border-primary/10 text-foreground/70"
+                  placeholder="Enter your name" 
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  className="bg-background/50 border-primary/20 focus:border-primary text-foreground"
                 />
-                <p className="text-xs text-muted-foreground italic">Name is linked to your account.</p>
               </div>
               
               <div className="grid md:grid-cols-2 gap-4">

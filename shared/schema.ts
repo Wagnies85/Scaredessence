@@ -23,6 +23,7 @@ export type User = typeof users.$inferSelect;
 export const spiritualProfiles = pgTable("spiritual_profiles", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id),
+  name: text("name"),
   birthDate: timestamp("birth_date"),
   birthTime: text("birth_time"),
   birthLocation: text("birth_location"),
