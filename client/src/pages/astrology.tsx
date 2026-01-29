@@ -136,6 +136,11 @@ export default function Astrology() {
     <Layout>
       <div className="mb-10">
         <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4">Cosmic Charts</h1>
+        <div className="p-4 bg-primary/10 border border-primary/20 rounded-xl mb-6">
+          <p className="text-sm text-primary font-medium">
+            Calculations generated for: <span className="text-foreground">{profile?.birthLocation || "Unknown Location"}</span> on <span className="text-foreground">{profile?.birthDate ? new Date(profile.birthDate).toLocaleDateString() : "Unknown Date"}</span> at <span className="text-foreground">{profile?.birthTime || "Unknown Time"}</span>
+          </p>
+        </div>
         <p className="text-lg text-muted-foreground max-w-2xl">
           Decoding your spiritual architecture through the Sidereal and Tropical systems.
         </p>
