@@ -54,7 +54,7 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchCities = async () => {
-      if (searchValue.length < 3) {
+      if (searchValue.length < 2) {
         setCities([]);
         return;
       }
@@ -154,34 +154,41 @@ export default function Profile() {
   return (
     <Layout>
       <div className="max-w-2xl mx-auto">
-        <h1 className="font-serif text-4xl mb-8">Your Cosmic Profile</h1>
-        <Card className="bg-white/60 backdrop-blur-xl border-white/60 shadow-xl">
+        <h1 className="font-serif text-4xl mb-8 text-primary drop-shadow-[0_2px_10px_rgba(168,85,247,0.4)]">Your Cosmic Profile</h1>
+        <Card className="bg-card/40 backdrop-blur-xl border-primary/20 shadow-2xl">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5 text-primary" /> Personal Details
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <User className="h-5 w-5" /> Personal Details
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <Label>Full Name</Label>
-                <Input placeholder="John Doe" disabled value="Default User" />
-                <p className="text-xs text-muted-foreground">Name is linked to your account.</p>
+                <Label className="text-primary/80">Full Name</Label>
+                <Input 
+                  placeholder="John Doe" 
+                  disabled 
+                  value="Default User" 
+                  className="bg-background/50 border-primary/10 text-foreground/70"
+                />
+                <p className="text-xs text-muted-foreground italic">Name is linked to your account.</p>
               </div>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2"><Calendar className="h-4 w-4" /> Date of Birth</Label>
+                  <Label className="flex items-center gap-2 text-primary/80"><Calendar className="h-4 w-4" /> Date of Birth</Label>
                   <Input 
                     type="date" 
+                    className="bg-background/50 border-primary/20 focus:border-primary text-foreground [color-scheme:dark]"
                     value={formData.birthDate}
                     onChange={(e) => setFormData(prev => ({ ...prev, birthDate: e.target.value }))}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2"><Clock className="h-4 w-4" /> Time of Birth</Label>
+                  <Label className="flex items-center gap-2 text-primary/80"><Clock className="h-4 w-4" /> Time of Birth</Label>
                   <Input 
                     type="time" 
+                    className="bg-background/50 border-primary/20 focus:border-primary text-foreground [color-scheme:dark]"
                     value={formData.birthTime}
                     onChange={(e) => setFormData(prev => ({ ...prev, birthTime: e.target.value }))}
                   />
@@ -189,26 +196,29 @@ export default function Profile() {
               </div>
 
               <div className="space-y-2">
-                <Label className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Place of Birth</Label>
+                <Label className="flex items-center gap-2 text-primary/80"><MapPin className="h-4 w-4" /> Place of Birth</Label>
                 <div className="relative">
                   <Input
                     placeholder="Type city name (e.g. London, UK)..."
+                    className="bg-background/50 border-primary/20 focus:border-primary text-foreground"
                     value={formData.birthLocation}
                     onChange={(e) => {
-                      setFormData(prev => ({ ...prev, birthLocation: e.target.value }));
-                      setSearchValue(e.target.value);
-                      if (e.target.value.length >= 3) setOpen(true);
+                      const val = e.target.value;
+                      setFormData(prev => ({ ...prev, birthLocation: val }));
+                      setSearchValue(val);
+                      if (val.length >= 2) setOpen(true);
+                      else setOpen(false);
                     }}
                     onFocus={() => {
-                      if (formData.birthLocation.length >= 3) setOpen(true);
+                      if (formData.birthLocation.length >= 2) setOpen(true);
                     }}
                   />
-                  {open && (searchValue.length >= 3) && (
-                    <Card className="absolute left-0 right-0 z-[100] mt-1 max-h-[250px] overflow-y-auto shadow-2xl border-primary/30 bg-white ring-1 ring-black/5">
+                  {open && (searchValue.length >= 2) && (
+                    <Card className="absolute left-0 right-0 z-[100] mt-1 max-h-[250px] overflow-y-auto shadow-2xl border-primary/30 bg-card/95 backdrop-blur-md ring-1 ring-black/5">
                       <div className="p-1">
                         {isSearching ? (
-                          <div className="p-4 text-sm text-center flex items-center justify-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                          <div className="p-4 text-sm text-center flex items-center justify-center gap-2 text-primary">
+                            <Loader2 className="h-4 w-4 animate-spin" />
                             Searching...
                           </div>
                         ) : cities.length === 0 ? (
@@ -218,10 +228,11 @@ export default function Profile() {
                             <button
                               key={`${city.value}-${index}`}
                               type="button"
-                              className="w-full text-left px-4 py-3 text-sm hover:bg-primary/10 rounded-md transition-colors border-b border-border/50 last:border-0"
+                              className="w-full text-left px-4 py-3 text-sm hover:bg-primary/20 text-foreground rounded-md transition-colors border-b border-primary/10 last:border-0"
                               onMouseDown={(e) => {
                                 e.preventDefault();
                                 setFormData(prev => ({ ...prev, birthLocation: city.label }));
+                                setSearchValue(city.label);
                                 setOpen(false);
                               }}
                             >
