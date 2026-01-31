@@ -84,8 +84,13 @@ export async function registerRoutes(
           });
 
           // Fetching Sidereal Horoscope
-          const vedaRes = await fetch(`https://api.vedicastroapi.com/v3-0/horoscope/planet-details?${vedaParams.toString()}`);
+          const [vedaRes, mangalRes] = await Promise.all([
+            fetch(`https://api.vedicastroapi.com/v3-0/horoscope/planet-details?${vedaParams.toString()}`),
+            fetch(`https://api.vedicastroapi.com/v3-0/dosha/mangal-dosh?${vedaParams.toString()}`)
+          ]);
+          
           const vedaData = await vedaRes.json();
+          const mangalData = await mangalRes.json();
           
           if (vedaData.status === 200) {
             const planets = vedaData.response;
@@ -100,6 +105,10 @@ export async function registerRoutes(
             
             const ak = sortedForAK[0]?.name || "Jupiter";
 
+            const mangalInsight = mangalData.status === 200 ? 
+              (mangalData.response.has_mangal_dosha ? `Manglik: ${mangalData.response.type}. ${mangalData.response.description}` : "Non-Manglik") 
+              : "Mangal Dosha calculation unavailable";
+
             spiritualData = {
               astrology: {
                 sunSign: sun?.sign || "Pisces",
@@ -107,7 +116,7 @@ export async function registerRoutes(
                 ascendant: ascendant?.sign || "Libra",
                 sunInsight: `Sun in ${sun?.sign}, ${sun?.house}th House. Reflects your core essence.`,
                 moonInsight: `Moon in ${moon?.sign}, ${moon?.house}th House. Governs your emotional landscape.`,
-                insight: `A powerful ${ascendant?.sign} rising chart with ${ak} as your Atmakaraka.`,
+                insight: `A powerful ${ascendant?.sign} rising chart with ${ak} as your Atmakaraka. ${mangalInsight}`,
                 dailyHoroscope: "" // Will be populated by AI
               },
               sidereal: {
