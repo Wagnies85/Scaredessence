@@ -207,8 +207,8 @@ export async function registerRoutes(
       }`;
 
       const response = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 2000,
+        model: "claude-sonnet-4-5",
+        max_tokens: 8192,
         messages: [{ role: "user", content: prompt }],
       });
 
