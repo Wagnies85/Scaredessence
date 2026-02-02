@@ -257,24 +257,39 @@ export async function registerRoutes(
       const month = now.getMonth();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-      const prompt = `Act as an expert Vedic astrologer. Generate a personalized daily horoscope for the entire month of ${now.toLocaleString('default', { month: 'long' })} ${year}.
+      // Casting charts to any to avoid LSP type errors on jsonb fields
+      const astroChart = (profile.astrologyChart || {}) as any;
+      const sideChart = (profile.siderealChart || {}) as any;
+      const numNumbers = (profile.numerologyNumbers || {}) as any;
+      const hdGraph = (profile.humanDesignBodygraph || {}) as any;
+
+      const prompt = `Act as an expert Vedic astrologer and Numerologist. Generate a deeply personalized spiritual calendar for the month of ${now.toLocaleString('default', { month: 'long' })} ${year}.
       
       User Birth Details:
-      - Sun: ${profile.astrologyChart?.sunSign}
-      - Moon: ${profile.astrologyChart?.moonSign}
-      - Ascendant: ${profile.astrologyChart?.ascendant}
-      - Atmakaraka: ${profile.siderealChart?.atmakaraka}
-      - Life Path: ${profile.numerologyNumbers?.lifePath}
-      - HD Type: ${profile.humanDesignBodygraph?.type}
+      - Sun: ${astroChart.sunSign}
+      - Moon: ${astroChart.moonSign}
+      - Ascendant: ${astroChart.ascendant}
+      - Atmakaraka: ${sideChart.atmakaraka}
+      - Life Path: ${numNumbers.lifePath}
+      - HD Type: ${hdGraph.type}
 
-      Provide a 1-2 sentence insight for EACH day (1 to ${daysInMonth}). 
+      For EACH day (1 to ${daysInMonth}), provide:
+      1. Planetary & House Influence: Specify the exact transit (e.g., "Mars transiting your 10th House") affecting the user today.
+      2. Personal Numerology: The daily number vibration (1-9) calculated specifically for their birth date.
+      3. Integrated Insight: A 2-3 sentence spiritual guidance merging the planetary, house, and numerology influences.
+
       Return strictly JSON in this format:
       {
         "month": "${now.toLocaleString('default', { month: 'long' })}",
         "year": ${year},
         "days": [
-          { "day": 1, "insight": "..." },
-          ...
+          { 
+            "day": 1, 
+            "planetary_transit": "Mars in 10th House", 
+            "house_system": "Whole Sign",
+            "numerology_day": "5",
+            "insight": "..." 
+          }
         ]
       }`;
 
