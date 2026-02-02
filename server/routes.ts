@@ -237,5 +237,57 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/horoscope/monthly", async (req, res) => {
+    try {
+      const profile = await storage.getSpiritualProfile("default-user");
+      if (!profile) return res.status(404).json({ error: "Profile not found" });
+
+      const birthDate = new Date(profile.birthDate!);
+      const birthTime = profile.birthTime || "12:00";
+      const birthLocation = profile.birthLocation || "Unknown";
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      const prompt = `Act as an expert Vedic astrologer. Generate a personalized daily horoscope for the entire month of ${now.toLocaleString('default', { month: 'long' })} ${year}.
+      
+      User Birth Details:
+      - Sun: ${profile.astrologyChart?.sunSign}
+      - Moon: ${profile.astrologyChart?.moonSign}
+      - Ascendant: ${profile.astrologyChart?.ascendant}
+      - Atmakaraka: ${profile.siderealChart?.atmakaraka}
+      - Life Path: ${profile.numerologyNumbers?.lifePath}
+      - HD Type: ${profile.humanDesignBodygraph?.type}
+
+      Provide a 1-2 sentence insight for EACH day (1 to ${daysInMonth}). 
+      Return strictly JSON in this format:
+      {
+        "month": "${now.toLocaleString('default', { month: 'long' })}",
+        "year": ${year},
+        "days": [
+          { "day": 1, "insight": "..." },
+          ...
+        ]
+      }`;
+
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-5",
+        max_tokens: 8192,
+        messages: [{ role: "user", content: prompt }],
+      });
+
+      const content = response.content[0].type === 'text' ? response.content[0].text : '';
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("Failed to parse monthly horoscope");
+      
+      res.json(JSON.parse(jsonMatch[0]));
+    } catch (error: any) {
+      console.error("Monthly horoscope error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return httpServer;
 }
