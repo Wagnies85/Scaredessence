@@ -63,6 +63,8 @@ export class DatabaseStorage implements IStorage {
             siderealChart: insertProfile.siderealChart ?? existing.siderealChart,
             humanDesignBodygraph: insertProfile.humanDesignBodygraph ?? existing.humanDesignBodygraph,
             numerologyNumbers: insertProfile.numerologyNumbers ?? existing.numerologyNumbers,
+            dailyAffirmation: insertProfile.dailyAffirmation ?? existing.dailyAffirmation,
+            dailyMeditation: insertProfile.dailyMeditation ?? existing.dailyMeditation,
           })
           .where(eq(spiritualProfiles.userId, userId))
           .returning();

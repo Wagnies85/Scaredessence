@@ -337,6 +337,38 @@ export default function Astrology() {
             </CardContent>
           </Card>
 
+          <Card className="bg-gradient-to-br from-indigo-900/90 to-purple-900/90 text-white border-primary/30 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-40 transition-opacity">
+              <Sparkles className="h-12 w-12 text-indigo-300 rotate-12" />
+            </div>
+            <CardHeader className="relative z-10 pb-2">
+              <CardTitle className="font-serif text-xl flex items-center gap-2 text-indigo-100">
+                <Zap className="h-5 w-5 text-yellow-400" /> Daily Affirmation
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="relative z-10">
+              <p className="text-xl font-serif leading-relaxed italic text-indigo-50 drop-shadow-sm">
+                "{profile?.dailyAffirmation || "I am aligned with the wisdom of the cosmos and open to its guidance."}"
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-purple-900/90 to-black text-white border-primary/30 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-40 transition-opacity">
+              <Moon className="h-12 w-12 text-purple-300 -rotate-12" />
+            </div>
+            <CardHeader className="relative z-10 pb-2">
+              <CardTitle className="font-serif text-xl flex items-center gap-2 text-purple-100">
+                <Sparkles className="h-5 w-5 text-indigo-300" /> Cosmic Meditation
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="relative z-10">
+              <p className="text-sm leading-relaxed text-purple-100/90 font-medium">
+                {profile?.dailyMeditation || "Close your eyes, breathe into your heart space, and visualize a radiant indigo light connecting your crown to the stars above."}
+              </p>
+            </CardContent>
+          </Card>
+
           <Card className="bg-primary text-white overflow-hidden relative">
             <Zap className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 rotate-12" />
             <CardHeader>

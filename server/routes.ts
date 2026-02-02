@@ -84,7 +84,7 @@ export async function registerRoutes(
           });
 
           // Fetching Sidereal Horoscope
-          const [vedaRes, mangalRes] = await Promise.all([
+          const [vedaRes, mangalRes]: [any, any] = await Promise.all([
             fetch(`https://api.vedicastroapi.com/v3-0/horoscope/planet-details?${vedaParams.toString()}`),
             fetch(`https://api.vedicastroapi.com/v3-0/dosha/mangal-dosh?${vedaParams.toString()}`)
           ]);
@@ -147,7 +147,7 @@ export async function registerRoutes(
       // If API failed or key missing, fallback to Claude for high-precision spiritual calculations and daily horoscope
       // We also use Claude to generate the dailyHoroscope text even if we have the API data
       const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
-      ${spiritualData.astrology ? "I have the core technical data, please refine the insights and generate a daily horoscope." : "Calculate high-precision spiritual data and a personalized daily horoscope."}
+      ${spiritualData.astrology ? "I have the core technical data, please refine the insights, generate a daily horoscope, a personalized affirmation, and a short meditation guidance." : "Calculate high-precision spiritual data, a personalized daily horoscope, a daily affirmation, and a meditation guidance."}
       
       Birth Context:
       - Date: ${birthDate.toISOString()}
@@ -174,6 +174,8 @@ export async function registerRoutes(
       2. Numerology: Confirm Life Path 5.
       3. Human Design: Manifesting Generator.
       4. Daily Horoscope: Provide 2-3 sentences of guidance for today based on current transits.
+      5. Affirmation: A powerful, personalized daily affirmation (1 sentence).
+      6. Meditation: A brief (2-3 sentence) meditation focus or visualization for today.
 
       Required Fields (strictly return JSON):
       {
@@ -203,7 +205,9 @@ export async function registerRoutes(
           "type": "string",
           "strategy": "string",
           "insight": "string"
-        }
+        },
+        "dailyAffirmation": "string",
+        "dailyMeditation": "string"
       }`;
 
       const response = await anthropic.messages.create({
@@ -223,7 +227,9 @@ export async function registerRoutes(
         astrologyChart: finalSpiritualData.astrology,
         siderealChart: finalSpiritualData.sidereal,
         numerologyNumbers: finalSpiritualData.numerology,
-        humanDesignBodygraph: finalSpiritualData.humanDesign
+        humanDesignBodygraph: finalSpiritualData.humanDesign,
+        dailyAffirmation: finalSpiritualData.dailyAffirmation,
+        dailyMeditation: finalSpiritualData.dailyMeditation
       });
       
       console.log("Profile upserted successfully:", profile.id);

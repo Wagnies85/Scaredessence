@@ -31,6 +31,8 @@ export const spiritualProfiles = pgTable("spiritual_profiles", {
   siderealChart: jsonb("sidereal_chart"),
   humanDesignBodygraph: jsonb("human_design_bodygraph"),
   numerologyNumbers: jsonb("numerology_numbers"),
+  dailyAffirmation: text("daily_affirmation"),
+  dailyMeditation: text("daily_meditation"),
 });
 
 export const conversations = pgTable("conversations", {
