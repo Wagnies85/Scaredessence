@@ -145,14 +145,13 @@ export async function registerRoutes(
       }
 
       // If API failed or key missing, fallback to Claude for high-precision spiritual calculations and daily horoscope
-      // We also use Claude to generate the dailyHoroscope text even if we have the API data
       const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
       ${spiritualData.astrology ? "I have the core technical data, please refine the insights, generate a daily horoscope, a personalized affirmation, and a short meditation guidance." : "Calculate high-precision spiritual data, a personalized daily horoscope, a daily affirmation, and a meditation guidance."}
       
-      Birth Context:
-      - Date: ${birthDate.toISOString()}
-      - Time: ${birthTime}
-      - Location: ${birthLocation}
+      Birth Context (CRITICAL: USE THESE FOR ALL CALCULATIONS):
+      - Birth Date: ${birthDate.toISOString()}
+      - Birth Time: ${birthTime}
+      - Birth Location: ${birthLocation}
       - Current Date: ${new Date().toISOString()}
 
       ${spiritualData.astrology ? `Technical Data to use:
@@ -170,8 +169,8 @@ export async function registerRoutes(
       - Human Design: Manifesting Generator`}
 
       CRITICAL ACCURACY REQUIREMENTS:
-      1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. Ensure Lagnam is Libra and Moon is Libra as per user confirmation.
-      2. Numerology: Confirm Life Path 5.
+      1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. List EVERY planet's house placement and degree.
+      2. Numerology: Calculate Life Path, Personal Year, and Soul Urge using exactly ${birthDate.toISOString()}.
       3. Human Design: Manifesting Generator.
       4. Daily Horoscope: Provide 2-3 sentences of guidance for today based on current transits.
       5. Affirmation: A powerful, personalized daily affirmation (1 sentence).
@@ -186,7 +185,11 @@ export async function registerRoutes(
           "sunInsight": "string",
           "moonInsight": "string",
           "insight": "string",
-          "dailyHoroscope": "string"
+          "dailyHoroscope": "string",
+          "planetaryPlacements": [
+            { "planet": "Sun", "house": 6, "sign": "Pisces", "degree": "21°" },
+            ...
+          ]
         },
         "sidereal": {
           "atmakaraka": "string",
@@ -194,11 +197,13 @@ export async function registerRoutes(
           "rahu": "string",
           "ketu": "string",
           "atmakarakaInsight": "string",
-          "lagnamInsight": "string"
+          "lagnamInsight": "string",
+          "housePlacements": "Detailed list of planets in houses"
         },
         "numerology": {
           "lifePath": number,
           "personalYear": number,
+          "soulUrge": number,
           "insight": "string"
         },
         "humanDesign": {
@@ -220,6 +225,11 @@ export async function registerRoutes(
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("Failed to parse spiritual data from AI");
       const finalSpiritualData = JSON.parse(jsonMatch[0]);
+
+      // Ensure numerology insight is strictly tied to birth date
+      if (finalSpiritualData.numerology) {
+        finalSpiritualData.numerology.insight = `Calculated for birth date ${birthDate.toLocaleDateString()}: ${finalSpiritualData.numerology.insight}`;
+      }
 
       const profile = await storage.upsertSpiritualProfile({
         ...result.data,
@@ -265,17 +275,22 @@ export async function registerRoutes(
 
       const prompt = `Act as an expert Vedic astrologer and Numerologist. Generate a deeply personalized spiritual calendar for the month of ${now.toLocaleString('default', { month: 'long' })} ${year}.
       
-      User Birth Details:
+      CRITICAL: Use these EXACT birth details for all calculations:
+      - Birth Date: ${birthDate.toISOString()}
+      - Birth Time: ${birthTime}
+      - Birth Location: ${birthLocation}
+      
+      User Profile Data (for reference):
       - Sun: ${astroChart.sunSign}
       - Moon: ${astroChart.moonSign}
       - Ascendant: ${astroChart.ascendant}
       - Atmakaraka: ${sideChart.atmakaraka}
-      - Life Path: ${numNumbers.lifePath}
+      - Life Path (Current): ${numNumbers.lifePath}
       - HD Type: ${hdGraph.type}
 
       For EACH day (1 to ${daysInMonth}), provide:
-      1. Planetary & House Influence: Specify the exact transit (e.g., "Mars transiting your 10th House") affecting the user today.
-      2. Personal Numerology: The daily number vibration (1-9) calculated specifically for their birth date.
+      1. Planetary & House Influence: Specify the exact transit (e.g., "Mars transiting your 10th House") and its specific effect on their natal placements.
+      2. High-Precision Numerology: Calculate the Personal Day number using their birth date (${birthDate.toDateString()}) and the specific calendar date. Explain the vibration.
       3. Integrated Insight: A 2-3 sentence spiritual guidance merging the planetary, house, and numerology influences.
 
       Return strictly JSON in this format:
@@ -288,6 +303,7 @@ export async function registerRoutes(
             "planetary_transit": "Mars in 10th House", 
             "house_system": "Whole Sign",
             "numerology_day": "5",
+            "numerology_explanation": "Activity and change vibration",
             "insight": "..." 
           }
         ]

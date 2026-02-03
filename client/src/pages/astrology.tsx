@@ -142,6 +142,19 @@ export default function Astrology() {
                    <h4 className="font-bold text-accent mb-1">Ascendant (Lagnam)</h4>
                    <p className="text-sm">{siderealData.lagnamInsight}</p>
                 </div>
+                {tropicalData.planetaryPlacements && (
+                  <div className="p-4 bg-background/50 rounded-lg border border-primary/20">
+                    <h4 className="font-bold text-primary mb-3">Planetary Placements</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {tropicalData.planetaryPlacements.map((p: any, i: number) => (
+                        <div key={i} className="text-xs p-2 bg-primary/5 rounded border border-primary/10">
+                          <span className="font-bold text-primary">{p.planet}</span>: {p.sign} ({p.degree})
+                          <p className="text-muted-foreground mt-1">House {p.house}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
              </div>
           </CardContent>
        </Card>
