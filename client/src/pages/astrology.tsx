@@ -144,12 +144,18 @@ export default function Astrology() {
                 </div>
                 {tropicalData.planetaryPlacements && (
                   <div className="p-4 bg-background/50 rounded-lg border border-primary/20">
-                    <h4 className="font-bold text-primary mb-3">Planetary Placements</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <h4 className="font-bold text-primary mb-3">Natal Planetary Placements</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {tropicalData.planetaryPlacements.map((p: any, i: number) => (
-                        <div key={i} className="text-xs p-2 bg-primary/5 rounded border border-primary/10">
-                          <span className="font-bold text-primary">{p.planet}</span>: {p.sign} ({p.degree})
-                          <p className="text-muted-foreground mt-1">House {p.house}</p>
+                        <div key={i} className="text-xs p-3 bg-primary/5 rounded-xl border border-primary/10 shadow-sm">
+                          <div className="flex justify-between items-start mb-1">
+                            <span className="font-bold text-primary text-sm">{p.planet}</span>
+                            <Badge variant="outline" className="text-[10px] py-0 h-4">{p.degree}</Badge>
+                          </div>
+                          <p className="font-medium">{p.sign} — House {p.house}</p>
+                          {p.interpretation && (
+                            <p className="text-muted-foreground mt-2 leading-relaxed italic border-t border-primary/5 pt-2">{p.interpretation}</p>
+                          )}
                         </div>
                       ))}
                     </div>

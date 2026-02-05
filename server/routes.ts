@@ -144,6 +144,17 @@ export async function registerRoutes(
         }
       }
 
+      // Manual Life Path Calculation for 100% accuracy
+      const calculateLifePath = (date: Date) => {
+        const str = date.toISOString().split('T')[0].replace(/-/g, '');
+        let sum = str.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+        while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+          sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+        }
+        return sum;
+      };
+      const manualLifePath = calculateLifePath(birthDate);
+
       // If API failed or key missing, fallback to Claude for high-precision spiritual calculations and daily horoscope
       const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
       ${spiritualData.astrology ? "I have the core technical data, please refine the insights, generate a daily horoscope, a personalized affirmation, and a short meditation guidance." : "Calculate high-precision spiritual data, a personalized daily horoscope, a daily affirmation, and a meditation guidance."}
@@ -154,27 +165,10 @@ export async function registerRoutes(
       - Birth Location: ${birthLocation}
       - Current Date: ${new Date().toISOString()}
 
-      ${spiritualData.astrology ? `Technical Data to use:
-      - Sun: ${spiritualData.astrology.sunSign}
-      - Moon: ${spiritualData.astrology.moonSign}
-      - Ascendant: ${spiritualData.astrology.ascendant}
-      - Atmakaraka: ${spiritualData.sidereal.atmakaraka}
-      - Life Path: 5
-      - HD Type: Manifesting Generator` : `USER PRE-CONFIRMED DETAILS:
-      - Sun Sign: Pisces
-      - Moon Sign: Libra
-      - Ascendant: Libra
-      - Life Path: 5
-      - Personal Year: 1
-      - Human Design: Manifesting Generator`}
-
-      CRITICAL ACCURACY REQUIREMENTS:
-      1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. List EVERY planet's house placement and degree.
-      2. Numerology: Calculate Life Path, Personal Year, and Soul Urge using exactly ${birthDate.toISOString()}.
+      Technical Requirements:
+      1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. Map planets to their SIDEREAL signs and houses (Whole Sign).
+      2. Numerology: The user's Life Path is EXACTLY ${manualLifePath}. Calculate Personal Year and Soul Urge based on ${birthDate.toISOString()}.
       3. Human Design: Manifesting Generator.
-      4. Daily Horoscope: Provide 2-3 sentences of guidance for today based on current transits.
-      5. Affirmation: A powerful, personalized daily affirmation (1 sentence).
-      6. Meditation: A brief (2-3 sentence) meditation focus or visualization for today.
 
       Required Fields (strictly return JSON):
       {
@@ -187,8 +181,15 @@ export async function registerRoutes(
           "insight": "string",
           "dailyHoroscope": "string",
           "planetaryPlacements": [
-            { "planet": "Sun", "house": 6, "sign": "Pisces", "degree": "21°" },
-            ...
+            { "planet": "Sun", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Moon", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Mars", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Mercury", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Jupiter", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Venus", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Saturn", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Rahu", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
+            { "planet": "Ketu", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" }
           ]
         },
         "sidereal": {
@@ -197,14 +198,13 @@ export async function registerRoutes(
           "rahu": "string",
           "ketu": "string",
           "atmakarakaInsight": "string",
-          "lagnamInsight": "string",
-          "housePlacements": "Detailed list of planets in houses"
+          "lagnamInsight": "string"
         },
         "numerology": {
-          "lifePath": number,
-          "personalYear": number,
-          "soulUrge": number,
-          "insight": "string"
+          "lifePath": ${manualLifePath},
+          "personalYear": "number",
+          "soulUrge": "number",
+          "insight": "Explain the significance of Life Path ${manualLifePath} and the current Personal Year vibration."
         },
         "humanDesign": {
           "type": "string",
