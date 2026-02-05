@@ -146,20 +146,31 @@ export async function registerRoutes(
 
       // Numerology Calculations
       const calculateLifePath = (date: Date) => {
-        // Life Path: Sum of all digits in birth date until single digit or master number
-        const digits = date.toISOString().split('T')[0].replace(/-/g, '').split('');
-        let sum = digits.reduce((acc, d) => acc + parseInt(d), 0);
-        while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-          sum = sum.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
-        }
-        return sum;
+        // Life Path: Sum digits of Month, Day, and Year separately, then sum those results.
+        const day = date.getUTCDate();
+        const month = date.getUTCMonth() + 1;
+        const year = date.getUTCFullYear();
+
+        const reduce = (n: number) => {
+          let s = n;
+          while (s > 9 && s !== 11 && s !== 22 && s !== 33) {
+            s = s.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
+          }
+          return s;
+        };
+
+        const mReduced = reduce(month);
+        const dReduced = reduce(day);
+        const yReduced = reduce(year);
+
+        return reduce(mReduced + dReduced + yReduced);
       };
 
       const calculatePersonalYear = (birthDate: Date, targetDate: Date) => {
-        // Personal Year = (Day of Birth + Month of Birth + Target Year) reduced
-        const day = birthDate.getDate();
-        const month = birthDate.getMonth() + 1;
-        const year = targetDate.getFullYear();
+        // Personal Year = (Month of Birth + Day of Birth + Current Year) reduced
+        const day = birthDate.getUTCDate();
+        const month = birthDate.getUTCMonth() + 1;
+        const currentYear = targetDate.getUTCFullYear();
         
         const reduce = (n: number) => {
           let s = n;
@@ -169,11 +180,11 @@ export async function registerRoutes(
           return s;
         };
 
-        const dayReduced = reduce(day);
-        const monthReduced = reduce(month);
-        const yearReduced = reduce(year);
+        const mReduced = reduce(month);
+        const dReduced = reduce(day);
+        const yReduced = reduce(currentYear);
         
-        return reduce(dayReduced + monthReduced + yearReduced);
+        return reduce(mReduced + dReduced + yReduced);
       };
 
       const manualLifePath = calculateLifePath(birthDate);
