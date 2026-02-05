@@ -144,16 +144,40 @@ export async function registerRoutes(
         }
       }
 
-      // Manual Life Path Calculation for 100% accuracy
+      // Numerology Calculations
       const calculateLifePath = (date: Date) => {
-        const str = date.toISOString().split('T')[0].replace(/-/g, '');
-        let sum = str.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+        // Life Path: Sum of all digits in birth date until single digit or master number
+        const digits = date.toISOString().split('T')[0].replace(/-/g, '').split('');
+        let sum = digits.reduce((acc, d) => acc + parseInt(d), 0);
         while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
-          sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+          sum = sum.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
         }
         return sum;
       };
+
+      const calculatePersonalYear = (birthDate: Date, targetDate: Date) => {
+        // Personal Year = (Day of Birth + Month of Birth + Target Year) reduced
+        const day = birthDate.getDate();
+        const month = birthDate.getMonth() + 1;
+        const year = targetDate.getFullYear();
+        
+        const reduce = (n: number) => {
+          let s = n;
+          while (s > 9 && s !== 11 && s !== 22 && s !== 33) {
+            s = s.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
+          }
+          return s;
+        };
+
+        const dayReduced = reduce(day);
+        const monthReduced = reduce(month);
+        const yearReduced = reduce(year);
+        
+        return reduce(dayReduced + monthReduced + yearReduced);
+      };
+
       const manualLifePath = calculateLifePath(birthDate);
+      const manualPersonalYear = calculatePersonalYear(birthDate, new Date());
 
       // If API failed or key missing, fallback to Claude for high-precision spiritual calculations and daily horoscope
       const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
@@ -167,7 +191,10 @@ export async function registerRoutes(
 
       Technical Requirements:
       1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. Map planets to their SIDEREAL signs and houses (Whole Sign).
-      2. Numerology: The user's Life Path is EXACTLY ${manualLifePath}. Calculate Personal Year and Soul Urge based on ${birthDate.toISOString()}.
+      2. Numerology: 
+         - Life Path: EXACTLY ${manualLifePath}
+         - Personal Year: EXACTLY ${manualPersonalYear}
+         Calculate Soul Urge based on ${birthDate.toISOString()}.
       3. Human Design: Manifesting Generator.
 
       Required Fields (strictly return JSON):
@@ -202,9 +229,9 @@ export async function registerRoutes(
         },
         "numerology": {
           "lifePath": ${manualLifePath},
-          "personalYear": "number",
+          "personalYear": ${manualPersonalYear},
           "soulUrge": "number",
-          "insight": "Explain the significance of Life Path ${manualLifePath} and the current Personal Year vibration."
+          "insight": "Explain the significance of Life Path ${manualLifePath} and Personal Year ${manualPersonalYear}."
         },
         "humanDesign": {
           "type": "string",
