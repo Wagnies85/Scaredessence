@@ -149,20 +149,28 @@ export default function Astrology() {
                    <h4 className="font-bold text-accent mb-1">Ascendant (Lagnam)</h4>
                    <p className="text-sm">{siderealData.lagnamInsight}</p>
                 </div>
-                {tropicalData.planetaryPlacements && (
-                  <div className="p-4 bg-background/50 rounded-lg border border-primary/20">
-                    <h4 className="font-bold text-primary mb-3">Natal Planetary Placements</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {tropicalData.planetaryPlacements.map((p: any, i: number) => (
+                {tropicalData.nakshatras && (
+                  <div className="p-4 bg-background/50 rounded-lg border border-primary/20 mt-4">
+                    <h4 className="font-bold text-primary mb-3">Nakshatra Details (Vedic Star Constellations)</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {Object.entries(tropicalData.nakshatras).map(([planet, details]: [string, any], i: number) => (
                         <div key={i} className="text-xs p-3 bg-primary/5 rounded-xl border border-primary/10 shadow-sm">
-                          <div className="flex justify-between items-start mb-1">
-                            <span className="font-bold text-primary text-sm">{p.planet}</span>
-                            <Badge variant="outline" className="text-[10px] py-0 h-4">{p.degree}</Badge>
-                          </div>
-                          <p className="font-medium">{p.sign} — House {p.house}</p>
-                          {p.interpretation && (
-                            <p className="text-muted-foreground mt-2 leading-relaxed italic border-t border-primary/5 pt-2">{p.interpretation}</p>
-                          )}
+                          <span className="font-bold text-primary text-sm capitalize">{planet}</span>
+                          <p className="font-medium mt-1">Nakshatra: {details.nakshatra}</p>
+                          <p className="text-muted-foreground">Lord: {details.lord} | Pada: {details.pada}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {tropicalData.ashtakvarga && (
+                  <div className="p-4 bg-background/50 rounded-lg border border-secondary/20 mt-4">
+                    <h4 className="font-bold text-secondary mb-3">Ashtakvarga (Planetary Strength)</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                      {Object.entries(tropicalData.ashtakvarga).map(([sign, score]: [string, any], i: number) => (
+                        <div key={i} className="text-[10px] p-2 bg-secondary/5 rounded-lg border border-secondary/10 flex flex-col items-center">
+                          <span className="font-bold text-secondary uppercase">{sign.slice(0, 3)}</span>
+                          <span className="text-lg font-black">{score}</span>
                         </div>
                       ))}
                     </div>

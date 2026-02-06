@@ -83,14 +83,18 @@ export async function registerRoutes(
             lang: "en"
           });
 
-          // Fetching Sidereal Horoscope
-          const [vedaRes, mangalRes]: [any, any] = await Promise.all([
+          // Fetching Sidereal Horoscope, Ashtakvarga, and Nakshatra details
+          const [vedaRes, mangalRes, ashtakRes, nakshatraRes]: [any, any, any, any] = await Promise.all([
             fetch(`https://api.vedicastroapi.com/v3-0/horoscope/planet-details?${vedaParams.toString()}`),
-            fetch(`https://api.vedicastroapi.com/v3-0/dosha/mangal-dosh?${vedaParams.toString()}`)
+            fetch(`https://api.vedicastroapi.com/v3-0/dosha/mangal-dosh?${vedaParams.toString()}`),
+            fetch(`https://api.vedicastroapi.com/v3-0/horoscope/ashtakvarga?${vedaParams.toString()}`),
+            fetch(`https://api.vedicastroapi.com/v3-0/horoscope/nakshatra-details?${vedaParams.toString()}`)
           ]);
           
           const vedaData = await vedaRes.json();
           const mangalData = await mangalRes.json();
+          const ashtakData = await ashtakRes.json();
+          const nakshatraData = await nakshatraRes.json();
           
           if (vedaData.status === 200) {
             const planets = vedaData.response;
@@ -98,10 +102,13 @@ export async function registerRoutes(
             const moon = planets.find((p: any) => p.name === "Moon");
             const sun = planets.find((p: any) => p.name === "Sun");
 
+            const ashtakSummary = ashtakData.status === 200 ? ashtakData.response : null;
+            const nakshatraSummary = nakshatraData.status === 200 ? nakshatraData.response : null;
+
             // Sort planets by degree within their sign to find Atmakaraka (highest degree excluding Rahu/Ketu)
             const sortedForAK = planets
               .filter((p: any) => !["Rahu", "Ketu", "Ascendant"].includes(p.name))
-              .sort((a: any, b: any) => b.full_degree % 30 - a.full_degree % 30);
+              .sort((a: any, b: any) => (b.full_degree % 30) - (a.full_degree % 30));
             
             const ak = sortedForAK[0]?.name || "Jupiter";
 
@@ -117,7 +124,9 @@ export async function registerRoutes(
                 sunInsight: `Sun in ${sun?.sign}, ${sun?.house}th House. Reflects your core essence.`,
                 moonInsight: `Moon in ${moon?.sign}, ${moon?.house}th House. Governs your emotional landscape.`,
                 insight: `A powerful ${ascendant?.sign} rising chart with ${ak} as your Atmakaraka. ${mangalInsight}`,
-                dailyHoroscope: "" // Will be populated by AI
+                dailyHoroscope: "", // Will be populated by AI
+                ashtakvarga: ashtakSummary,
+                nakshatras: nakshatraSummary
               },
               sidereal: {
                 atmakaraka: ak,
