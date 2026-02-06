@@ -48,7 +48,7 @@ export default function Astrology() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `horoscope-${data.month}-${data.year}.json`;
+      a.download = `spiritual-calendar-${data.month}-${data.year}.json`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

@@ -323,13 +323,13 @@ export async function registerRoutes(
       - Moon: ${astroChart.moonSign}
       - Ascendant: ${astroChart.ascendant}
       - Atmakaraka: ${sideChart.atmakaraka}
-      - Life Path (Current): ${numNumbers.lifePath}
+      - Life Path: ${numNumbers.lifePath}
       - HD Type: ${hdGraph.type}
 
       For EACH day (1 to ${daysInMonth}), provide:
-      1. Planetary & House Influence: Specify the exact transit (e.g., "Mars transiting your 10th House") and its specific effect on their natal placements.
-      2. High-Precision Numerology: Calculate the Personal Day number using their birth date (${birthDate.toDateString()}) and the specific calendar date. Explain the vibration.
-      3. Integrated Insight: A 2-3 sentence spiritual guidance merging the planetary, house, and numerology influences.
+      1. Personalized Daily Horoscope: 2-3 sentences explaining exactly how the day's transits affect their specific natal placements (Sun, Moon, Ascendant).
+      2. Accurate Personal Day Numerology: Calculate the Personal Day number using the formula: (Personal Year + Month + Day) reduced to a single digit or master number. Explain the specific vibration for them.
+      3. Integrated Guidance: A summary combining both influences.
 
       Return strictly JSON in this format:
       {
@@ -338,10 +338,9 @@ export async function registerRoutes(
         "days": [
           { 
             "day": 1, 
-            "planetary_transit": "Mars in 10th House", 
-            "house_system": "Whole Sign",
+            "daily_horoscope": "...",
             "numerology_day": "5",
-            "numerology_explanation": "Activity and change vibration",
+            "numerology_explanation": "...",
             "insight": "..." 
           }
         ]
