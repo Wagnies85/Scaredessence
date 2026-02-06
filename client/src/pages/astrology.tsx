@@ -182,11 +182,88 @@ export default function Astrology() {
     </div>
   );
 
+  const [viewYear, setViewYear] = useState(false);
+
+  const AnnualCosmicCalendar = () => {
+    const significantEvents = [
+      { date: "March 20", event: "Spring Equinox - New Beginnings", type: "Equinox" },
+      { date: "June 21", event: "Summer Solstice - Peak Solar Energy", type: "Solstice" },
+      { date: "September 22", event: "Autumn Equinox - Balance & Harvest", type: "Equinox" },
+      { date: "December 21", event: "Winter Solstice - Inward Reflection", type: "Solstice" },
+      { date: "March 29", event: "Solar Eclipse in Aries", type: "Eclipse" },
+      { date: "September 21", event: "Solar Eclipse in Virgo", type: "Eclipse" },
+      { date: "February 24 - March 20", event: "Mercury Retrograde", type: "Retrograde" },
+      { date: "June 29 - July 23", event: "Mercury Retrograde", type: "Retrograde" },
+      { date: "October 24 - November 13", event: "Mercury Retrograde", type: "Retrograde" }
+    ];
+
+    return (
+      <Card className="border-2 border-primary/40 shadow-xl overflow-hidden mt-8">
+        <CardHeader className="bg-primary/5 flex flex-row items-center justify-between space-y-0">
+          <div>
+            <CardTitle className="font-serif text-2xl text-primary">2026 Cosmic Forecast</CardTitle>
+            <CardDescription>Annual view of significant planetary shifts</CardDescription>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => setViewYear(!viewYear)}>
+            {viewYear ? "Hide Annual View" : "Show Annual View"}
+          </Button>
+        </CardHeader>
+        {viewYear && (
+          <CardContent className="pt-6 space-y-6">
+            <div className="bg-primary/5 p-4 rounded-xl border border-primary/10">
+              <h4 className="font-bold text-primary mb-3 flex items-center gap-2">
+                <Sparkles className="h-4 w-4" /> Major Astrological Events 2026
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {significantEvents.map((event, idx) => (
+                  <div key={idx} className="flex flex-col p-2 bg-background rounded border border-primary/5">
+                    <span className="text-[10px] font-bold text-primary/60 uppercase">{event.date}</span>
+                    <span className="text-xs font-medium">{event.event}</span>
+                    <Badge variant="secondary" className="w-fit text-[8px] h-4 mt-1">{event.type}</Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {months.map((month, idx) => (
+                <div key={idx} className="p-3 bg-card rounded-lg border border-primary/10 hover:border-primary/30 transition-colors">
+                  <h4 className="font-bold text-primary border-b border-primary/10 pb-1 mb-2">{month} 2026</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2">
+                      <Zap className="h-3 w-3 text-yellow-500 mt-1 flex-shrink-0" />
+                      <p className="text-[10px] leading-tight text-muted-foreground italic">
+                        Major focus: {idx % 3 === 0 ? "Spiritual expansion" : idx % 3 === 1 ? "Material foundation" : "Relationship harmony"}
+                      </p>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full text-[10px] h-7 hover:bg-primary/10"
+                      onClick={() => {
+                        setSelectedMonth(idx);
+                        setSelectedYear(2026);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        )}
+      </Card>
+    );
+  };
+
   const NatalChartDisplay = () => (
     <div className="space-y-8">
       <SouthIndianChart title="Natal Birth Chart (D1)" data={siderealData} />
       <SouthIndianChart title="Navamsha Chart (D9)" data={{...siderealData, atmakaraka: "Venus"}} />
       <VedicInsights />
+      <AnnualCosmicCalendar />
     </div>
   );
 
