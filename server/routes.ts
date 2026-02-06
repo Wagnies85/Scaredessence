@@ -293,6 +293,9 @@ export async function registerRoutes(
 
   app.get("/api/horoscope/monthly", async (req, res) => {
     try {
+      const monthParam = req.query.month ? parseInt(req.query.month as string) : new Date().getMonth();
+      const yearParam = req.query.year ? parseInt(req.query.year as string) : new Date().getFullYear();
+
       const profile = await storage.getSpiritualProfile("default-user");
       if (!profile) return res.status(404).json({ error: "Profile not found" });
 
@@ -300,10 +303,8 @@ export async function registerRoutes(
       const birthTime = profile.birthTime || "12:00";
       const birthLocation = profile.birthLocation || "Unknown";
 
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInMonth = new Date(yearParam, monthParam + 1, 0).getDate();
+      const targetMonthDate = new Date(yearParam, monthParam, 1);
 
       // Casting charts to any to avoid LSP type errors on jsonb fields
       const astroChart = (profile.astrologyChart || {}) as any;
@@ -311,7 +312,7 @@ export async function registerRoutes(
       const numNumbers = (profile.numerologyNumbers || {}) as any;
       const hdGraph = (profile.humanDesignBodygraph || {}) as any;
 
-      const prompt = `Act as an expert Vedic astrologer and Numerologist. Generate a deeply personalized spiritual calendar for the month of ${now.toLocaleString('default', { month: 'long' })} ${year}.
+      const prompt = `Act as an expert Vedic astrologer and Numerologist. Generate a deeply personalized spiritual calendar for the month of ${targetMonthDate.toLocaleString('default', { month: 'long' })} ${yearParam}.
       
       CRITICAL: Use these EXACT birth details for all calculations:
       - Birth Date: ${birthDate.toISOString()}
@@ -333,8 +334,8 @@ export async function registerRoutes(
 
       Return strictly JSON in this format:
       {
-        "month": "${now.toLocaleString('default', { month: 'long' })}",
-        "year": ${year},
+        "month": "${targetMonthDate.toLocaleString('default', { month: 'long' })}",
+        "year": ${yearParam},
         "days": [
           { 
             "day": 1, 

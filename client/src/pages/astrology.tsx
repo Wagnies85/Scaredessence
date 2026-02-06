@@ -15,6 +15,13 @@ export default function Astrology() {
   });
 
   const [isDownloading, setIsDownloading] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(2026);
+
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
   const isPremium = profile?.isPremium ?? false;
 
@@ -41,7 +48,7 @@ export default function Astrology() {
   const downloadMonthlyHoroscope = async () => {
     setIsDownloading(true);
     try {
-      const res = await fetch("/api/horoscope/monthly");
+      const res = await fetch(`/api/horoscope/monthly?month=${selectedMonth}&year=${selectedYear}`);
       const data = await res.json();
       
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -188,14 +195,32 @@ export default function Astrology() {
             </div>
           )}
         </div>
-        <Button 
-          onClick={downloadMonthlyHoroscope} 
-          disabled={isDownloading}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground"
-        >
-          {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
-          Download Monthly Calendar
-        </Button>
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <select 
+            value={selectedMonth} 
+            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+            className="bg-card border border-primary/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          >
+            {months.map((m, i) => (
+              <option key={i} value={i}>{m}</option>
+            ))}
+          </select>
+          <select 
+            value={selectedYear} 
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+            className="bg-card border border-primary/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          >
+            <option value={2026}>2026</option>
+          </select>
+          <Button 
+            onClick={downloadMonthlyHoroscope} 
+            disabled={isDownloading}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
+          >
+            {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
+            Download Calendar
+          </Button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-12 gap-8">
