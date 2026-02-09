@@ -2,7 +2,7 @@ import Layout from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Moon, Sparkles, Zap, Sun, Info, Lock, Download, Loader2 } from "lucide-react";
+import { Moon, Sparkles, Zap, Sun, Lock, Download, Loader2, Star, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -17,6 +17,7 @@ export default function Astrology() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(2026);
+  const [viewYear, setViewYear] = useState(false);
 
   const months = [
     "January", "February", "March", "April", "May", "June",
@@ -36,14 +37,27 @@ export default function Astrology() {
     ketuInsight: "Harvesting past life wisdom..."
   };
 
-  const tropicalData = profile?.astrologyChart || {
+  const vedicData = profile?.astrologyChart || {
     sunSign: "Calculating...",
     moonSign: "Calculating...",
     ascendant: "Calculating...",
     sunInsight: "Connecting with your core identity...",
     moonInsight: "Refining your emotional inner-world...",
-    dailyHoroscope: "Your stars for today are aligning..."
+    dailyHoroscope: "Your stars for today are aligning...",
+    planetaryPlacements: []
   };
+
+  const westernData = (profile?.astrologyChart as any)?.western || {
+    sunSign: "Calculating...",
+    moonSign: "Calculating...",
+    ascendant: "Calculating...",
+    sunDescription: "Analyzing your Western Sun placement...",
+    moonDescription: "Analyzing your Western Moon placement...",
+    ascendantDescription: "Analyzing your Western Ascendant...",
+    overview: "Your Western chart is being calculated..."
+  };
+
+  const planetaryPlacements = vedicData.planetaryPlacements || [];
 
   const downloadMonthlyHoroscope = async () => {
     setIsDownloading(true);
@@ -66,6 +80,23 @@ export default function Astrology() {
     }
   };
 
+  const planetIcons: Record<string, string> = {
+    Sun: "☉", Moon: "☽", Mars: "♂", Mercury: "☿",
+    Jupiter: "♃", Venus: "♀", Saturn: "♄", Rahu: "☊", Ketu: "☋"
+  };
+
+  const planetColors: Record<string, string> = {
+    Sun: "from-amber-500/20 to-orange-500/10 border-amber-500/30",
+    Moon: "from-slate-300/20 to-blue-200/10 border-slate-400/30",
+    Mars: "from-red-500/20 to-rose-500/10 border-red-500/30",
+    Mercury: "from-emerald-500/20 to-green-500/10 border-emerald-500/30",
+    Jupiter: "from-yellow-500/20 to-amber-400/10 border-yellow-500/30",
+    Venus: "from-pink-500/20 to-fuchsia-400/10 border-pink-500/30",
+    Saturn: "from-indigo-500/20 to-blue-500/10 border-indigo-500/30",
+    Rahu: "from-violet-500/20 to-purple-500/10 border-violet-500/30",
+    Ketu: "from-orange-500/20 to-red-400/10 border-orange-500/30"
+  };
+
   const SouthIndianChart = ({ title, data }: { title: string, data: any }) => (
     <Card className="bg-card/40 backdrop-blur-md border-2 border-primary/40 shadow-2xl overflow-hidden mb-8">
       <CardHeader className="bg-primary/20 border-b border-primary/20">
@@ -79,13 +110,10 @@ export default function Astrology() {
       </CardHeader>
       <CardContent className="p-0 bg-transparent">
         <div className="grid grid-cols-4 grid-rows-4 aspect-square max-w-[500px] mx-auto border-4 border-primary/50 m-4 bg-background/30 rounded-lg shadow-inner">
-          {/* Row 1 */}
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">12: PI</div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">1: AR</div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">2: TA</div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">3: GE</div>
-          
-          {/* Row 2 */}
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">11: AQ</div>
           <div className="col-span-2 row-span-2 flex flex-col items-center justify-center bg-primary/10 rounded-xl m-2 border border-primary/20 shadow-lg">
              <p className="text-[10px] uppercase tracking-[0.2em] text-primary/80 font-bold">Soul Center</p>
@@ -93,12 +121,8 @@ export default function Astrology() {
              <p className="text-[10px] text-muted-foreground mt-1 font-medium">ASC: {data.lagnam}</p>
           </div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">4: CA</div>
-          
-          {/* Row 3 */}
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">10: CP</div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">5: LE</div>
-          
-          {/* Row 4 */}
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">9: SG</div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">8: SC</div>
           <div className="border border-primary/30 p-2 flex flex-col items-center justify-center text-[10px] font-bold text-foreground/80">7: LI</div>
@@ -106,25 +130,131 @@ export default function Astrology() {
         </div>
         
         <div className="bg-primary/10 p-6 border-t border-primary/20 grid grid-cols-2 md:grid-cols-4 gap-6">
-           <div className="text-center group">
+           <div className="text-center group" data-testid="chart-ascendant">
               <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Ascendant</p>
-              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{siderealData.lagnam || tropicalData.ascendant}</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{siderealData.lagnam || vedicData.ascendant}</p>
            </div>
-           <div className="text-center group">
+           <div className="text-center group" data-testid="chart-sun">
               <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Sun (S)</p>
-              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{tropicalData.sunSign}</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{vedicData.sunSign}</p>
            </div>
-           <div className="text-center group">
+           <div className="text-center group" data-testid="chart-moon">
               <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Moon (M)</p>
-              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{tropicalData.moonSign}</p>
+              <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{vedicData.moonSign}</p>
            </div>
-           <div className="text-center group">
+           <div className="text-center group" data-testid="chart-soul-planet">
               <p className="text-xs uppercase text-primary/60 font-bold tracking-wider mb-1">Soul Planet</p>
               <p className="text-base font-black text-foreground group-hover:text-primary transition-colors">{siderealData.atmakaraka}</p>
            </div>
         </div>
       </CardContent>
     </Card>
+  );
+
+  const PlanetaryPlacementsGrid = () => {
+    if (!planetaryPlacements || planetaryPlacements.length === 0) {
+      return (
+        <Card className="border-2 border-primary/30">
+          <CardHeader>
+            <CardTitle className="font-serif text-2xl text-primary">Planetary Placements</CardTitle>
+            <CardDescription>Submit your birth details to see your planetary positions</CardDescription>
+          </CardHeader>
+        </Card>
+      );
+    }
+
+    return (
+      <Card className="border-2 border-primary/40 shadow-xl overflow-hidden" data-testid="planetary-placements">
+        <CardHeader className="bg-primary/10 border-b border-primary/20">
+          <CardTitle className="font-serif text-2xl text-primary flex items-center gap-2">
+            <Star className="h-5 w-5" /> Vedic Planetary Placements
+          </CardTitle>
+          <CardDescription className="text-foreground/80">Each planet's position and personal meaning in your Sidereal birth chart</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {planetaryPlacements.map((p: any, idx: number) => (
+              <div
+                key={idx}
+                className={cn(
+                  "p-4 rounded-xl border-2 bg-gradient-to-br transition-all hover:shadow-lg hover:scale-[1.02]",
+                  planetColors[p.planet] || "from-gray-500/20 to-gray-400/10 border-gray-500/30"
+                )}
+                data-testid={`planet-card-${p.planet?.toLowerCase()}`}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">{planetIcons[p.planet] || "⚫"}</span>
+                  <div>
+                    <h4 className="font-bold text-lg text-foreground">{p.planet}</h4>
+                    <p className="text-xs text-muted-foreground font-medium">
+                      {p.sign} | House {p.house} | {p.degree}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-foreground/90 leading-relaxed">{p.interpretation}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  const WesternAstrologySection = () => (
+    <div className="space-y-6">
+      <Card className="bg-gradient-to-br from-blue-950/80 to-indigo-950/80 border-2 border-blue-500/30 shadow-2xl text-white overflow-hidden" data-testid="western-astrology-section">
+        <CardHeader className="border-b border-blue-500/20">
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle className="font-serif text-2xl text-blue-200 flex items-center gap-2">
+                <Globe className="h-5 w-5" /> Western (Tropical) Astrology
+              </CardTitle>
+              <CardDescription className="text-blue-300/80">Seasonal zodiac - your personality and psychological patterns</CardDescription>
+            </div>
+            <Badge className="bg-blue-500/30 text-blue-200 border-blue-400/30">Tropical</Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6 space-y-6">
+          <div className="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
+            <h3 className="font-serif text-lg text-blue-200 mb-2">About Tropical Astrology</h3>
+            <p className="text-sm text-blue-100/80 leading-relaxed">
+              Western (Tropical) astrology is based on the seasons and the Earth's relationship to the Sun. It reflects your personality, psychological patterns, and how you experience the world. While Vedic shows your karmic destiny, Tropical reveals your psychological self.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-5 bg-amber-500/10 rounded-xl border border-amber-500/20" data-testid="western-sun">
+              <div className="flex items-center gap-2 mb-3">
+                <Sun className="h-5 w-5 text-amber-400" />
+                <h4 className="font-bold text-amber-200">Sun in {westernData.sunSign}</h4>
+              </div>
+              <p className="text-sm text-blue-100/90 leading-relaxed">{westernData.sunDescription}</p>
+            </div>
+            <div className="p-5 bg-slate-400/10 rounded-xl border border-slate-400/20" data-testid="western-moon">
+              <div className="flex items-center gap-2 mb-3">
+                <Moon className="h-5 w-5 text-slate-300" />
+                <h4 className="font-bold text-slate-200">Moon in {westernData.moonSign}</h4>
+              </div>
+              <p className="text-sm text-blue-100/90 leading-relaxed">{westernData.moonDescription}</p>
+            </div>
+            <div className="p-5 bg-indigo-400/10 rounded-xl border border-indigo-400/20" data-testid="western-ascendant">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="h-5 w-5 text-indigo-300" />
+                <h4 className="font-bold text-indigo-200">{westernData.ascendant} Rising</h4>
+              </div>
+              <p className="text-sm text-blue-100/90 leading-relaxed">{westernData.ascendantDescription}</p>
+            </div>
+          </div>
+
+          <div className="p-5 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-500/20">
+            <h4 className="font-bold text-purple-200 mb-2 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" /> Chart Overview
+            </h4>
+            <p className="text-sm text-blue-100/90 leading-relaxed">{westernData.overview}</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 
   const VedicInsights = () => (
@@ -149,12 +279,12 @@ export default function Astrology() {
                    <h4 className="font-bold text-accent mb-1">Ascendant (Lagnam)</h4>
                    <p className="text-sm">{siderealData.lagnamInsight}</p>
                 </div>
-                {tropicalData.nakshatras && (
+                {vedicData.nakshatras && (
                   <div className="p-4 bg-background/50 rounded-lg border border-primary/20 mt-4">
                     <h4 className="font-bold text-primary mb-3">Nakshatra Details (Vedic Star Constellations)</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {Object.entries(tropicalData.nakshatras).map(([planet, details]: [string, any], i: number) => (
-                        <div key={i} className="text-xs p-3 bg-primary/5 rounded-xl border border-primary/10 shadow-sm">
+                      {Object.entries(vedicData.nakshatras).map(([planet, details]: [string, any], i: number) => (
+                        <div key={i} className="text-xs p-3 bg-primary/5 rounded-xl border border-primary/10 shadow-sm" data-testid={`nakshatra-${planet}`}>
                           <span className="font-bold text-primary text-sm capitalize">{planet}</span>
                           <p className="font-medium mt-1">Nakshatra: {details.nakshatra}</p>
                           <p className="text-muted-foreground">Lord: {details.lord} | Pada: {details.pada}</p>
@@ -163,12 +293,12 @@ export default function Astrology() {
                     </div>
                   </div>
                 )}
-                {tropicalData.ashtakvarga && (
+                {vedicData.ashtakvarga && (
                   <div className="p-4 bg-background/50 rounded-lg border border-secondary/20 mt-4">
                     <h4 className="font-bold text-secondary mb-3">Ashtakvarga (Planetary Strength)</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                      {Object.entries(tropicalData.ashtakvarga).map(([sign, score]: [string, any], i: number) => (
-                        <div key={i} className="text-[10px] p-2 bg-secondary/5 rounded-lg border border-secondary/10 flex flex-col items-center">
+                      {Object.entries(vedicData.ashtakvarga).map(([sign, score]: [string, any], i: number) => (
+                        <div key={i} className="text-[10px] p-2 bg-secondary/5 rounded-lg border border-secondary/10 flex flex-col items-center" data-testid={`ashtakvarga-${sign}`}>
                           <span className="font-bold text-secondary uppercase">{sign.slice(0, 3)}</span>
                           <span className="text-lg font-black">{score}</span>
                         </div>
@@ -182,8 +312,6 @@ export default function Astrology() {
     </div>
   );
 
-  const [viewYear, setViewYear] = useState(false);
-
   const AnnualCosmicCalendar = () => {
     const significantEvents = [
       { date: "March 20", event: "Spring Equinox - New Beginnings", type: "Equinox" },
@@ -192,19 +320,26 @@ export default function Astrology() {
       { date: "December 21", event: "Winter Solstice - Inward Reflection", type: "Solstice" },
       { date: "March 29", event: "Solar Eclipse in Aries", type: "Eclipse" },
       { date: "September 21", event: "Solar Eclipse in Virgo", type: "Eclipse" },
-      { date: "February 24 - March 20", event: "Mercury Retrograde", type: "Retrograde" },
-      { date: "June 29 - July 23", event: "Mercury Retrograde", type: "Retrograde" },
-      { date: "October 24 - November 13", event: "Mercury Retrograde", type: "Retrograde" }
+      { date: "Feb 24 - Mar 20", event: "Mercury Retrograde", type: "Retrograde" },
+      { date: "Jun 29 - Jul 23", event: "Mercury Retrograde", type: "Retrograde" },
+      { date: "Oct 24 - Nov 13", event: "Mercury Retrograde", type: "Retrograde" }
     ];
 
+    const typeColors: Record<string, string> = {
+      Equinox: "bg-green-500/20 text-green-300 border-green-500/30",
+      Solstice: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+      Eclipse: "bg-red-500/20 text-red-300 border-red-500/30",
+      Retrograde: "bg-purple-500/20 text-purple-300 border-purple-500/30"
+    };
+
     return (
-      <Card className="border-2 border-primary/40 shadow-xl overflow-hidden mt-8">
+      <Card className="border-2 border-primary/40 shadow-xl overflow-hidden mt-8" data-testid="annual-cosmic-calendar">
         <CardHeader className="bg-primary/5 flex flex-row items-center justify-between space-y-0">
           <div>
             <CardTitle className="font-serif text-2xl text-primary">2026 Cosmic Forecast</CardTitle>
             <CardDescription>Annual view of significant planetary shifts</CardDescription>
           </div>
-          <Button variant="outline" size="sm" onClick={() => setViewYear(!viewYear)}>
+          <Button variant="outline" size="sm" onClick={() => setViewYear(!viewYear)} data-testid="toggle-annual-view">
             {viewYear ? "Hide Annual View" : "Show Annual View"}
           </Button>
         </CardHeader>
@@ -216,10 +351,10 @@ export default function Astrology() {
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {significantEvents.map((event, idx) => (
-                  <div key={idx} className="flex flex-col p-2 bg-background rounded border border-primary/5">
+                  <div key={idx} className="flex flex-col p-3 bg-background rounded-lg border border-primary/10" data-testid={`event-${idx}`}>
                     <span className="text-[10px] font-bold text-primary/60 uppercase">{event.date}</span>
-                    <span className="text-xs font-medium">{event.event}</span>
-                    <Badge variant="secondary" className="w-fit text-[8px] h-4 mt-1">{event.type}</Badge>
+                    <span className="text-xs font-medium mt-1">{event.event}</span>
+                    <Badge className={cn("w-fit text-[8px] h-4 mt-2 border", typeColors[event.type])}>{event.type}</Badge>
                   </div>
                 ))}
               </div>
@@ -227,7 +362,7 @@ export default function Astrology() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {months.map((month, idx) => (
-                <div key={idx} className="p-3 bg-card rounded-lg border border-primary/10 hover:border-primary/30 transition-colors">
+                <div key={idx} className="p-3 bg-card rounded-lg border border-primary/10 hover:border-primary/30 transition-colors" data-testid={`month-card-${idx}`}>
                   <h4 className="font-bold text-primary border-b border-primary/10 pb-1 mb-2">{month} 2026</h4>
                   <div className="space-y-2">
                     <div className="flex items-start gap-2">
@@ -245,6 +380,7 @@ export default function Astrology() {
                         setSelectedYear(2026);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
+                      data-testid={`view-month-${idx}`}
                     >
                       View Details
                     </Button>
@@ -258,22 +394,13 @@ export default function Astrology() {
     );
   };
 
-  const NatalChartDisplay = () => (
-    <div className="space-y-8">
-      <SouthIndianChart title="Natal Birth Chart (D1)" data={siderealData} />
-      <SouthIndianChart title="Navamsha Chart (D9)" data={{...siderealData, atmakaraka: "Venus"}} />
-      <VedicInsights />
-      <AnnualCosmicCalendar />
-    </div>
-  );
-
   return (
     <Layout>
       <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4">Cosmic Charts</h1>
+          <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4" data-testid="text-page-title">Cosmic Charts</h1>
           {profile?.birthLocation && (
-            <div className="p-4 bg-primary/10 border border-primary/20 rounded-xl mb-6">
+            <div className="p-4 bg-primary/10 border border-primary/20 rounded-xl mb-6" data-testid="text-birth-info">
               <p className="text-sm text-primary font-medium">
                 Calculations generated for: <span className="text-foreground">{profile.birthLocation}</span> on <span className="text-foreground">{new Date(profile.birthDate).toLocaleDateString()}</span> at <span className="text-foreground">{profile.birthTime}</span>
               </p>
@@ -285,6 +412,7 @@ export default function Astrology() {
             value={selectedMonth} 
             onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
             className="bg-card border border-primary/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            data-testid="select-month"
           >
             {months.map((m, i) => (
               <option key={i} value={i}>{m}</option>
@@ -294,6 +422,7 @@ export default function Astrology() {
             value={selectedYear} 
             onChange={(e) => setSelectedYear(parseInt(e.target.value))}
             className="bg-card border border-primary/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            data-testid="select-year"
           >
             <option value={2026}>2026</option>
           </select>
@@ -301,6 +430,7 @@ export default function Astrology() {
             onClick={downloadMonthlyHoroscope} 
             disabled={isDownloading}
             className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
+            data-testid="button-download-calendar"
           >
             {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
             Download Calendar
@@ -310,86 +440,43 @@ export default function Astrology() {
 
       <div className="grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-8">
-          <NatalChartDisplay />
-          
-          <Tabs defaultValue="sidereal" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-muted/50 p-1 rounded-xl mb-6">
-              <TabsTrigger value="sidereal" className="rounded-lg">Sidereal (Vedic)</TabsTrigger>
-              <TabsTrigger value="tropical" className="rounded-lg">Tropical (Western)</TabsTrigger>
+          <Tabs defaultValue="vedic" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 bg-muted/50 p-1 rounded-xl mb-6">
+              <TabsTrigger value="vedic" className="rounded-lg" data-testid="tab-vedic">Vedic (Sidereal)</TabsTrigger>
+              <TabsTrigger value="western" className="rounded-lg" data-testid="tab-western">Western (Tropical)</TabsTrigger>
+              <TabsTrigger value="planets" className="rounded-lg" data-testid="tab-planets">Planet Details</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="sidereal" className="space-y-6">
-              <Card className="bg-card/40 backdrop-blur-xl border-white/10 shadow-2xl">
-                <CardHeader>
-                  <CardTitle className="font-serif text-2xl text-primary drop-shadow-sm">Your Sidereal Soul Map</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-4 bg-primary/10 rounded-xl border border-primary/20 shadow-inner">
-                    <h3 className="font-serif text-xl text-primary/90 mb-2">What is a Sidereal Chart?</h3>
-                    <p className="text-sm text-foreground/80 leading-relaxed font-medium">
-                      The Sidereal (Vedic) system uses the actual observable positions of the constellations in the sky. It accounts for the "Precession of the Equinoxes," which shifts about 1 degree every 72 years. This chart represents your **Karmic Reality**—the objective truth of your soul's journey and destiny.
-                    </p>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-semibold flex items-center gap-2"><Moon className="h-4 w-4 text-primary" /> Atmakaraka</h4>
-                      <p className="text-sm text-muted-foreground">{siderealData.atmakarakaInsight}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="font-semibold flex items-center gap-2"><Sun className="h-4 w-4 text-primary" /> Lagnam</h4>
-                      <p className="text-sm text-muted-foreground">{siderealData.lagnamInsight}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <TabsContent value="vedic" className="space-y-6">
+              <SouthIndianChart title="Natal Birth Chart (D1)" data={siderealData} />
+              <VedicInsights />
 
-              {/* Karmic Nodes */}
               <div className="space-y-4">
                 <h2 className="font-serif text-2xl text-foreground flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-primary" /> Karmic Nodes: Rahu & Ketu
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <Card className="bg-gradient-to-br from-violet-50 to-white border-violet-100">
+                  <Card className="bg-gradient-to-br from-violet-950/80 to-purple-950/60 border-violet-500/20 text-white">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-lg font-serif">Rahu (North Node)</CardTitle>
-                      <Badge className="bg-violet-100 text-violet-700 border-violet-200">The Obsession</Badge>
+                      <CardTitle className="text-lg font-serif text-violet-200">☊ Rahu (North Node)</CardTitle>
+                      <Badge className="bg-violet-500/20 text-violet-200 border-violet-400/30 w-fit">Future Growth</Badge>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">{siderealData.rahuInsight}</p>
+                      <p className="text-sm text-violet-100/80">{siderealData.rahuInsight}</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-gradient-to-br from-amber-50 to-white border-amber-100">
+                  <Card className="bg-gradient-to-br from-amber-950/80 to-orange-950/60 border-amber-500/20 text-white">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-lg font-serif">Ketu (South Node)</CardTitle>
-                      <Badge className="bg-amber-100 text-amber-700 border-amber-200">The Mastery</Badge>
+                      <CardTitle className="text-lg font-serif text-amber-200">☋ Ketu (South Node)</CardTitle>
+                      <Badge className="bg-amber-500/20 text-amber-200 border-amber-400/30 w-fit">Past Mastery</Badge>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">{siderealData.ketuInsight}</p>
+                      <p className="text-sm text-amber-100/80">{siderealData.ketuInsight}</p>
                     </CardContent>
                   </Card>
                 </div>
               </div>
 
-              {/* Soul Axis */}
-              <div className="p-6 bg-primary/10 rounded-2xl border border-primary/20 mt-6">
-                <h3 className="font-serif text-xl text-primary mb-3">The Soul's Axis Deep-Dive</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-bold text-foreground mb-2">Rahu's Material Quest</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Rahu represents where you are expanding your boundaries. In your chart, it pushes you toward mastering material world challenges.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-foreground mb-2">Ketu's Spiritual Wisdom</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Ketu represents innate talents from past lives, allowing you to navigate spiritual laws with ease.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Dasha Cycles */}
               <Card className="relative overflow-hidden border-primary/20 bg-primary/5">
                 {!isPremium && (
                   <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-8 text-center">
@@ -423,32 +510,16 @@ export default function Astrology() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="tropical" className="space-y-6">
-              <Card className="bg-white/60 backdrop-blur-xl border-white/60">
-                <CardHeader>
-                  <CardTitle className="font-serif text-2xl">Your Tropical Psychological Map</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100">
-                    <h3 className="font-serif text-xl text-blue-900 mb-2">The Psychological Self</h3>
-                    <p className="text-sm text-blue-800 leading-relaxed">
-                      Tropical astrology represents your **Personality and Ego Structure**. While Sidereal is "what happens," Tropical is "how you feel about it."
-                    </p>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-white/40 rounded-lg">
-                      <p className="font-semibold text-foreground">Sun in {tropicalData.sunSign}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{tropicalData.sunInsight}</p>
-                    </div>
-                    <div className="p-4 bg-white/40 rounded-lg">
-                      <p className="font-semibold text-foreground">Moon in {tropicalData.moonSign}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{tropicalData.moonInsight}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <TabsContent value="western" className="space-y-6">
+              <WesternAstrologySection />
+            </TabsContent>
+
+            <TabsContent value="planets" className="space-y-6">
+              <PlanetaryPlacementsGrid />
             </TabsContent>
           </Tabs>
+
+          <AnnualCosmicCalendar />
         </div>
 
         <div className="lg:col-span-4 space-y-6">
@@ -460,8 +531,8 @@ export default function Astrology() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm leading-relaxed italic">
-                {tropicalData.dailyHoroscope || "Your personalized daily guidance is aligning with the stars."}
+              <p className="text-sm leading-relaxed italic" data-testid="text-daily-horoscope">
+                {vedicData.dailyHoroscope || "Your personalized daily guidance is aligning with the stars."}
               </p>
             </CardContent>
           </Card>
@@ -476,7 +547,7 @@ export default function Astrology() {
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-xl font-serif leading-relaxed italic text-indigo-50 drop-shadow-sm">
+              <p className="text-xl font-serif leading-relaxed italic text-indigo-50 drop-shadow-sm" data-testid="text-daily-affirmation">
                 "{profile?.dailyAffirmation || "I am aligned with the wisdom of the cosmos and open to its guidance."}"
               </p>
             </CardContent>
@@ -492,7 +563,7 @@ export default function Astrology() {
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-sm leading-relaxed text-purple-100/90 font-medium">
+              <p className="text-sm leading-relaxed text-purple-100/90 font-medium" data-testid="text-daily-meditation">
                 {profile?.dailyMeditation || "Close your eyes, breathe into your heart space, and visualize a radiant indigo light connecting your crown to the stars above."}
               </p>
             </CardContent>
@@ -505,7 +576,7 @@ export default function Astrology() {
             </CardHeader>
             <CardContent>
               <p className="text-sm leading-relaxed opacity-90">
-                Use **Sidereal** for your life's destiny and timing, and **Tropical** for your inner psychological processing.
+                Use the Vedic (Sidereal) system for your life's destiny and timing, and the Western (Tropical) system for understanding your inner psychological patterns.
               </p>
             </CardContent>
           </Card>

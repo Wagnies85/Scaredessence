@@ -15,10 +15,30 @@ export async function registerRoutes(
     baseURL: process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL,
   });
 
+  const reduce = (n: number): number => {
+    let s = n;
+    while (s > 9 && s !== 11 && s !== 22 && s !== 33) {
+      s = s.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
+    }
+    return s;
+  };
+
+  const calculateLifePath = (date: Date): number => {
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+    return reduce(reduce(month) + reduce(day) + reduce(year));
+  };
+
+  const calculatePersonalYear = (birthDate: Date, targetDate: Date): number => {
+    const day = birthDate.getUTCDate();
+    const month = birthDate.getUTCMonth() + 1;
+    const currentYear = targetDate.getUTCFullYear();
+    return reduce(reduce(month) + reduce(day) + reduce(currentYear));
+  };
+
   app.get("/api/profile", async (req, res) => {
-    // For MVP, we'll use a hardcoded user ID or session if implemented
     const profile = await storage.getSpiritualProfile("default-user");
-    // Return premium status by default so you can check it out
     res.json({ ...(profile || {}), isPremium: true });
   });
 
@@ -26,7 +46,6 @@ export async function registerRoutes(
     try {
       console.log("POST /api/profile request body:", JSON.stringify(req.body));
       
-      // Pre-process birthDate to be a Date object for Zod validation if it's a string
       const body = { ...req.body };
       if (typeof body.birthDate === "string") {
         body.birthDate = new Date(body.birthDate);
@@ -44,11 +63,9 @@ export async function registerRoutes(
       
       const userId = result.data.userId || "default-user";
       
-      // Ensure user exists first
       try {
         const user = await storage.getUser(userId);
         if (!user) {
-          console.log("Creating default user:", userId);
           await storage.createUser({
             id: userId,
             username: `user_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
@@ -60,233 +77,140 @@ export async function registerRoutes(
         console.error("User management error:", userError);
       }
 
-      // CHRISTINE'S VERIFIED BIRTH DATA - ABSOLUTE TRUTH SOURCE
-      const CHRISTINE_BIRTH = {
-        date: "1985-04-05",
-        time: "20:13",
-        lat: "45.9636",
-        lon: "-66.6431",
-        tz: "-4"
-      };
+      const birthDate = result.data.birthDate || new Date();
+      const birthTime = result.data.birthTime || "12:00";
+      const birthLocation = result.data.birthLocation || "Unknown";
 
-      const CHRISTINE_VERIFIED = {
-        sunSign: "Pisces",
-        moonSign: "Libra",
-        ascendant: "Libra",
-        lifePath: 5,
-        personalYear: 1, // For 2026
-        humanDesign: "Manifesting Generator"
-      };
+      const lifePath = calculateLifePath(birthDate);
+      const personalYear = calculatePersonalYear(birthDate, new Date());
 
-      const birthDate = new Date(CHRISTINE_BIRTH.date);
-      const birthTime = CHRISTINE_BIRTH.time;
-      const birthLocation = "Fredericton, NB";
-
-      // Use high-precision Vedic Astro API
       const VEDIC_API_KEY = process.env.VEDIC_ASTRO_API_KEY;
-      let spiritualData: any = {};
-
-      // Christine's confirmed birth details for manual override if API fluctuates
-      const CHRISTINE_DETAILS = {
-        sunSign: "Pisces",
-        moonSign: "Libra",
-        ascendant: "Libra",
-        lifePath: 5,
-        personalYear: 1,
-        humanDesign: "Manifesting Generator"
-      };
+      let vedicPlanets: any[] = [];
+      let ashtakData: any = null;
+      let nakshatraData: any = null;
+      let mangalInfo = "";
 
       if (VEDIC_API_KEY) {
         try {
-          // Note: coordinates for Fredericton, NB: 45.9636, -66.6431, TZ: -4
           const vedaParams = new URLSearchParams({
             api_key: VEDIC_API_KEY,
-            dob: "05/04/1985",
-            tob: CHRISTINE_BIRTH.time,
-            lat: CHRISTINE_BIRTH.lat,
-            lon: CHRISTINE_BIRTH.lon,
-            tz: CHRISTINE_BIRTH.tz,
+            dob: `${birthDate.getUTCDate().toString().padStart(2, '0')}/${(birthDate.getUTCMonth() + 1).toString().padStart(2, '0')}/${birthDate.getUTCFullYear()}`,
+            tob: birthTime,
+            lat: "45.9636",
+            lon: "-66.6431",
+            tz: "-4",
             lang: "en"
           });
 
-          // Fetching Sidereal Horoscope, Ashtakvarga, and Nakshatra details
-          const [vedaRes, mangalRes, ashtakRes, nakshatraRes]: [any, any, any, any] = await Promise.all([
+          const [vedaRes, mangalRes, ashtakRes, nakshatraRes] = await Promise.all([
             fetch(`https://api.vedicastroapi.com/v3-0/horoscope/planet-details?${vedaParams.toString()}`),
             fetch(`https://api.vedicastroapi.com/v3-0/dosha/mangal-dosh?${vedaParams.toString()}`),
             fetch(`https://api.vedicastroapi.com/v3-0/horoscope/ashtakvarga?${vedaParams.toString()}`),
             fetch(`https://api.vedicastroapi.com/v3-0/horoscope/nakshatra-details?${vedaParams.toString()}`)
           ]);
           
-          const vedaData = await vedaRes.json();
-          const mangalData = await mangalRes.json();
-          const ashtakData = await ashtakRes.json();
-          const nakshatraData = await nakshatraRes.json();
+          const vedaJson = await vedaRes.json();
+          const mangalJson = await mangalRes.json();
+          const ashtakJson = await ashtakRes.json();
+          const nakshatraJson = await nakshatraRes.json();
           
-          if (vedaData.status === 200) {
-            const planets = vedaData.response;
-            const ascendant = planets.find((p: any) => p.name === "Ascendant");
-            const moon = planets.find((p: any) => p.name === "Moon");
-            const sun = planets.find((p: any) => p.name === "Sun");
-
-            const ashtakSummary = ashtakData.status === 200 ? ashtakData.response : null;
-            const nakshatraSummary = nakshatraData.status === 200 ? nakshatraData.response : null;
-
-            // Sort planets by degree within their sign to find Atmakaraka (highest degree excluding Rahu/Ketu)
-            const sortedForAK = planets
-              .filter((p: any) => !["Rahu", "Ketu", "Ascendant"].includes(p.name))
-              .sort((a: any, b: any) => (b.full_degree % 30) - (a.full_degree % 30));
-            
-            const ak = sortedForAK[0]?.name || "Jupiter";
-
-            const mangalInsight = mangalData.status === 200 ? 
-              (mangalData.response.has_mangal_dosha ? `Manglik: ${mangalData.response.type}. ${mangalData.response.description}` : "Non-Manglik") 
-              : "Mangal Dosha calculation unavailable";
-
-            spiritualData = {
-              astrology: {
-                sunSign: CHRISTINE_VERIFIED.sunSign,
-                moonSign: CHRISTINE_VERIFIED.moonSign,
-                ascendant: CHRISTINE_VERIFIED.ascendant,
-                sunInsight: `Sun in ${CHRISTINE_VERIFIED.sunSign} at 21 degrees (6th House). This is your core soul radiance.`,
-                moonInsight: `Moon in ${CHRISTINE_VERIFIED.moonSign} at 14 degrees (1st House). Governs your high emotional intelligence.`,
-                insight: `A rare Libra Ascendant with Pisces Sun and Libra Moon. ${mangalInsight}`,
-                dailyHoroscope: "", 
-                ashtakvarga: ashtakSummary,
-                nakshatras: nakshatraSummary
-              },
-              sidereal: {
-                atmakaraka: ak,
-                lagnam: CHRISTINE_VERIFIED.ascendant,
-                rahu: planets.find((p: any) => p.name === "Rahu")?.sign || "Aries",
-                ketu: planets.find((p: any) => p.name === "Ketu")?.sign || "Libra",
-                atmakarakaInsight: `Your Atmakaraka is ${ak}, guiding your soul's deepest evolution.`,
-                lagnamInsight: `Libra Rising gives you a life path focused on balance, beauty, and justice.`
-              },
-              numerology: {
-                lifePath: CHRISTINE_VERIFIED.lifePath,
-                personalYear: CHRISTINE_VERIFIED.personalYear,
-                insight: `Life Path 5 (The Freedom Seeker) in a Personal Year 1 (New Beginnings) makes 2026 your most powerful year for change.`
-              },
-              humanDesign: {
-                type: CHRISTINE_VERIFIED.humanDesign,
-                strategy: "To Respond",
-                insight: `As a ${CHRISTINE_VERIFIED.humanDesign}, your signature is satisfaction through correct response.`
-              }
-            };
+          if (vedaJson.status === 200) {
+            vedicPlanets = vedaJson.response;
+          }
+          if (ashtakJson.status === 200) ashtakData = ashtakJson.response;
+          if (nakshatraJson.status === 200) nakshatraData = nakshatraJson.response;
+          if (mangalJson.status === 200) {
+            mangalInfo = mangalJson.response.has_mangal_dosha 
+              ? `Manglik: ${mangalJson.response.type}` 
+              : "Non-Manglik";
           }
         } catch (apiError) {
           console.error("Vedic API Error:", apiError);
         }
       }
 
-      // Numerology Calculations
-      const calculateLifePath = (date: Date) => {
-        // Life Path: Sum digits of Month, Day, and Year separately, then sum those results.
-        const day = date.getUTCDate();
-        const month = date.getUTCMonth() + 1;
-        const year = date.getUTCFullYear();
+      const vedicPlanetSummary = vedicPlanets.length > 0 
+        ? vedicPlanets.map((p: any) => `${p.name}: ${p.sign} (House ${p.house}, ${Math.floor(p.full_degree % 30)}°)`).join(", ")
+        : "No API data available";
 
-        const reduce = (n: number) => {
-          let s = n;
-          while (s > 9 && s !== 11 && s !== 22 && s !== 33) {
-            s = s.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
-          }
-          return s;
-        };
+      const prompt = `You are an expert Vedic astrologer, Western astrologer, Numerologist, and Human Design analyst.
 
-        const mReduced = reduce(month);
-        const dReduced = reduce(day);
-        const yReduced = reduce(year);
+BIRTH DETAILS (USE THESE EXACTLY FOR ALL CALCULATIONS):
+- Date: ${birthDate.toISOString().split('T')[0]}
+- Time: ${birthTime}
+- Location: ${birthLocation}
+- Current Date: ${new Date().toISOString().split('T')[0]}
 
-        return reduce(mReduced + dReduced + yReduced);
-      };
+${vedicPlanets.length > 0 ? `VEDIC API DATA (Sidereal positions from VedicAstroAPI - use these as reference):
+${vedicPlanetSummary}
+Mangal Dosha: ${mangalInfo}` : "No Vedic API data available. Calculate all Sidereal positions based on the birth details above using Lahiri Ayanamsa."}
 
-      const calculatePersonalYear = (birthDate: Date, targetDate: Date) => {
-        // Personal Year = (Month of Birth + Day of Birth + Current Year) reduced
-        const day = birthDate.getUTCDate();
-        const month = birthDate.getUTCMonth() + 1;
-        const currentYear = targetDate.getUTCFullYear();
-        
-        const reduce = (n: number) => {
-          let s = n;
-          while (s > 9 && s !== 11 && s !== 22 && s !== 33) {
-            s = s.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
-          }
-          return s;
-        };
+NUMEROLOGY (PRE-CALCULATED, USE EXACTLY):
+- Life Path: ${lifePath}
+- Personal Year (${new Date().getUTCFullYear()}): ${personalYear}
 
-        const mReduced = reduce(month);
-        const dReduced = reduce(day);
-        const yReduced = reduce(currentYear);
-        
-        return reduce(mReduced + dReduced + yReduced);
-      };
+INSTRUCTIONS:
+1. WESTERN ASTROLOGY (Tropical/Seasonal zodiac): Calculate Sun, Moon, and Ascendant using the TROPICAL zodiac based on the birth details above. Provide detailed personality insights for each placement.
+2. VEDIC ASTROLOGY (Sidereal/Lahiri): Calculate or use the API data above for all 9 planets (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu) with sign, house, degree, and a 2-3 sentence personal interpretation of what that placement means for this person.
+3. NUMEROLOGY: Life Path is EXACTLY ${lifePath}. Personal Year is EXACTLY ${personalYear}. Calculate Soul Urge number from the full birth name vibration. Provide deep insights.
+4. HUMAN DESIGN: Determine the Human Design type based on birth details. Provide type, strategy, and insight.
+5. DAILY: Generate today's horoscope (2-3 sentences), a personalized affirmation, and a meditation focus.
 
-      const manualLifePath = CHRISTINE_VERIFIED.lifePath;
-      const manualPersonalYear = CHRISTINE_VERIFIED.personalYear;
-
-      // If API failed or key missing, fallback to Claude for high-precision spiritual calculations and daily horoscope
-      const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
-      ${spiritualData.astrology ? "I have the core technical data, please refine the insights, generate a daily horoscope, a personalized affirmation, and a short meditation guidance." : "Calculate high-precision spiritual data, a personalized daily horoscope, a daily affirmation, and a meditation guidance."}
-      
-      Birth Context (CRITICAL: USE THESE FOR ALL CALCULATIONS):
-      - Birth Date: ${birthDate.toISOString()}
-      - Birth Time: ${birthTime}
-      - Birth Location: ${birthLocation}
-      - Current Date: ${new Date().toISOString()}
-
-      Technical Requirements:
-      1. Vedic Astrology (Sidereal): Use Lahiri Ayanamsa. Map planets to their SIDEREAL signs and houses (Whole Sign).
-      2. Numerology: 
-         - Life Path: EXACTLY ${manualLifePath}
-         - Personal Year: EXACTLY ${manualPersonalYear}
-         Calculate Soul Urge based on ${birthDate.toISOString()}.
-      3. Human Design: Manifesting Generator.
-
-      Required Fields (strictly return JSON):
-      {
-        "astrology": {
-          "sunSign": "string",
-          "moonSign": "string",
-          "ascendant": "string",
-          "sunInsight": "string",
-          "moonInsight": "string",
-          "insight": "string",
-          "dailyHoroscope": "string",
-          "planetaryPlacements": [
-            { "planet": "Sun", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Moon", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Mars", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Mercury", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Jupiter", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Venus", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Saturn", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Rahu", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" },
-            { "planet": "Ketu", "house": "number", "sign": "string", "degree": "string", "interpretation": "short text" }
-          ]
-        },
-        "sidereal": {
-          "atmakaraka": "string",
-          "lagnam": "string",
-          "rahu": "string",
-          "ketu": "string",
-          "atmakarakaInsight": "string",
-          "lagnamInsight": "string"
-        },
-        "numerology": {
-          "lifePath": ${manualLifePath},
-          "personalYear": ${manualPersonalYear},
-          "soulUrge": "number",
-          "insight": "Explain the significance of Life Path ${manualLifePath} and Personal Year ${manualPersonalYear}."
-        },
-        "humanDesign": {
-          "type": "string",
-          "strategy": "string",
-          "insight": "string"
-        },
-        "dailyAffirmation": "string",
-        "dailyMeditation": "string"
-      }`;
+Return ONLY valid JSON in this exact structure (replace all placeholder values with actual calculated data):
+{
+  "western": {
+    "sunSign": "calculated tropical sun sign",
+    "moonSign": "calculated tropical moon sign",
+    "ascendant": "calculated tropical ascendant",
+    "sunDescription": "2-3 sentence description of this Sun placement and what it means for this person",
+    "moonDescription": "2-3 sentence description of this Moon placement and what it means",
+    "ascendantDescription": "2-3 sentence description of this Rising sign and what it means",
+    "overview": "3-4 sentence synthesis of the full Western chart"
+  },
+  "astrology": {
+    "sunSign": "calculated sidereal sun sign",
+    "moonSign": "calculated sidereal moon sign",
+    "ascendant": "calculated sidereal ascendant",
+    "sunInsight": "Detailed insight about the Sidereal Sun placement",
+    "moonInsight": "Detailed insight about the Sidereal Moon placement",
+    "insight": "Overall Vedic chart synthesis",
+    "dailyHoroscope": "Today's personalized horoscope 2-3 sentences",
+    "planetaryPlacements": [
+      {"planet": "Sun", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences about what this Sun placement means for this person"},
+      {"planet": "Moon", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Mars", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Mercury", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Jupiter", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Venus", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Saturn", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Rahu", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"},
+      {"planet": "Ketu", "house": 0, "sign": "sign", "degree": "X°", "interpretation": "2-3 sentences"}
+    ]
+  },
+  "sidereal": {
+    "atmakaraka": "calculated atmakaraka planet",
+    "lagnam": "calculated sidereal ascendant",
+    "rahu": "calculated rahu sign",
+    "ketu": "calculated ketu sign",
+    "atmakarakaInsight": "2-3 sentences about the Atmakaraka planet",
+    "lagnamInsight": "2-3 sentences about the Lagnam/Ascendant",
+    "rahuInsight": "2-3 sentences about Rahu's position",
+    "ketuInsight": "2-3 sentences about Ketu's position"
+  },
+  "numerology": {
+    "lifePath": ${lifePath},
+    "personalYear": ${personalYear},
+    "soulUrge": 0,
+    "insight": "Deep 3-4 sentence analysis of Life Path ${lifePath} combined with Personal Year ${personalYear}"
+  },
+  "humanDesign": {
+    "type": "calculated HD type",
+    "strategy": "calculated strategy",
+    "insight": "2-3 sentences about this Human Design type"
+  },
+  "dailyAffirmation": "A powerful personalized affirmation",
+  "dailyMeditation": "2-3 sentence meditation guidance"
+}`;
 
       const response = await anthropic.messages.create({
         model: "claude-sonnet-4-5",
@@ -297,24 +221,68 @@ export async function registerRoutes(
       const content = response.content[0].type === 'text' ? response.content[0].text : '';
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("Failed to parse spiritual data from AI");
-      const finalSpiritualData = JSON.parse(jsonMatch[0]);
+      const finalData = JSON.parse(jsonMatch[0]);
 
-      // Ensure numerology insight is strictly tied to birth date
-      if (finalSpiritualData.numerology) {
-        finalSpiritualData.numerology.lifePath = manualLifePath;
-        finalSpiritualData.numerology.personalYear = manualPersonalYear;
-        finalSpiritualData.numerology.insight = `Your Life Path ${manualLifePath} and Personal Year ${manualPersonalYear} are accurately calculated from your birth date ${birthDate.toLocaleDateString()}. ${finalSpiritualData.numerology.insight}`;
+      const defaultWestern = {
+        sunSign: "Unknown", moonSign: "Unknown", ascendant: "Unknown",
+        sunDescription: "Western Sun data unavailable.", moonDescription: "Western Moon data unavailable.",
+        ascendantDescription: "Western Ascendant data unavailable.", overview: "Western chart data unavailable."
+      };
+      if (!finalData.western) finalData.western = defaultWestern;
+      else finalData.western = { ...defaultWestern, ...finalData.western };
+
+      const defaultAstrology = {
+        sunSign: "Unknown", moonSign: "Unknown", ascendant: "Unknown",
+        sunInsight: "Vedic Sun data unavailable.", moonInsight: "Vedic Moon data unavailable.",
+        insight: "Vedic chart data unavailable.", dailyHoroscope: "Daily horoscope unavailable.",
+        planetaryPlacements: []
+      };
+      if (!finalData.astrology) finalData.astrology = defaultAstrology;
+      else finalData.astrology = { ...defaultAstrology, ...finalData.astrology };
+
+      if (Array.isArray(finalData.astrology.planetaryPlacements)) {
+        finalData.astrology.planetaryPlacements = finalData.astrology.planetaryPlacements.map((p: any) => ({
+          planet: p.planet || "Unknown",
+          house: p.house || 0,
+          sign: p.sign || "Unknown",
+          degree: p.degree || "0°",
+          interpretation: p.interpretation || "Interpretation unavailable."
+        }));
+      }
+
+      const defaultSidereal = {
+        atmakaraka: "Unknown", lagnam: "Unknown", rahu: "Unknown", ketu: "Unknown",
+        atmakarakaInsight: "Atmakaraka data unavailable.", lagnamInsight: "Lagnam data unavailable.",
+        rahuInsight: "Rahu data unavailable.", ketuInsight: "Ketu data unavailable."
+      };
+      if (!finalData.sidereal) finalData.sidereal = defaultSidereal;
+      else finalData.sidereal = { ...defaultSidereal, ...finalData.sidereal };
+
+      if (!finalData.humanDesign) finalData.humanDesign = { type: "Unknown", strategy: "Unknown", insight: "Human Design data unavailable." };
+      if (!finalData.dailyAffirmation) finalData.dailyAffirmation = "I am aligned with the wisdom of the cosmos.";
+      if (!finalData.dailyMeditation) finalData.dailyMeditation = "Close your eyes and breathe deeply, connecting with your inner light.";
+
+      if (finalData.numerology) {
+        finalData.numerology.lifePath = lifePath;
+        finalData.numerology.personalYear = personalYear;
+      } else {
+        finalData.numerology = { lifePath, personalYear, soulUrge: 0, insight: "Numerology data unavailable." };
+      }
+
+      if (finalData.astrology) {
+        finalData.astrology.ashtakvarga = ashtakData;
+        finalData.astrology.nakshatras = nakshatraData;
       }
 
       const profile = await storage.upsertSpiritualProfile({
         ...result.data,
         userId,
-        astrologyChart: finalSpiritualData.astrology,
-        siderealChart: finalSpiritualData.sidereal,
-        numerologyNumbers: finalSpiritualData.numerology,
-        humanDesignBodygraph: finalSpiritualData.humanDesign,
-        dailyAffirmation: finalSpiritualData.dailyAffirmation,
-        dailyMeditation: finalSpiritualData.dailyMeditation
+        astrologyChart: { ...finalData.astrology, western: finalData.western },
+        siderealChart: finalData.sidereal,
+        numerologyNumbers: finalData.numerology,
+        humanDesignBodygraph: finalData.humanDesign,
+        dailyAffirmation: finalData.dailyAffirmation,
+        dailyMeditation: finalData.dailyMeditation
       });
       
       console.log("Profile upserted successfully:", profile.id);
@@ -343,7 +311,6 @@ export async function registerRoutes(
       const daysInMonth = new Date(yearParam, monthParam + 1, 0).getDate();
       const targetMonthDate = new Date(yearParam, monthParam, 1);
 
-      // Casting charts to any to avoid LSP type errors on jsonb fields
       const astroChart = (profile.astrologyChart || {}) as any;
       const sideChart = (profile.siderealChart || {}) as any;
       const numNumbers = (profile.numerologyNumbers || {}) as any;
