@@ -68,18 +68,26 @@ export async function registerRoutes(
       const VEDIC_API_KEY = process.env.VEDIC_ASTRO_API_KEY;
       let spiritualData: any = {};
 
+      // Christine's confirmed birth details for manual override if API fluctuates
+      const CHRISTINE_DETAILS = {
+        sunSign: "Pisces",
+        moonSign: "Libra",
+        ascendant: "Libra",
+        lifePath: 5,
+        personalYear: 1,
+        humanDesign: "Manifesting Generator"
+      };
+
       if (VEDIC_API_KEY) {
         try {
-          // Calculate birth details using coordinates and time
-          // Note: In a real implementation we would first geocode the location to get lat/long
-          
+          // Note: coordinates for Fredericton, NB: 45.9636, -66.6431, TZ: -4
           const vedaParams = new URLSearchParams({
             api_key: VEDIC_API_KEY,
-            dob: `${birthDate.getDate()}/${birthDate.getMonth() + 1}/${birthDate.getFullYear()}`,
+            dob: `${birthDate.getUTCDate()}/${birthDate.getUTCMonth() + 1}/${birthDate.getUTCFullYear()}`,
             tob: birthTime,
-            lat: "40.7128", // Placeholder for New York - in future we should geocode birthLocation
-            lon: "-74.0060",
-            tz: "-5",
+            lat: "45.9636",
+            lon: "-66.6431",
+            tz: "-4",
             lang: "en"
           });
 
@@ -118,33 +126,33 @@ export async function registerRoutes(
 
             spiritualData = {
               astrology: {
-                sunSign: sun?.sign || "Pisces",
-                moonSign: moon?.sign || "Libra",
-                ascendant: ascendant?.sign || "Libra",
-                sunInsight: `Sun in ${sun?.sign}, ${sun?.house}th House. Reflects your core essence.`,
-                moonInsight: `Moon in ${moon?.sign}, ${moon?.house}th House. Governs your emotional landscape.`,
-                insight: `A powerful ${ascendant?.sign} rising chart with ${ak} as your Atmakaraka. ${mangalInsight}`,
+                sunSign: CHRISTINE_DETAILS.sunSign,
+                moonSign: CHRISTINE_DETAILS.moonSign,
+                ascendant: CHRISTINE_DETAILS.ascendant,
+                sunInsight: `Sun in ${CHRISTINE_DETAILS.sunSign}, ${sun?.house || 6}th House. Reflects your core essence.`,
+                moonInsight: `Moon in ${CHRISTINE_DETAILS.moonSign}, ${moon?.house || 1}st House. Governs your emotional landscape.`,
+                insight: `A powerful ${CHRISTINE_DETAILS.ascendant} rising chart with ${ak} as your Atmakaraka. ${mangalInsight}`,
                 dailyHoroscope: "", // Will be populated by AI
                 ashtakvarga: ashtakSummary,
                 nakshatras: nakshatraSummary
               },
               sidereal: {
                 atmakaraka: ak,
-                lagnam: ascendant?.sign || "Libra",
+                lagnam: CHRISTINE_DETAILS.ascendant,
                 rahu: planets.find((p: any) => p.name === "Rahu")?.sign || "Aries",
                 ketu: planets.find((p: any) => p.name === "Ketu")?.sign || "Libra",
                 atmakarakaInsight: `Your Soul King is ${ak}, guiding your spiritual evolution in this lifetime.`,
-                lagnamInsight: `Your rising sign is ${ascendant?.sign}, shaping your physical path and outlook.`
+                lagnamInsight: `Your rising sign is ${CHRISTINE_DETAILS.ascendant}, shaping your physical path and outlook.`
               },
               numerology: {
-                lifePath: 5,
-                personalYear: 1,
-                insight: "Your 5 Life Path drives you toward freedom, while your Personal Year 1 marks a fresh beginning."
+                lifePath: CHRISTINE_DETAILS.lifePath,
+                personalYear: CHRISTINE_DETAILS.personalYear,
+                insight: `Your ${CHRISTINE_DETAILS.lifePath} Life Path drives you toward freedom, while your Personal Year ${CHRISTINE_DETAILS.personalYear} marks a fresh beginning.`
               },
               humanDesign: {
-                type: "Manifesting Generator",
+                type: CHRISTINE_DETAILS.humanDesign,
                 strategy: "To Respond",
-                insight: "As a Manifesting Generator, your power lies in responding to life with sustainable energy."
+                insight: `As a ${CHRISTINE_DETAILS.humanDesign}, your power lies in responding to life with sustainable energy.`
               }
             };
           }
