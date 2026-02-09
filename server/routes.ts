@@ -92,13 +92,17 @@ export async function registerRoutes(
 
       if (VEDIC_API_KEY) {
         try {
+          const defaultLat = "45.9636";
+          const defaultLon = "-66.6431";
+          const defaultTz = "-4";
+
           const vedaParams = new URLSearchParams({
             api_key: VEDIC_API_KEY,
             dob: `${birthDate.getUTCDate().toString().padStart(2, '0')}/${(birthDate.getUTCMonth() + 1).toString().padStart(2, '0')}/${birthDate.getUTCFullYear()}`,
             tob: birthTime,
-            lat: "45.9636",
-            lon: "-66.6431",
-            tz: "-4",
+            lat: defaultLat,
+            lon: defaultLon,
+            tz: defaultTz,
             lang: "en"
           });
 
