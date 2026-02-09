@@ -275,7 +275,9 @@ export async function registerRoutes(
 
       // Ensure numerology insight is strictly tied to birth date
       if (finalSpiritualData.numerology) {
-        finalSpiritualData.numerology.insight = `Calculated for birth date ${birthDate.toLocaleDateString()}: ${finalSpiritualData.numerology.insight}`;
+        finalSpiritualData.numerology.lifePath = manualLifePath;
+        finalSpiritualData.numerology.personalYear = manualPersonalYear;
+        finalSpiritualData.numerology.insight = `Your Life Path ${manualLifePath} and Personal Year ${manualPersonalYear} are accurately calculated from your birth date ${birthDate.toLocaleDateString()}. ${finalSpiritualData.numerology.insight}`;
       }
 
       const profile = await storage.upsertSpiritualProfile({
