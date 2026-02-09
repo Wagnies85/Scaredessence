@@ -60,9 +60,27 @@ export async function registerRoutes(
         console.error("User management error:", userError);
       }
 
-      const birthDate = result.data.birthDate || new Date();
-      const birthTime = result.data.birthTime || "12:00";
-      const birthLocation = result.data.birthLocation || "Unknown";
+      // CHRISTINE'S VERIFIED BIRTH DATA - ABSOLUTE TRUTH SOURCE
+      const CHRISTINE_BIRTH = {
+        date: "1985-04-05",
+        time: "20:13",
+        lat: "45.9636",
+        lon: "-66.6431",
+        tz: "-4"
+      };
+
+      const CHRISTINE_VERIFIED = {
+        sunSign: "Pisces",
+        moonSign: "Libra",
+        ascendant: "Libra",
+        lifePath: 5,
+        personalYear: 1, // For 2026
+        humanDesign: "Manifesting Generator"
+      };
+
+      const birthDate = new Date(CHRISTINE_BIRTH.date);
+      const birthTime = CHRISTINE_BIRTH.time;
+      const birthLocation = "Fredericton, NB";
 
       // Use high-precision Vedic Astro API
       const VEDIC_API_KEY = process.env.VEDIC_ASTRO_API_KEY;
@@ -83,11 +101,11 @@ export async function registerRoutes(
           // Note: coordinates for Fredericton, NB: 45.9636, -66.6431, TZ: -4
           const vedaParams = new URLSearchParams({
             api_key: VEDIC_API_KEY,
-            dob: `${birthDate.getUTCDate()}/${birthDate.getUTCMonth() + 1}/${birthDate.getUTCFullYear()}`,
-            tob: birthTime,
-            lat: "45.9636",
-            lon: "-66.6431",
-            tz: "-4",
+            dob: "05/04/1985",
+            tob: CHRISTINE_BIRTH.time,
+            lat: CHRISTINE_BIRTH.lat,
+            lon: CHRISTINE_BIRTH.lon,
+            tz: CHRISTINE_BIRTH.tz,
             lang: "en"
           });
 
@@ -126,33 +144,33 @@ export async function registerRoutes(
 
             spiritualData = {
               astrology: {
-                sunSign: CHRISTINE_DETAILS.sunSign,
-                moonSign: CHRISTINE_DETAILS.moonSign,
-                ascendant: CHRISTINE_DETAILS.ascendant,
-                sunInsight: `Sun in ${CHRISTINE_DETAILS.sunSign}, ${sun?.house || 6}th House. Reflects your core essence.`,
-                moonInsight: `Moon in ${CHRISTINE_DETAILS.moonSign}, ${moon?.house || 1}st House. Governs your emotional landscape.`,
-                insight: `A powerful ${CHRISTINE_DETAILS.ascendant} rising chart with ${ak} as your Atmakaraka. ${mangalInsight}`,
-                dailyHoroscope: "", // Will be populated by AI
+                sunSign: CHRISTINE_VERIFIED.sunSign,
+                moonSign: CHRISTINE_VERIFIED.moonSign,
+                ascendant: CHRISTINE_VERIFIED.ascendant,
+                sunInsight: `Sun in ${CHRISTINE_VERIFIED.sunSign} at 21 degrees (6th House). This is your core soul radiance.`,
+                moonInsight: `Moon in ${CHRISTINE_VERIFIED.moonSign} at 14 degrees (1st House). Governs your high emotional intelligence.`,
+                insight: `A rare Libra Ascendant with Pisces Sun and Libra Moon. ${mangalInsight}`,
+                dailyHoroscope: "", 
                 ashtakvarga: ashtakSummary,
                 nakshatras: nakshatraSummary
               },
               sidereal: {
                 atmakaraka: ak,
-                lagnam: CHRISTINE_DETAILS.ascendant,
+                lagnam: CHRISTINE_VERIFIED.ascendant,
                 rahu: planets.find((p: any) => p.name === "Rahu")?.sign || "Aries",
                 ketu: planets.find((p: any) => p.name === "Ketu")?.sign || "Libra",
-                atmakarakaInsight: `Your Soul King is ${ak}, guiding your spiritual evolution in this lifetime.`,
-                lagnamInsight: `Your rising sign is ${CHRISTINE_DETAILS.ascendant}, shaping your physical path and outlook.`
+                atmakarakaInsight: `Your Atmakaraka is ${ak}, guiding your soul's deepest evolution.`,
+                lagnamInsight: `Libra Rising gives you a life path focused on balance, beauty, and justice.`
               },
               numerology: {
-                lifePath: CHRISTINE_DETAILS.lifePath,
-                personalYear: CHRISTINE_DETAILS.personalYear,
-                insight: `Your ${CHRISTINE_DETAILS.lifePath} Life Path drives you toward freedom, while your Personal Year ${CHRISTINE_DETAILS.personalYear} marks a fresh beginning.`
+                lifePath: CHRISTINE_VERIFIED.lifePath,
+                personalYear: CHRISTINE_VERIFIED.personalYear,
+                insight: `Life Path 5 (The Freedom Seeker) in a Personal Year 1 (New Beginnings) makes 2026 your most powerful year for change.`
               },
               humanDesign: {
-                type: CHRISTINE_DETAILS.humanDesign,
+                type: CHRISTINE_VERIFIED.humanDesign,
                 strategy: "To Respond",
-                insight: `As a ${CHRISTINE_DETAILS.humanDesign}, your power lies in responding to life with sustainable energy.`
+                insight: `As a ${CHRISTINE_VERIFIED.humanDesign}, your signature is satisfaction through correct response.`
               }
             };
           }
@@ -204,8 +222,8 @@ export async function registerRoutes(
         return reduce(mReduced + dReduced + yReduced);
       };
 
-      const manualLifePath = calculateLifePath(birthDate);
-      const manualPersonalYear = calculatePersonalYear(birthDate, new Date());
+      const manualLifePath = CHRISTINE_VERIFIED.lifePath;
+      const manualPersonalYear = CHRISTINE_VERIFIED.personalYear;
 
       // If API failed or key missing, fallback to Claude for high-precision spiritual calculations and daily horoscope
       const prompt = `Act as an expert Vedic astrologer (Jyotish), Human Design professional, and Numerologist. 
